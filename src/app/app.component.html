@@ -1,3 +1,19 @@
-<button type="button" name="ak" id="ak" class="btn btn-block btn-lg btn-block">
-  Hello adasd
-</button>
+<ng-container>
+  <app-nav-bar
+    (toggleSidebar)="drawer.toggle()"
+    [isLoggedIn]="true"
+  ></app-nav-bar>
+
+  <mat-drawer-container autosize>
+    <mat-drawer
+      #drawer
+      [mode]="(isLessThanSmall$ | async) ? 'over' : 'side'"
+      [opened]="!(isLessThanSmall$ | async)"
+    >
+      <app-side-bar></app-side-bar>
+    </mat-drawer>
+    <mat-drawer-content class="main-container">
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</ng-container>

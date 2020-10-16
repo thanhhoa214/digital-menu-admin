@@ -1,0 +1,41 @@
+<mat-toolbar
+  color="primary"
+  class="position-sticky flex-center-center justify-content-between"
+>
+  <div>
+    <button mat-icon-button (click)="toggleSidebar.emit()" class="ml-n2">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button [routerLink]="isLoggedIn ? ['/'] : []" mat-button>
+      2USD Dashboard
+    </button>
+  </div>
+
+  <div class="flex-center-center justify-content-around">
+    <button
+      mat-icon-button
+      class="mx-2 flex-center-center"
+      [matMenuTriggerFor]="profileMenu"
+      aria-label="Show Profile Menu"
+    >
+      <div class="avatar">
+        <img [src]="'assets/images/globe.png'" />
+      </div>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-menu #profileMenu="matMenu">
+  <mat-card [class.mat-elevation-z0]="true">
+    <mat-card-header>
+      <mat-card-title>John Doe </mat-card-title>
+      <mat-card-subtitle>Admin</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image class="px-4" [src]="'assets/images/globe.png'" />
+    <mat-card-actions class="d-flex justify-content-end">
+      <button mat-raised-button color="primary" (click)="logout()">
+        Logout
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</mat-menu>
