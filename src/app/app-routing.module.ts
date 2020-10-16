@@ -13,7 +13,23 @@ const routes: Routes = [
     loadChildren: () =>
       import('./screen/screen.module').then((m) => m.ScreenModule),
   },
+  {
+    path: 'displays',
+    loadChildren: () =>
+      import('./display/display.module').then((m) => m.DisplayModule),
+  },
+  {
+    path: 'stores',
+    loadChildren: () =>
+      import('./store/store.module').then((m) => m.StoreModule),
+  },
+  {
+    path: 'accounts',
+    loadChildren: () =>
+      import('./account/account.module').then((m) => m.AccountModule),
+  },
   { path: '404', component: NotFoundComponent },
+  { path: '', redirectTo: 'templates', pathMatch: 'full' },
   { path: '**', redirectTo: '/404', pathMatch: 'full' },
 ];
 
