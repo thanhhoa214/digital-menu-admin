@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { DisplayRoutingModule } from './display-routing.module';
-import { DisplayComponent } from './display.component';
-
+import { DetailComponent } from './detail/detail.component';
+import { ListingComponent } from './listing/listing.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [DisplayComponent],
-  imports: [
-    CommonModule,
-    DisplayRoutingModule
-  ]
+  declarations: [DetailComponent, ListingComponent],
+  imports: [SharedModule, DisplayRoutingModule],
 })
-export class DisplayModule { }
+export class DisplayModule {}

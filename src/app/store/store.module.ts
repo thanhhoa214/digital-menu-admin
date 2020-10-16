@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import { SharedModule } from '../shared/shared.module';
 import { StoreRoutingModule } from './store-routing.module';
-import { StoreComponent } from './store.component';
-
+import { DetailComponent } from './detail/detail.component';
+import { ListingComponent } from './listing/listing.component';
 
 @NgModule({
-  declarations: [StoreComponent],
-  imports: [
-    CommonModule,
-    StoreRoutingModule
-  ]
+  declarations: [DetailComponent, ListingComponent],
+  imports: [SharedModule, StoreRoutingModule],
 })
-export class StoreModule { }
+export class StoreModule {}
