@@ -1,0 +1,73 @@
+<div class="container mt-2">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-10 col-md-8 col-lg-6">
+      <!-- Form -->
+      <form class="form" action="" method="post">
+        <h1>Create New Account</h1>
+
+        <!-- Username  -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            placeholder="Enter Username"
+            name="username"
+          />
+        </div>
+        <!-- End Username  -->
+
+        <!-- Password -->
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="form-inline">
+            <input
+              type="text"
+              class="form-control mr-2"
+              id="password"
+              placeholder="Password"
+            />
+            <button type="" class="btn btn-primary">Generate</button>
+          </div>
+        </div>
+        <!-- End Password -->
+        <!-- Store name  -->
+        <div class="form-group">
+          <label for="store-name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="store-name"
+            placeholder="Store Name - ID"
+            name="store-name"
+          />
+        </div>
+        <!-- End Srore name  -->
+        <!-- Description -->
+        <div class="form-group">
+          <label for="user-des">Description</label>
+          <textarea class="form-control" id="user-des" rows="2"></textarea>
+        </div>
+        <!-- End Description -->
+
+        <!-- Role -->
+        <div class="form-group">
+          <label for="user-role">Role</label>
+          <select class="form-control" id="user-role">
+            <option>Admin</option>
+            <option>Staff</option>
+            <option>User</option>
+          </select>
+        </div>
+        <!-- End Role -->
+
+        <button type="submit" class="btn btn-primary btn-block">
+          Create New Account
+        </button>
+        <button type="" class="btn btn-secondary btn-block">&lt;</button>
+      </form>
+    </div>
+  </div>
+</div>
