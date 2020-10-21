@@ -1,3 +1,76 @@
-<div *ngFor="let index of [1, 2, 3, 4, 5]">
-  Hello go to <a [routerLink]="index">detail {{ index }}</a>
+<div class="container">
+  <br />
+  <h1>
+    <p style="color: blue; font-weight: 500; font-size: 40px;">Screens Management</p>
+  </h1>
+  <div class="search-area">
+    <!-- Search form -->
+    <input class="form-control" type="text" placeholder="Find Screen By Name" aria-label="Search">
+    <button type="button" class="btn btn-primary">Search</button>
+  </div>
+
+  <br>
+  <table class="table">
+    <thead class="thead-blue">
+      <tr>
+        <th scope="col" class="tbtitle" style="color: white; text-align: center;">No</th>
+        <th scope="col" class="tbtitle" style="color: white; text-align: center;">ID Screen</th>
+        <th scope="col" class="tbtitle" style="color: white; text-align: center;">Screen Name</th>
+        <th scope="col" class="tbtitle" style="color: white; text-align: center;">Screen Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" style="text-align: center;">1</th>
+        <td style="text-align: center;">SC1101</td>
+        <td style="text-align: center;">Screen_1</td>
+        <td style="text-align: center;">XXXXXXXXXXX</td>
+      </tr>
+      <tr>
+        <th style="text-align: center;"scope="row">2</th>
+        <td style="text-align: center;">SC2203</td>
+        <td style="text-align: center;">Screen_23</td>
+        <td style="text-align: center;">XXXXXXXXXXX</td>
+      </tr>
+      <tr>
+        <th style="text-align: center;" scope="row">3</th>
+        <td style="text-align: center;">SC1123</td>
+        <td style="text-align: center;">Screen_13</td>
+        <td style="text-align: center;">XXXXXXXXXXX</td>
+      </tr>
+      <tr>
+        <th style="text-align: center;" scope="row">4</th>
+        <td style="text-align: center;">SC1123</td>
+        <td style="text-align: center;">Screen_13</td>
+        <td style="text-align: center;">XXXXXXXXXXX</td>
+      </tr>
+      <tr>
+        <th style="text-align: center;" scope="row">5</th>
+        <td style="text-align: center;">SC1123</td>
+        <td style="text-align: center;">Screen_13</td>
+        <td style="text-align: center;">XXXXXXXXXXX</td>
+      </tr>
+      <tr>
+        <th style="text-align: center;" scope="row">6</th>
+        <td style="text-align: center;">SC1123</td>
+        <td style="text-align: center;">Screen_13</td>
+        <td style="text-align: center;">XXXXXXXXXXX</td>
+      </tr>
+      <tr>
+        <th style="text-align: center;" scope="row">7</th>
+        <td style="text-align: center;">SC1123</td>
+        <td style="text-align: center;">Screen_13</td>
+        <td style="text-align: center;">XXXXXXXXXXX</td>
+      </tr>
+      <tr>
+        <th style="text-align: center;" scope="row">8</th>
+        <td style="text-align: center;">SC1123</td>
+        <td style="text-align: center;">Screen_13</td>
+        <td style="text-align: center;">XXXXXXXXXXX</td>
+      </tr>
+      
+    </tbody>
+  </table>
+
+
 </div>

@@ -1,3 +1,92 @@
-<div *ngFor="let index of [1, 2, 3, 4, 5]">
-  Hello go to <a [routerLink]="index">detail {{ index }}</a>
+<div class="container">
+  <br />
+  <h1>
+    <p style="color: blue; font-weight: 500; font-size: 40px;">Stores Management</p>
+  </h1>
+  <div class="search-area">
+    <!-- Search form -->
+    <input class="form-control" type="text" placeholder="Find By NameStore" aria-label="Search">
+    <button type="button" class="btn btn-primary">Search</button>
+  </div>
+
+  <br>
+  <table class="table">
+    <thead class="thead-blue">
+      <tr>
+        <th scope="col" class="tbtitle" style="color: white; text-align: center;">No</th>
+        <th scope="col" class="tbtitle" style="color: white;text-align: center;">ID Store</th>
+        <th scope="col" class="tbtitle" style="color: white;text-align: center;">Name Store</th>
+        <th scope="col" class="tbtitle" style="color: white;text-align: center;">Location</th>
+        <th scope="col" class="tbtitle" style="color: white;text-align: center;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" style="text-align: center;">1</th>
+        <td style="text-align: center;">Passio_THT01</td>
+        <td style="text-align: center;">Passio To Hien Thanh</td>
+        <td style="text-align: center;">70 To Hien Thanh</td>
+        <td style="text-align: center;"><button type="button"
+            class="btn btn-outline-warning waves-effect">Inactive</button></td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center;">2</th>
+        <td style="text-align: center;">BLR_LDH03</td>
+        <td style="text-align: center;">Bò-Lế-Rồ Lê Đại Hành</td>
+        <td style="text-align: center;">113 Le Dai Hanh</td>
+        <td style="text-align: center;"><button type="button"
+            class="btn btn-outline-warning waves-effect">Inactive</button></td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center;">3</th>
+        <td style="text-align: center;">Lotte_CT01</td>
+        <td style="text-align: center;">Lotte Cong Hoa</td>
+        <td style="text-align: center;">223 Cong Hoa</td>
+        <td style="text-align: center;"><button type="button"
+            class="btn btn-outline-warning waves-effect">Inactive</button></td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center;">4</th>
+        <td style="text-align: center;">Kichi_SVH11</td>
+        <td style="text-align: center;">Kichi Kichi Su Van Hanh</td>
+        <td style="text-align: center;">499 Su Van Hanh</td>
+        <td style="text-align: center;"><button type="button"
+            class="btn btn-outline-warning waves-effect">Inactive</button></td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center;">1</th>
+        <td style="text-align: center;">Passio_THT01</td>
+        <td style="text-align: center;">Passio To Hien Thanh</td>
+        <td style="text-align: center;">70 To Hien Thanh</td>
+        <td style="text-align: center;"><button type="button"
+            class="btn btn-outline-warning waves-effect">Inactive</button></td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center;">2</th>
+        <td style="text-align: center;">BLR_LDH03</td>
+        <td style="text-align: center;">Bò-Lế-Rồ Lê Đại Hành</td>
+        <td style="text-align: center;">113 Le Dai Hanh</td>
+        <td style="text-align: center;"><button type="button"
+            class="btn btn-outline-warning waves-effect">Inactive</button></td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center;">3</th>
+        <td style="text-align: center;">Lotte_CT01</td>
+        <td style="text-align: center;">Lotte Cong Hoa</td>
+        <td style="text-align: center;">223 Cong Hoa</td>
+        <td style="text-align: center;"><button type="button"
+            class="btn btn-outline-warning waves-effect">Inactive</button></td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center;">4</th>
+        <td style="text-align: center;">Kichi_SVH11</td>
+        <td style="text-align: center;">Kichi Kichi Su Van Hanh</td>
+        <td style="text-align: center;">499 Su Van Hanh</td>
+        <td style="text-align: center;"><button type="button"
+            class="btn btn-outline-warning waves-effect">Inactive</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+
 </div>
