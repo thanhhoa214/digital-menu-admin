@@ -1,3 +1,141 @@
-<div *ngFor="let index of [1, 2, 3, 4, 5]">
-  Hello go to <a [routerLink]="index">detail {{ index }}</a>
+<h1 class="d-flex align-items-center ml-3 mt-2 mat-display-1">
+  <mat-icon>web</mat-icon>
+  <span class="ml-3">Templates</span>
+</h1>
+<app-create-button></app-create-button>
+<!-- Grid row -->
+<div class="container-fluid">
+  <form>
+    <div class="row d-flex justify-content-center mx-2">
+      <mat-form-field class="flex-fill">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="Find your template ..." />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="ml-2">
+        <mat-label>Select</mat-label>
+        <mat-select>
+          <mat-option value="option">All</mat-option>
+          <mat-option value="option">Desert</mat-option>
+          <mat-option value="option">Tree</mat-option>
+          <mat-option value="option">Fruit</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  <div class="row">
+    <!-- Grid column -->
+    <div class="col-md-12 d-flex justify-content-center mb-5">
+      <button mat-stroked-button color="primary">All</button>
+      <button mat-stroked-button color="primary" class="ml-1">Mountains</button>
+      <button mat-stroked-button color="primary" class="ml-1">Sea</button>
+      <button mat-stroked-button color="primary" class="ml-1">9:16</button>
+      <button mat-stroked-button color="primary" class="ml-1">20:9</button>
+      <button mat-stroked-button color="primary" class="ml-1">Desert</button>
+    </div>
+
+    <!-- Grid column -->
+  </div>
+  <!-- Grid row -->
+
+  <!-- Grid row -->
+  <div class="gallery" id="gallery">
+    <!-- Grid column -->
+    <div class="mb-3 px-2 py-3 shadow pics animation all 2">
+      <div class="d-flex justify-content-between mb-1">
+        <h2>Title 1</h2>
+        <button
+          mat-raised-button
+          color="primary"
+          class="mb-2"
+          (click)="
+            openDialog(
+              'Title 1',
+              'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(73).jpg'
+            )
+          "
+        >
+          Preview
+        </button>
+      </div>
+      <img
+        class="img-fluid rounded-lg"
+        src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(73).jpg"
+        alt="Card image cap"
+      />
+    </div>
+    <!-- Grid column -->
+
+    <!-- Grid column -->
+    <div class="mb-3 px-2 py-3 shadow pics animation all 1">
+      <div class="d-flex justify-content-between mb-1">
+        <h2>Title</h2>
+        <button mat-raised-button color="primary" class="mb-2">Preview</button>
+      </div>
+      <img
+        class="img-fluid rounded-lg"
+        src="https://mdbootstrap.com/img/Photos/Vertical/mountain1.jpg"
+        alt="Card image cap"
+      />
+    </div>
+    <!-- Grid column -->
+
+    <!-- Grid column -->
+    <div class="mb-3 px-2 py-3 shadow pics animation all 1">
+      <div class="d-flex justify-content-between mb-1">
+        <h2>Title</h2>
+        <button mat-raised-button color="primary" class="mb-2">Preview</button>
+      </div>
+      <img
+        class="img-fluid rounded-lg"
+        src="https://mdbootstrap.com/img/Photos/Vertical/mountain2.jpg"
+        alt="Card image cap"
+      />
+    </div>
+    <!-- Grid column -->
+
+    <!-- Grid column -->
+    <div class="mb-3 px-2 py-3 shadow pics animation all 2">
+      <div class="d-flex justify-content-between mb-1">
+        <h2>Title</h2>
+        <button mat-raised-button color="primary" class="mb-2">Preview</button>
+      </div>
+      <img
+        class="img-fluid rounded-lg"
+        src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(35).jpg"
+        alt="Card image cap"
+      />
+    </div>
+    <!-- Grid column -->
+
+    <!-- Grid column -->
+    <div class="mb-3 px-2 py-3 shadow pics animation all 2">
+      <div class="d-flex justify-content-between mb-1">
+        <h2>Title</h2>
+        <button mat-raised-button color="primary" class="mb-2">Preview</button>
+      </div>
+      <img
+        class="img-fluid rounded-lg"
+        src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(18).jpg"
+        alt="Card image cap"
+      />
+    </div>
+    <!-- Grid column -->
+
+    <!-- Grid column -->
+    <div class="mb-3 px-2 py-3 shadow pics animation all 1">
+      <div class="d-flex justify-content-between mb-1">
+        <h2>Title</h2>
+        <button mat-raised-button color="primary" class="mb-2">Preview</button>
+      </div>
+      <img
+        class="img-fluid rounded-lg"
+        src="https://mdbootstrap.com/img/Photos/Vertical/mountain3.jpg"
+        alt="Card image cap"
+      />
+    </div>
+    <!-- Grid column -->
+  </div>
+  <!-- Grid row -->
 </div>

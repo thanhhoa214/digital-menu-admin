@@ -33,6 +33,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { CdkTableModule, CdkColumnDef } from '@angular/cdk/table';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const componentModules = [
   MatSnackBarModule,
@@ -61,6 +62,7 @@ const componentModules = [
   MatProgressSpinnerModule,
   CdkTableModule,
   MatCheckboxModule,
+  MatDialogModule,
 ];
 
 @NgModule({

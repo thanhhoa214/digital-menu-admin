@@ -4,6 +4,7 @@ import { MaterialModule } from './material.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
+  CreateButtonComponent,
   NavBarComponent,
   NotFoundComponent,
   SideBarComponent,
@@ -16,7 +17,12 @@ const modules = [
   FormsModule,
   RouterModule,
 ];
-const components = [NavBarComponent, NotFoundComponent, SideBarComponent];
+const components = [
+  NavBarComponent,
+  NotFoundComponent,
+  SideBarComponent,
+  CreateButtonComponent,
+];
 
 @NgModule({
   imports: modules,

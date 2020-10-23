@@ -2,20 +2,12 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ViewChild,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap,
-} from 'rxjs/operators';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { ImageModalComponent } from '../shared/components/image-modal/image-modal.component';
 
 const sampleSkeleton = {
   id: 'skeleton',
@@ -31,13 +23,16 @@ const sampleSkeleton = {
 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListingComponent implements OnInit, OnDestroy {
-  constructor(
-    private _snackBar: MatSnackBar,
-    private _cdRef: ChangeDetectorRef
-  ) {}
+export class ListingComponent {
+  constructor(public dialog: MatDialog) {}
 
-  ngOnInit() {}
+  openDialog(title: string, src: string) {
+    const dialogRef = this.dialog.open(ImageModalComponent, {
+      data: { title, src },
+    });
 
-  ngOnDestroy(): void {}
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }
