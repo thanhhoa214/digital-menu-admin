@@ -21,6 +21,11 @@ body {
   cursor: pointer;
 }
 
+.main-container {
+  min-height: 91.5vh;
+  min-width: 333px;
+  overflow-x: scroll;
+}
 .mat-snack-bar-container {
   margin-top: 8vh !important;
 }
