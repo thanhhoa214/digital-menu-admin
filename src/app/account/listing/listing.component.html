@@ -1,92 +1,152 @@
 <div class="container">
-    <br />
-    <h1>
-        <p style="color: blue; font-weight: 500; font-size: 40px;">Accounts Management</p>
-    </h1>
-    <div class="search-area">
-        <!-- Search form -->
-        <input class="form-control" type="text" placeholder="Find By ID Account" aria-label="Search">
-        <button type="button" class="btn btn-primary">Search</button>
-    </div>
+  <br />
+  <h1>
+    <p style="color: blue; font-weight: 500; font-size: 40px">
+      Accounts Management
+    </p>
+  </h1>
+  <div class="search-area">
+    <!-- Search form -->
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Find By ID Account"
+      aria-label="Search"
+    />
+    <button type="button" class="btn btn-primary">Search</button>
+  </div>
+  <app-create-button></app-create-button>
 
-    <br>
-    <table class="table">
-        <thead class="thead-blue">
-            <tr>
-                <th scope="col" class="tbtitle" style="color: white; text-align: center;">No</th>
-                <th scope="col" class="tbtitle" style="color: white;text-align: center;">ID Account</th>
-                <th scope="col" class="tbtitle" style="color: white;text-align: center;">Name</th>
-                <th scope="col" class="tbtitle" style="color: white;text-align: center;">Store ID</th>
-                <th scope="col" class="tbtitle" style="color: white;text-align: center;">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row" style="text-align: center;">1</th>
-                <td style="text-align: center;">HuyNT</td>
-                <td style="text-align: center;">Nguyen Trung Huy</td>
-                <td style="text-align: center;">Passio_THT01</td>
-                <td style="text-align: center;"><button type="button"
-                        class="btn btn-outline-warning waves-effect">Inactive</button></td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align: center;">2</th>
-                <td style="text-align: center;">DatLT</td>
-                <td style="text-align: center;">Le Thanh Dat</td>
-                <td style="text-align: center;">Passio_THT03</td>
-                <td style="text-align: center;"><button type="button"
-                        class="btn btn-outline-warning waves-effect">Inactive</button></td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align: center;">3</th>
-                <td style="text-align: center;">HoaNT</td>
-                <td style="text-align: center;">Nguyen Thanh Hoa</td>
-                <td style="text-align: center;">PZCompany_LG303</td>
-                <td style="text-align: center;"><button type="button"
-                        class="btn btn-outline-warning waves-effect">Inactive</button></td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align: center;">4</th>
-                <td style="text-align: center;">HuyKTM</td>
-                <td style="text-align: center;">Trieu Minh Huy</td>
-                <td style="text-align: center;">Lotte_CT01</td>
-                <td style="text-align: center;"><button type="button"
-                        class="btn btn-outline-warning waves-effect">Inactive</button></td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align: center;">5</th>
-                <td style="text-align: center;">HuyNT</td>
-                <td style="text-align: center;">Nguyen Trung Huy</td>
-                <td style="text-align: center;">Passio_THT01</td>
-                <td style="text-align: center;"><button type="button"
-                        class="btn btn-outline-warning waves-effect">Inactive</button></td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align: center;">6</th>
-                <td style="text-align: center;">DatLT</td>
-                <td style="text-align: center;">Le Thanh Dat</td>
-                <td style="text-align: center;">Passio_THT03</td>
-                <td style="text-align: center;"><button type="button"
-                        class="btn btn-outline-warning waves-effect">Inactive</button></td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align: center;">7</th>
-                <td style="text-align: center;">HoaNT</td>
-                <td style="text-align: center;">Nguyen Thanh Hoa</td>
-                <td style="text-align: center;">PZCompany_LG303</td>
-                <td style="text-align: center;"><button type="button"
-                        class="btn btn-outline-warning waves-effect">Inactive</button></td>
-            </tr>
-            <tr>
-                <th scope="row" style="text-align: center;">8</th>
-                <td style="text-align: center;">HuyKTM</td>
-                <td style="text-align: center;">Trieu Minh Huy</td>
-                <td style="text-align: center;">Lotte_CT01</td>
-                <td style="text-align: center;"><button type="button"
-                        class="btn btn-outline-warning waves-effect">Inactive</button></td>
-            </tr>
-        </tbody>
-    </table>
-
-
+  <br />
+  <table class="table">
+    <thead class="thead-blue">
+      <tr>
+        <th
+          scope="col"
+          class="tbtitle"
+          style="color: white; text-align: center"
+        >
+          No
+        </th>
+        <th
+          scope="col"
+          class="tbtitle"
+          style="color: white; text-align: center"
+        >
+          ID Account
+        </th>
+        <th
+          scope="col"
+          class="tbtitle"
+          style="color: white; text-align: center"
+        >
+          Name
+        </th>
+        <th
+          scope="col"
+          class="tbtitle"
+          style="color: white; text-align: center"
+        >
+          Store ID
+        </th>
+        <th
+          scope="col"
+          class="tbtitle"
+          style="color: white; text-align: center"
+        >
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" style="text-align: center">1</th>
+        <td style="text-align: center">HuyNT</td>
+        <td style="text-align: center">Nguyen Trung Huy</td>
+        <td style="text-align: center">Passio_THT01</td>
+        <td style="text-align: center">
+          <button type="button" class="btn btn-outline-warning waves-effect">
+            Inactive
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center">2</th>
+        <td style="text-align: center">DatLT</td>
+        <td style="text-align: center">Le Thanh Dat</td>
+        <td style="text-align: center">Passio_THT03</td>
+        <td style="text-align: center">
+          <button type="button" class="btn btn-outline-warning waves-effect">
+            Inactive
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center">3</th>
+        <td style="text-align: center">HoaNT</td>
+        <td style="text-align: center">Nguyen Thanh Hoa</td>
+        <td style="text-align: center">PZCompany_LG303</td>
+        <td style="text-align: center">
+          <button type="button" class="btn btn-outline-warning waves-effect">
+            Inactive
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center">4</th>
+        <td style="text-align: center">HuyKTM</td>
+        <td style="text-align: center">Trieu Minh Huy</td>
+        <td style="text-align: center">Lotte_CT01</td>
+        <td style="text-align: center">
+          <button type="button" class="btn btn-outline-warning waves-effect">
+            Inactive
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center">5</th>
+        <td style="text-align: center">HuyNT</td>
+        <td style="text-align: center">Nguyen Trung Huy</td>
+        <td style="text-align: center">Passio_THT01</td>
+        <td style="text-align: center">
+          <button type="button" class="btn btn-outline-warning waves-effect">
+            Inactive
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center">6</th>
+        <td style="text-align: center">DatLT</td>
+        <td style="text-align: center">Le Thanh Dat</td>
+        <td style="text-align: center">Passio_THT03</td>
+        <td style="text-align: center">
+          <button type="button" class="btn btn-outline-warning waves-effect">
+            Inactive
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center">7</th>
+        <td style="text-align: center">HoaNT</td>
+        <td style="text-align: center">Nguyen Thanh Hoa</td>
+        <td style="text-align: center">PZCompany_LG303</td>
+        <td style="text-align: center">
+          <button type="button" class="btn btn-outline-warning waves-effect">
+            Inactive
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" style="text-align: center">8</th>
+        <td style="text-align: center">HuyKTM</td>
+        <td style="text-align: center">Trieu Minh Huy</td>
+        <td style="text-align: center">Lotte_CT01</td>
+        <td style="text-align: center">
+          <button type="button" class="btn btn-outline-warning waves-effect">
+            Inactive
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

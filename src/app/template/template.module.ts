@@ -4,9 +4,15 @@ import { SharedModule } from '../shared/shared.module';
 import { ListingComponent } from './listing/listing.component';
 import { DetailComponent } from './detail/detail.component';
 import { ImageModalComponent } from './shared/components/image-modal/image-modal.component';
+import { UpdateComponent } from './update/update.component';
 
 @NgModule({
-  declarations: [ListingComponent, DetailComponent, ImageModalComponent],
+  declarations: [
+    ListingComponent,
+    DetailComponent,
+    ImageModalComponent,
+    UpdateComponent,
+  ],
   imports: [SharedModule, TemplateRoutingModule],
 })
 export class TemplateModule {}
