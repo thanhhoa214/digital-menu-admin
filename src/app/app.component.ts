@@ -3,6 +3,7 @@ import { MatDrawerMode } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { TokenService } from './token.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,12 @@ import { map, shareReplay } from 'rxjs/operators';
 export class AppComponent {
   drawerMode: MatDrawerMode = 'side';
   isLessThanSmall$: Observable<boolean>;
+  isLoggedIn$: Observable<boolean>;
 
-  constructor(breakpointObserver: BreakpointObserver) {
+  constructor(
+    breakpointObserver: BreakpointObserver,
+    private _tokenService: TokenService
+  ) {
     this.isLessThanSmall$ = breakpointObserver
       .observe([Breakpoints.Small, Breakpoints.XSmall])
       .pipe(
@@ -22,8 +27,8 @@ export class AppComponent {
           refCount: false,
         })
       );
-  }
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('accessToken');
+    this.isLoggedIn$ = this._tokenService
+      .getAccessToken$()
+      .pipe(map((accessToken) => !!accessToken));
   }
 }

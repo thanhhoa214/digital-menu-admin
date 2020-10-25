@@ -8,6 +8,8 @@ import {
   NavBarComponent,
   NotFoundComponent,
   SideBarComponent,
+  SnackBarFailedComponent,
+  SnackBarSuccessComponent,
 } from '../shared/components';
 
 const modules = [
@@ -22,6 +24,8 @@ const components = [
   NotFoundComponent,
   SideBarComponent,
   CreateButtonComponent,
+  SnackBarFailedComponent,
+  SnackBarSuccessComponent,
 ];
 
 @NgModule({

@@ -1,7 +1,7 @@
 <ng-container>
   <app-nav-bar
     (toggleSidebar)="drawer.toggle()"
-    [isLoggedIn]="isLoggedIn()"
+    [isLoggedIn]="isLoggedIn$ | async"
   ></app-nav-bar>
 
   <mat-drawer-container autosize>
@@ -9,7 +9,7 @@
       #drawer
       [mode]="(isLessThanSmall$ | async) ? 'over' : 'side'"
       [opened]="!(isLessThanSmall$ | async)"
-      [class.d-none]="isLoggedIn"
+      [class.d-none]="!(isLoggedIn$ | async)"
     >
       <app-side-bar></app-side-bar>
     </mat-drawer>

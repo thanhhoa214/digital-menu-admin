@@ -35,7 +35,9 @@ import { HttpClientModule } from '@angular/common/http';
       useFactory: (tokenService: TokenService) =>
         new Configuration({
           basePath: environment.API_URL,
-          accessToken: tokenService.getAccessToken.bind(tokenService),
+          accessToken: tokenService
+            .snapshot()
+            .getAccessToken.bind(tokenService),
         }),
       deps: [TokenService],
       multi: false,

@@ -5,6 +5,11 @@ import { distinctUntilChanged, filter, take, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatInput } from '@angular/material/input';
 import { AuthenticationService } from 'src/generated';
+import {
+  SnackBarFailedComponent,
+  SnackBarSuccessComponent,
+} from 'src/app/shared/components';
+import { TokenService } from 'src/app/token.service';
 
 @Component({
   selector: 'app-login',
@@ -12,32 +17,21 @@ import { AuthenticationService } from 'src/generated';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  @ViewChild('emailInput') emailInput: ElementRef<MatInput>;
   form: FormGroup;
 
   constructor(
     private _router: Router,
     private _formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
-    private _authService: AuthenticationService
+    private _authService: AuthenticationService,
+    private _tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
     this.form = this._formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
-    const formControlNames = ['email', 'password'];
-    // formControlNames.forEach((controlName) => {
-    //   const formControl = this.form.get(controlName);
-    //   formControl.valueChanges
-    //     .pipe(
-    //       distinctUntilChanged(),
-    //       filter((value) => !!value),
-    //       tap((value) => formControl.setValue({ str: value }))
-    //     )
-    //     .subscribe();
-    // });
   }
 
   login(): void {
@@ -45,9 +39,28 @@ export class LoginComponent implements OnInit {
       .apiAuthenticationPost(this.form.value)
       .pipe(take(1))
       .subscribe((result) => {
+        if (typeof result !== 'object') {
+          this._snackBar.openFromComponent(SnackBarFailedComponent, {
+            verticalPosition: 'top',
+            horizontalPosition: 'end',
+            panelClass: 'mat-snack-bar-failed',
+            data: {
+              title: 'Failed !',
+              message: 'Login failed. Username or password is incorrect.',
+            },
+          });
+          return;
+        }
         console.log(result);
         if (result.token) {
-          localStorage.setItem('accessToken', result.token);
+          this._snackBar.openFromComponent(SnackBarSuccessComponent, {
+            verticalPosition: 'top',
+            horizontalPosition: 'end',
+            panelClass: 'mat-snack-bar-success',
+            data: { title: 'Success !', message: 'Login successfully' },
+          });
+          this._tokenService.updateAccessToken(result.token);
+
           localStorage.setItem('accountInfor', JSON.stringify(result.account));
           this._router.navigateByUrl('/templates');
         }
