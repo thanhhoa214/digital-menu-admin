@@ -5,6 +5,19 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
+import {
+  ApiModule,
+  Configuration,
+  // ConfigurationParameters,
+} from 'src/generated';
+import { environment } from 'src/environments/environment';
+import { TokenService } from './token.service';
+import { HttpClientModule } from '@angular/common/http';
+
+// export function apiConfigFactory(): Configuration {
+//   const params: ConfigurationParameters = {};
+//   return new Configuration(params);
+// }
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,8 +26,21 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
+    ApiModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: Configuration,
+      useFactory: (tokenService: TokenService) =>
+        new Configuration({
+          basePath: environment.API_URL,
+          accessToken: tokenService.getAccessToken.bind(tokenService),
+        }),
+      deps: [TokenService],
+      multi: false,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

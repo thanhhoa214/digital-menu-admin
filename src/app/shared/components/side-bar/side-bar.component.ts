@@ -41,6 +41,11 @@ const TREE_DATA: TreeNode[] = [
     route: '/accounts',
     icon: 'account_circle',
   },
+  {
+    name: 'Products',
+    route: '/products',
+    icon: 'view_list',
+  },
 ];
 @Component({
   selector: 'app-side-bar',
