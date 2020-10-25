@@ -3,9 +3,9 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
 } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+import { ProductReadDto, ProductsService } from 'src/generated';
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -13,13 +13,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListingComponent implements OnInit, OnDestroy {
-  constructor(
-    private _snackBar: MatSnackBar,
-    private _cdRef: ChangeDetectorRef
-  ) {}
+  public products$: Observable<ProductReadDto[]>;
+  constructor(private _productService: ProductsService) {}
 
   ngOnInit() {
-    // new ProductsApi().apiProductsGet({}).subscribe(console.log);
+    this.products$ = this._productService.apiProductsGet(1, 10);
   }
 
   ngOnDestroy(): void {}
