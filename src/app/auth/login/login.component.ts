@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { distinctUntilChanged, filter, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, take, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatInput } from '@angular/material/input';
-import { AuthService } from '../auth.service';
+import { AuthenticationService } from 'src/generated';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
-    private _authService: AuthService
+    private _authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
@@ -41,11 +41,16 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this._authService.login(this.form.value).subscribe((result) => {
-      console.log(result);
-      if (result.token) {
-        this._router.navigateByUrl('/templates');
-      }
-    });
+    this._authService
+      .apiAuthenticationPost(this.form.value)
+      .pipe(take(1))
+      .subscribe((result) => {
+        console.log(result);
+        if (result.token) {
+          localStorage.setItem('accessToken', result.token);
+          localStorage.setItem('accountInfor', JSON.stringify(result.account));
+          this._router.navigateByUrl('/templates');
+        }
+      });
   }
 }

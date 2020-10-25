@@ -5,6 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class TokenService {
   getAccessToken() {
-    return localStorage.getItem('access_token');
+    return localStorage.getItem('accessToken');
   }
 }

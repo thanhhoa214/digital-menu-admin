@@ -10,8 +10,6 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  isLoggedIn$: Observable<boolean>;
-
   drawerMode: MatDrawerMode = 'side';
   isLessThanSmall$: Observable<boolean>;
 
@@ -24,5 +22,8 @@ export class AppComponent {
           refCount: false,
         })
       );
+  }
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('accessToken');
   }
 }
