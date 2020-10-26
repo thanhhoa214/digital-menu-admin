@@ -6,6 +6,8 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+import { StoreReadDto, StoresService } from 'src/generated';
 
 @Component({
   selector: 'app-listing',
@@ -14,13 +16,29 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListingComponent implements OnInit, OnDestroy {
+export class ListingComponent implements OnInit {
+  public store$: Observable<StoreReadDto[]>;
+
   constructor(
-    private _snackBar: MatSnackBar,
-    private _cdRef: ChangeDetectorRef
-  ) {}
+    private storeService: StoresService
+  ) { }
 
-  ngOnInit() {}
 
-  ngOnDestroy(): void {}
+
+
+  private _pagingOptions = {
+    limit: 10,
+  };
+
+
+  ngOnInit() {
+    this.store$ = this.storeService.apiStoresGet(1, this._pagingOptions.limit)
+  }
+
+  loadStores(page: number) {
+    this.store$ = this.storeService.apiStoresGet(
+      page,
+      this._pagingOptions.limit
+    );
+  }
 }

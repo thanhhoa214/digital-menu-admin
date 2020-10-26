@@ -14,13 +14,10 @@ export class ListingComponent implements OnInit {
     limit: 10,
   };
 
-  constructor(private _productService: ProductsService) {}
+  constructor(private _productService: ProductsService) { }
 
   ngOnInit() {
-    this.products$ = this._productService.apiProductsGet(
-      1,
-      this._pagingOptions.limit
-    );
+    this.products$ = this._productService.apiProductsGet(1, this._pagingOptions.limit)
   }
   loadProducts(page: number) {
     this.products$ = this._productService.apiProductsGet(
