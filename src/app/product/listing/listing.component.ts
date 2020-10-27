@@ -1,5 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Pagination } from 'src/app/shared/models/pagination.model';
 import { ProductReadDto, ProductsService } from 'src/generated';
 @Component({
   selector: 'app-listing',
@@ -8,24 +11,31 @@ import { ProductReadDto, ProductsService } from 'src/generated';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListingComponent implements OnInit {
-  public products$: Observable<ProductReadDto[]>;
+  products$: Observable<Pagination<ProductReadDto>>;
+  search: FormControl = new FormControl('');
 
-  private _pagingOptions = {
+  pagingOptions = {
     limit: 10,
+    currentPage: 1,
   };
 
   constructor(private _productService: ProductsService) {}
 
   ngOnInit() {
-    this.products$ = this._productService.apiProductsGet(
-      1,
-      this._pagingOptions.limit
-    );
+    this.products$ = this._productService.apiProductsGet();
   }
   loadProducts(page: number) {
+    const searchValue = this.search.value;
     this.products$ = this._productService.apiProductsGet(
       page,
-      this._pagingOptions.limit
+      this.pagingOptions.limit,
+      searchValue
     );
+    this.pagingOptions = { ...this.pagingOptions, currentPage: page };
+  }
+
+  getPagingArray(totolItem: number) {
+    const pageCount = Math.round(totolItem / this.pagingOptions.limit);
+    return Array(pageCount).fill(1);
   }
 }

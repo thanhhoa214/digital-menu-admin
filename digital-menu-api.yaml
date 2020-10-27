@@ -13,11 +13,19 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
+        - name: searchValue
+          in: query
+          schema:
+            type: string
+            default: ''
+            nullable: true
       responses:
         '200':
           description: Success
@@ -154,11 +162,19 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
+        - name: searchValue
+          in: query
+          schema:
+            type: string
+            default: ''
+            nullable: true
       responses:
         '200':
           description: Success
@@ -326,11 +342,13 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
       responses:
         '200':
           description: Success
@@ -467,11 +485,19 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
+        - name: searchValue
+          in: query
+          schema:
+            type: string
+            default: ''
+            nullable: true
       responses:
         '200':
           description: Success
@@ -608,11 +634,13 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
       responses:
         '200':
           description: Success
@@ -749,11 +777,13 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
       responses:
         '200':
           description: Success
@@ -890,11 +920,19 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
+        - name: searchValue
+          in: query
+          schema:
+            type: string
+            default: ''
+            nullable: true
       responses:
         '200':
           description: Success
@@ -1031,11 +1069,13 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
       responses:
         '200':
           description: Success
@@ -1172,11 +1212,13 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
       responses:
         '200':
           description: Success
@@ -1313,11 +1355,19 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
+        - name: searchValue
+          in: query
+          schema:
+            type: string
+            default: ''
+            nullable: true
       responses:
         '200':
           description: Success
@@ -1460,11 +1510,91 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
+      responses:
+        '200':
+          description: Success
+  '/api/stores/{id}/accounts':
+    get:
+      tags:
+        - Stores
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: Success
+  '/api/stores/{id}/templates':
+    get:
+      tags:
+        - Stores
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: Success
+  '/api/stores/{id}/screens':
+    get:
+      tags:
+        - Stores
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 10
       responses:
         '200':
           description: Success
@@ -1478,11 +1608,13 @@ paths:
           schema:
             type: integer
             format: int32
+            default: 1
         - name: limit
           in: query
           schema:
             type: integer
             format: int32
+            default: 10
         - name: tag
           in: query
           schema:
