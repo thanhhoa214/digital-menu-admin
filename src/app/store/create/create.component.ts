@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { StoresService } from 'src/generated';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent {
   form: FormGroup;
 
   constructor(
@@ -22,8 +22,6 @@ export class CreateComponent implements OnInit {
       name: ['', Validators.required],
     });
   }
-
-  ngOnInit(): void {}
 
   create() {
     const { name } = this.form.value;
