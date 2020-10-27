@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs/operators';
 import { SnackBarSuccessComponent } from 'src/app/shared/components';
-import { StoresService } from 'src/generated';
+import { AccountReadDto, StoresService } from 'src/generated';
 
 @Component({
   selector: 'app-create',
@@ -21,6 +21,12 @@ export class CreateComponent {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
     });
+
+    // NOTE: HOW TO GET LOGGED ACCOUNT INFORMATION
+    const account: AccountReadDto = JSON.parse(
+      localStorage.getItem('accountInfor')
+    );
+    console.log(account);
   }
 
   create() {

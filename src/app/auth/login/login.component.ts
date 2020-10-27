@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit {
           });
           return;
         }
-        console.log(result);
         if (result.token) {
           this._snackBar.openFromComponent(SnackBarSuccessComponent, {
             verticalPosition: 'top',

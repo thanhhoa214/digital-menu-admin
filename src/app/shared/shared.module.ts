@@ -10,6 +10,7 @@ import {
   SideBarComponent,
   SnackBarFailedComponent,
   SnackBarSuccessComponent,
+  SnackBarWarnComponent,
 } from '../shared/components';
 
 const modules = [
@@ -26,6 +27,7 @@ const components = [
   CreateButtonComponent,
   SnackBarFailedComponent,
   SnackBarSuccessComponent,
+  SnackBarWarnComponent,
 ];
 
 @NgModule({
