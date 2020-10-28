@@ -2,7 +2,7 @@
   <div class="row justify-content-center align-items-center">
     <div class="col-10 col-md-8 col-lg-6">
       <!-- Form -->
-      <form class="form" action="" method="post">
+      <form class="form" [formGroup]="form">
         <h1>Create Display</h1>
         <!-- screen name  -->
         <!-- <div class="form-group">
@@ -20,53 +20,39 @@
         <!-- Store name  -->
         <div class="form-group">
           <label for="template-name">Screen Name</label>
-          <select class="form-control">
-            <option
-              *ngFor="let item of (screen$ | async).result"
-              [value]="item"
+          <mat-select class="form-control" formControlName="screenId">
+            <mat-option
+              *ngFor="let screen of (screens$ | async)?.result"
+              [value]="screen.id"
             >
-              fgdg {{ item }}
-            </option>
-          </select>
+              {{ screen.uid }}
+            </mat-option>
+          </mat-select>
         </div>
         <!-- End Srore name  -->
 
         <!-- Template name  -->
         <div class="form-group">
           <label for="template-name">Template Name</label>
-          <select class="form-control">
-            <option
+          <mat-select class="form-control" formControlName="templateId">
+            <mat-option
               *ngFor="let item of (templates$ | async)?.result"
               [value]="item.id"
             >
               {{ item.name }}
-            </option>
-          </select>
+            </mat-option>
+          </mat-select>
         </div>
-        <!-- End Template name  -->
-
-        <!-- Description -->
-        <!-- <div class="form-group">
-          <label for="screen-des">Description</label>
-          <textarea class="form-control" id="screen-des" rows="3"></textarea>
-        </div><div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="is-available">
-          <label class="form-check-label" for="is-available">Is Available Now</label>
-        </div> -->
-        <!-- End Description -->
-
-        <!-- Is Available -->
-        <!--  -->
-        <!-- End Available -->
 
         <button
+          mat-raised-button
+          color="primary"
           type="submit"
-          class="btn btn-primary btn-block"
+          class="w-100"
           (click)="create()"
         >
           Create
         </button>
-        <!-- <button type="" class="btn btn-secondary btn-block">&lt;</button> -->
       </form>
     </div>
   </div>

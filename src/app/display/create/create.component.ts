@@ -4,8 +4,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { SnackBarSuccessComponent } from 'src/app/shared/components';
-import { Pagination } from 'src/app/shared/models/pagination.model';
-import { AccountReadDto, ScreensService, ScreenTemplatesService, StoreReadDto, TemplateReadDto, TemplateReadDtoPagingResponseDto, TemplatesService } from 'src/generated';
+import {
+  ScreenReadDtoPagingResponseDto,
+  ScreensService,
+  ScreenTemplatesService,
+  TemplateReadDtoPagingResponseDto,
+  TemplatesService,
+} from 'src/generated';
 
 @Component({
   selector: 'app-create',
@@ -16,7 +21,8 @@ import { AccountReadDto, ScreensService, ScreenTemplatesService, StoreReadDto, T
 export class CreateComponent implements OnInit {
   form: FormGroup;
   templates$: Observable<TemplateReadDtoPagingResponseDto>;
-  screens$: any;
+  screens$: Observable<ScreenReadDtoPagingResponseDto>;
+
   constructor(
     private formBuilder: FormBuilder,
     private displaysService: ScreenTemplatesService,
@@ -25,8 +31,8 @@ export class CreateComponent implements OnInit {
     private _snackBar: MatSnackBar
   ) {
     this.form = this.formBuilder.group({
-      storeId: ['', Validators.required],
-      uid: ['', Validators.required]
+      templateId: ['', Validators.required],
+      screenId: ['', Validators.required],
     });
   }
   ngOnInit(): void {
@@ -35,9 +41,10 @@ export class CreateComponent implements OnInit {
   }
 
   create() {
-    // const { storeId, uid } = this.form.value;
+    const { templateId, screenId } = this.form.value;
+
     this.displaysService
-      .apiScreenTemplatesPost({})
+      .apiScreenTemplatesPost({ templateId, screenId })
       .pipe(take(1))
       .subscribe(() => {
         this._snackBar.openFromComponent(SnackBarSuccessComponent, {
