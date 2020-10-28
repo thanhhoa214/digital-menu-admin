@@ -1,4 +1,16 @@
-#template-root {
-  width: 60rem;
+mat-card {
+  width: 1280px;
   //   height: 20rem;
+}
+mat-toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 500;
+}
+mat-drawer {
+  min-width: 14vw;
+}
+button {
+  width: 10rem;
 }

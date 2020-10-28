@@ -5,7 +5,8 @@ import { ListingComponent } from './listing/listing.component';
 import { DetailComponent } from './detail/detail.component';
 import { ImageModalComponent } from './shared/components/image-modal/image-modal.component';
 import { UpdateComponent } from './update/update.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CorsInterceptor } from '../shared/interceptors/cors.interceptor';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
     UpdateComponent,
   ],
   imports: [SharedModule, TemplateRoutingModule],
-  // schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true },
+  ],
 })
 export class TemplateModule {}

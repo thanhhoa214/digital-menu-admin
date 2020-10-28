@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { BoxCreateDto } from '../model/models';
 import { BoxReadDto } from '../model/models';
+import { BoxReadDtoPagingResponseDto } from '../model/models';
 import { BoxUpdateDto } from '../model/models';
 import { Operation } from '../model/models';
 
@@ -94,10 +95,10 @@ export class BoxesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBoxesGet(page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiBoxesGet(page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiBoxesGet(page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiBoxesGet(page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiBoxesGet(page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<BoxReadDtoPagingResponseDto>;
+    public apiBoxesGet(page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<BoxReadDtoPagingResponseDto>>;
+    public apiBoxesGet(page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<BoxReadDtoPagingResponseDto>>;
+    public apiBoxesGet(page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -123,6 +124,9 @@ export class BoxesService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -136,7 +140,7 @@ export class BoxesService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<any>(`${this.configuration.basePath}/api/boxes`,
+        return this.httpClient.get<BoxReadDtoPagingResponseDto>(`${this.configuration.basePath}/api/boxes`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,

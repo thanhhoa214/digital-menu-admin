@@ -14,11 +14,11 @@ export class CreateComponent {
   form: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private storesService: StoresService,
+    private _formBuilder: FormBuilder,
+    private _storesService: StoresService,
     private _snackBar: MatSnackBar
   ) {
-    this.form = this.formBuilder.group({
+    this.form = this._formBuilder.group({
       name: ['', Validators.required],
     });
 
@@ -31,7 +31,7 @@ export class CreateComponent {
 
   create() {
     const { name } = this.form.value;
-    this.storesService
+    this._storesService
       .apiStoresPost({ name })
       .pipe(take(1))
       .subscribe(() => {
