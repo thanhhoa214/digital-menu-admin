@@ -1,6 +1,22 @@
 mat-card {
-  width: 1280px;
-  //   height: 20rem;
+  position: relative;
+  float: left;
+  width: 99%;
+}
+mat-card:before {
+  content: "";
+  float: left;
+  padding-top: 57%;
+}
+#template-root {
+  position: relative;
+  float: left;
+  width: 99%;
+}
+#template-root:before {
+  content: "";
+  float: left;
+  padding-top: 57%;
 }
 mat-toolbar {
   position: fixed;

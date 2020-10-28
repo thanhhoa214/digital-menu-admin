@@ -46,6 +46,7 @@ export class UpdateComponent implements AfterViewInit {
     s.async = true;
     s.type = 'module';
     s.src = template.uilink;
+    console.log(s);
     this.renderer2.appendChild(document.body, s);
   }
 }
