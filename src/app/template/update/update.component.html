@@ -1,1 +1,22 @@
-<div #templateRoot id="template-root"></div>
+<mat-drawer-container autosize>
+  <mat-drawer-content class="main-container">
+    <mat-card class="m-1 bg-dark">
+      <div
+        #templateRoot
+        id="template-root"
+        [attr.data-template]="data"
+        class="border border-light rounded-lg"
+      ></div>
+    </mat-card>
+  </mat-drawer-content>
+  <mat-drawer mode="side" opened position="end"> Hey </mat-drawer>
+</mat-drawer-container>
+<mat-toolbar
+  class="border border-top d-flex justify-content-between align-items-center"
+>
+  <span>My Template</span>
+  <div>
+    <button mat-stroked-button color="primary">Cancel</button>
+    <button mat-raised-button color="primary">Update</button>
+  </div>
+</mat-toolbar>

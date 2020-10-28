@@ -36,8 +36,20 @@ export class BoxElement extends HTMLElement {
     const boxData = JSON.parse(
       (_a = this.box) !== null && _a !== void 0 ? _a : "{}"
     );
-    headerImage.src = boxData?.headerSrc;
-    footerImage.src = boxData?.footerSrc;
+    if (headerImage && headerImage) {
+      if (boxData?.headerSrc) {
+        headerImage.src = boxData.headerSrc;
+        headerImage.parentElement.classList.remove("d-none");
+      } else {
+        headerImage.parentElement.classList.add("d-none");
+      }
+      if (boxData?.footerSrc) {
+        footerImage.src = boxData.footerSrc;
+        footerImage.parentElement.classList.remove("d-none");
+      } else {
+        footerImage.parentElement.classList.add("d-none");
+      }
+    }
     productListsElement.innerHTML = boxData?.productLists
       ?.map(
         (productList) =>
@@ -107,7 +119,6 @@ export class ProductListElement extends HTMLElement {
 window.customElements.define("swd-root-product-list", ProductListElement);
 
 /******************************** MAIN ******************************** */
-const dataAsObject = JSON.parse(data);
 // const boxElements = document.querySelectorAll('swd-root-box');
 // boxElements.forEach((boxElement) => {
 //   boxElement.box = JSON.stringify(dataAsObject.boxes[0]);
@@ -155,7 +166,11 @@ const styleDeclaration = `
   color: #ffffff;
 }
 `;
-const data = document.getElementById("template-root").getAttribute("data-data");
+const data = document
+  .getElementById("template-root")
+  .getAttribute("data-template");
+const dataAsObject = JSON.parse(data);
+console.table(dataAsObject.boxes);
 const styleElement = document.createElement("style");
 styleElement.innerText = styleDeclaration;
 document.getElementsByTagName("head")[0].appendChild(styleElement);

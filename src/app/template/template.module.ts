@@ -5,7 +5,6 @@ import { ListingComponent } from './listing/listing.component';
 import { DetailComponent } from './detail/detail.component';
 import { ImageModalComponent } from './shared/components/image-modal/image-modal.component';
 import { UpdateComponent } from './update/update.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 
 @NgModule({
   declarations: [
@@ -15,6 +14,5 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
     UpdateComponent,
   ],
   imports: [SharedModule, TemplateRoutingModule],
-  // schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TemplateModule {}

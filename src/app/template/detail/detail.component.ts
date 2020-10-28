@@ -15,7 +15,6 @@ export class DetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.templateDtoJson = `{
-      "id": 1,
       "name": "Demo Template",
       "description": "Demo Template",
       "storeId": 1,
@@ -23,8 +22,6 @@ export class DetailComponent implements OnInit {
       "uilink": null,
       "boxes": [
         {
-          "id": 1,
-          "templateId": 1,
           "boxType": {
             "id": 1,
             "name": "product",
@@ -45,11 +42,7 @@ export class DetailComponent implements OnInit {
               "location": 1,
               "products": [
                 {
-                  "id": 21,
-                  "title": "Smoked Pastrami",
-                  "description": "Smoked pastrami, cheese, onion",
-                  "price": 8.99,
-                  "src": null,
+                  "productId": 40,
                   "location": 1
                 },
                 {

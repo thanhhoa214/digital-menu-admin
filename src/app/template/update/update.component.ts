@@ -9,6 +9,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { MatDrawer } from '@angular/material/sidenav';
+import { DrawerService } from 'src/app/drawer.service';
 
 @Component({
   selector: 'app-update',
@@ -24,15 +26,17 @@ export class UpdateComponent implements AfterViewInit {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private renderer2: Renderer2,
-    @Inject(DOCUMENT) private _document
+    private _drawerService: DrawerService
   ) {}
 
   ngAfterViewInit(): void {
+    this._drawerService.close();
+    this._drawerService.setMode('over');
+
     const id = this._activatedRoute.snapshot.params.id;
     console.log(id);
 
     const templateRootElement = this.templateRoot.nativeElement;
-    // templateRootElement.attachShadow({ mode: 'open' });
     const s = this.renderer2.createElement('script');
     s.async = true;
     s.type = 'module';
