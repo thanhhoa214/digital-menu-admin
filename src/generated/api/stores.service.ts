@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { Operation } from '../model/models';
 import { StoreCreateDto } from '../model/models';
 import { StoreReadDto } from '../model/models';
+import { StoreReadDtoPagingResponseDto } from '../model/models';
 import { StoreUpdateDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -95,10 +96,10 @@ export class StoresService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiStoresGet(page?: number, limit?: number, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiStoresGet(page?: number, limit?: number, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiStoresGet(page?: number, limit?: number, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiStoresGet(page?: number, limit?: number, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiStoresGet(page?: number, limit?: number, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<StoreReadDtoPagingResponseDto>;
+    public apiStoresGet(page?: number, limit?: number, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<StoreReadDtoPagingResponseDto>>;
+    public apiStoresGet(page?: number, limit?: number, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<StoreReadDtoPagingResponseDto>>;
+    public apiStoresGet(page?: number, limit?: number, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -128,6 +129,9 @@ export class StoresService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -141,7 +145,7 @@ export class StoresService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<any>(`${this.configuration.basePath}/api/stores`,
+        return this.httpClient.get<StoreReadDtoPagingResponseDto>(`${this.configuration.basePath}/api/stores`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,
@@ -157,13 +161,14 @@ export class StoresService {
      * @param id 
      * @param page 
      * @param limit 
+     * @param searchValue 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiStoresIdAccountsGet(id: number, page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiStoresIdAccountsGet(id: number, page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiStoresIdAccountsGet(id: number, page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiStoresIdAccountsGet(id: number, page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiStoresIdAccountsGet(id: number, page?: number, limit?: number, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiStoresIdAccountsGet(id: number, page?: number, limit?: number, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiStoresIdAccountsGet(id: number, page?: number, limit?: number, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiStoresIdAccountsGet(id: number, page?: number, limit?: number, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiStoresIdAccountsGet.');
         }
@@ -176,6 +181,10 @@ export class StoresService {
         if (limit !== undefined && limit !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>limit, 'limit');
+        }
+        if (searchValue !== undefined && searchValue !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>searchValue, 'searchValue');
         }
 
         let headers = this.defaultHeaders;
@@ -391,13 +400,14 @@ export class StoresService {
      * @param id 
      * @param page 
      * @param limit 
+     * @param searchValue 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiStoresIdProductsGet(id: number, page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiStoresIdProductsGet(id: number, page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiStoresIdProductsGet(id: number, page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiStoresIdProductsGet(id: number, page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiStoresIdProductsGet(id: number, page?: number, limit?: number, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiStoresIdProductsGet(id: number, page?: number, limit?: number, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiStoresIdProductsGet(id: number, page?: number, limit?: number, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiStoresIdProductsGet(id: number, page?: number, limit?: number, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiStoresIdProductsGet.');
         }
@@ -410,6 +420,10 @@ export class StoresService {
         if (limit !== undefined && limit !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>limit, 'limit');
+        }
+        if (searchValue !== undefined && searchValue !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>searchValue, 'searchValue');
         }
 
         let headers = this.defaultHeaders;
@@ -584,13 +598,15 @@ export class StoresService {
      * @param id 
      * @param page 
      * @param limit 
+     * @param tag 
+     * @param searchValue 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiStoresIdTemplatesGet(id: number, page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiStoresIdTemplatesGet(id: number, page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiStoresIdTemplatesGet(id: number, page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiStoresIdTemplatesGet(id: number, page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiStoresIdTemplatesGet(id: number, page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiStoresIdTemplatesGet(id: number, page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiStoresIdTemplatesGet(id: number, page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiStoresIdTemplatesGet(id: number, page?: number, limit?: number, tag?: string, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiStoresIdTemplatesGet.');
         }
@@ -603,6 +619,14 @@ export class StoresService {
         if (limit !== undefined && limit !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>limit, 'limit');
+        }
+        if (tag !== undefined && tag !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>tag, 'tag');
+        }
+        if (searchValue !== undefined && searchValue !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>searchValue, 'searchValue');
         }
 
         let headers = this.defaultHeaders;

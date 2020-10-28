@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { AccountCreateDto } from '../model/models';
 import { AccountReadDto } from '../model/models';
+import { AccountReadDtoPagingResponseDto } from '../model/models';
 import { AccountUpdateDto } from '../model/models';
 import { Operation } from '../model/models';
 
@@ -95,10 +96,10 @@ export class AccountsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountsGet(page?: number, limit?: number, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiAccountsGet(page?: number, limit?: number, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiAccountsGet(page?: number, limit?: number, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiAccountsGet(page?: number, limit?: number, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiAccountsGet(page?: number, limit?: number, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<AccountReadDtoPagingResponseDto>;
+    public apiAccountsGet(page?: number, limit?: number, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<AccountReadDtoPagingResponseDto>>;
+    public apiAccountsGet(page?: number, limit?: number, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<AccountReadDtoPagingResponseDto>>;
+    public apiAccountsGet(page?: number, limit?: number, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -128,6 +129,9 @@ export class AccountsService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -141,7 +145,7 @@ export class AccountsService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<any>(`${this.configuration.basePath}/api/accounts`,
+        return this.httpClient.get<AccountReadDtoPagingResponseDto>(`${this.configuration.basePath}/api/accounts`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,
@@ -393,10 +397,10 @@ export class AccountsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountsPost(accountCreateDto?: AccountCreateDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiAccountsPost(accountCreateDto?: AccountCreateDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiAccountsPost(accountCreateDto?: AccountCreateDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiAccountsPost(accountCreateDto?: AccountCreateDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiAccountsPost(accountCreateDto?: AccountCreateDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<AccountReadDto>;
+    public apiAccountsPost(accountCreateDto?: AccountCreateDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<AccountReadDto>>;
+    public apiAccountsPost(accountCreateDto?: AccountCreateDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<AccountReadDto>>;
+    public apiAccountsPost(accountCreateDto?: AccountCreateDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -412,6 +416,9 @@ export class AccountsService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -437,7 +444,7 @@ export class AccountsService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/api/accounts`,
+        return this.httpClient.post<AccountReadDto>(`${this.configuration.basePath}/api/accounts`,
             accountCreateDto,
             {
                 responseType: <any>responseType,

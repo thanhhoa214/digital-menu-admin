@@ -11,6 +11,7 @@ import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { MatDrawer } from '@angular/material/sidenav';
 import { DrawerService } from 'src/app/drawer.service';
+import { TemplatesService } from 'src/generated';
 
 @Component({
   selector: 'app-update',
@@ -26,21 +27,25 @@ export class UpdateComponent implements AfterViewInit {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private renderer2: Renderer2,
-    private _drawerService: DrawerService
+    private _drawerService: DrawerService,
+    private _templateService: TemplatesService
   ) {}
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit() {
     this._drawerService.close();
     this._drawerService.setMode('over');
 
     const id = this._activatedRoute.snapshot.params.id;
     console.log(id);
-
+    const template = await this._templateService
+      .apiTemplatesIdGet(id)
+      .toPromise();
+    this.data = JSON.stringify(template);
     const templateRootElement = this.templateRoot.nativeElement;
     const s = this.renderer2.createElement('script');
     s.async = true;
     s.type = 'module';
-    s.src = 'assets/template1.js';
-    this.renderer2.appendChild(templateRootElement, s);
+    s.src = template.uilink;
+    this.renderer2.appendChild(document.body, s);
   }
 }

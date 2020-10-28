@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { Operation } from '../model/models';
 import { ProductListCreateDto } from '../model/models';
 import { ProductListReadDto } from '../model/models';
+import { ProductListReadDtoPagingResponseDto } from '../model/models';
 import { ProductListUpdateDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -94,10 +95,10 @@ export class ProductListsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiProductListsGet(page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiProductListsGet(page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiProductListsGet(page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiProductListsGet(page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiProductListsGet(page?: number, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<ProductListReadDtoPagingResponseDto>;
+    public apiProductListsGet(page?: number, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<ProductListReadDtoPagingResponseDto>>;
+    public apiProductListsGet(page?: number, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<ProductListReadDtoPagingResponseDto>>;
+    public apiProductListsGet(page?: number, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -123,6 +124,9 @@ export class ProductListsService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -136,7 +140,7 @@ export class ProductListsService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<any>(`${this.configuration.basePath}/api/product-lists`,
+        return this.httpClient.get<ProductListReadDtoPagingResponseDto>(`${this.configuration.basePath}/api/product-lists`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,

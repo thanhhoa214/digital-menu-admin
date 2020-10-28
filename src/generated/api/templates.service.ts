@@ -19,7 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { Operation } from '../model/models';
 import { TemplateDetailReadDto } from '../model/models';
-import { TemplateReadDto } from '../model/models';
+import { TemplateReadDtoPagingResponseDto } from '../model/models';
 import { TemplateUpdateDto } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -109,9 +109,9 @@ export class TemplatesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTemplatesGet(page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<TemplateReadDto>>;
-    public apiTemplatesGet(page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<TemplateReadDto>>>;
-    public apiTemplatesGet(page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<TemplateReadDto>>>;
+    public apiTemplatesGet(page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<TemplateReadDtoPagingResponseDto>;
+    public apiTemplatesGet(page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<TemplateReadDtoPagingResponseDto>>;
+    public apiTemplatesGet(page?: number, limit?: number, tag?: string, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<TemplateReadDtoPagingResponseDto>>;
     public apiTemplatesGet(page?: number, limit?: number, tag?: string, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -162,7 +162,7 @@ export class TemplatesService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<Array<TemplateReadDto>>(`${this.configuration.basePath}/api/templates`,
+        return this.httpClient.get<TemplateReadDtoPagingResponseDto>(`${this.configuration.basePath}/api/templates`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,

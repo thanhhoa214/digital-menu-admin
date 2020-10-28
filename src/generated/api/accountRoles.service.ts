@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { AccountRoleCreateDto } from '../model/models';
 import { AccountRoleReadDto } from '../model/models';
+import { AccountRoleReadDtoPagingResponseDto } from '../model/models';
 import { AccountRoleUpdateDto } from '../model/models';
 import { Operation } from '../model/models';
 
@@ -95,10 +96,10 @@ export class AccountRolesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountRolesGet(page?: number, limit?: number, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiAccountRolesGet(page?: number, limit?: number, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiAccountRolesGet(page?: number, limit?: number, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiAccountRolesGet(page?: number, limit?: number, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiAccountRolesGet(page?: number, limit?: number, searchValue?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<AccountRoleReadDtoPagingResponseDto>;
+    public apiAccountRolesGet(page?: number, limit?: number, searchValue?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<AccountRoleReadDtoPagingResponseDto>>;
+    public apiAccountRolesGet(page?: number, limit?: number, searchValue?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<AccountRoleReadDtoPagingResponseDto>>;
+    public apiAccountRolesGet(page?: number, limit?: number, searchValue?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -128,6 +129,9 @@ export class AccountRolesService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -141,7 +145,7 @@ export class AccountRolesService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<any>(`${this.configuration.basePath}/api/account-roles`,
+        return this.httpClient.get<AccountRoleReadDtoPagingResponseDto>(`${this.configuration.basePath}/api/account-roles`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,
