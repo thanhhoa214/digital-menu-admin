@@ -41,96 +41,23 @@
 
   <!-- Grid row -->
   <div class="gallery" id="gallery">
-    <!-- Grid column -->
-    <div class="mb-3 px-2 py-3 shadow pics animation all 2">
+    <div
+      class="mb-3 px-2 py-3 shadow pics animation all"
+      *ngFor="let item of sampleData"
+    >
       <div class="d-flex justify-content-between mb-1">
-        <h2>Title 1</h2>
+        <h2>Title {{ item.id }}</h2>
         <button
           mat-raised-button
           color="primary"
           class="mb-2"
-          (click)="openDialog('Title 1', 'assets/images/img1.jpg')"
+          (click)="openDialog(item.id, 'Title ' + item.id, item.src)"
         >
           Preview
         </button>
       </div>
-      <img
-        class="img-fluid rounded-lg"
-        src="assets/images/img1.jpg"
-        alt="Card image cap"
-      />
+      <img class="img-fluid rounded-lg" [src]="item.src" alt="Card image cap" />
     </div>
-    <!-- Grid column -->
-
-    <!-- Grid column -->
-    <div class="mb-3 px-2 py-3 shadow pics animation all">
-      <div class="d-flex justify-content-between mb-1">
-        <h2>Title</h2>
-        <button mat-raised-button color="primary" class="mb-2">Preview</button>
-      </div>
-      <img
-        class="img-fluid rounded-lg"
-        src="assets/images/img2.jpg"
-        alt="Card image cap"
-      />
-    </div>
-    <!-- Grid column -->
-
-    <!-- Grid column -->
-    <div class="mb-3 px-2 py-3 shadow pics animation all">
-      <div class="d-flex justify-content-between mb-1">
-        <h2>Title</h2>
-        <button mat-raised-button color="primary" class="mb-2">Preview</button>
-      </div>
-      <img
-        class="img-fluid rounded-lg"
-        src="assets/images/img3.jpg"
-        alt="Card image cap"
-      />
-    </div>
-    <!-- Grid column -->
-
-    <!-- Grid column -->
-    <div class="mb-3 px-2 py-3 shadow pics animation all">
-      <div class="d-flex justify-content-between mb-1">
-        <h2>Title</h2>
-        <button mat-raised-button color="primary" class="mb-2">Preview</button>
-      </div>
-      <img
-        class="img-fluid rounded-lg"
-        src="assets/images/img4.jpg"
-        alt="Card image cap"
-      />
-    </div>
-    <!-- Grid column -->
-
-    <!-- Grid column -->
-    <div class="mb-3 px-2 py-3 shadow pics animation all">
-      <div class="d-flex justify-content-between mb-1">
-        <h2>Title</h2>
-        <button mat-raised-button color="primary" class="mb-2">Preview</button>
-      </div>
-      <img
-        class="img-fluid rounded-lg"
-        src="assets/images/img5.jpg"
-        alt="Card image cap"
-      />
-    </div>
-    <!-- Grid column -->
-
-    <!-- Grid column -->
-    <div class="mb-3 px-2 py-3 shadow pics animation all">
-      <div class="d-flex justify-content-between mb-1">
-        <h2>Title</h2>
-        <button mat-raised-button color="primary" class="mb-2">Preview</button>
-      </div>
-      <img
-        class="img-fluid rounded-lg"
-        src="assets/images/img6.jpg"
-        alt="Card image cap"
-      />
-    </div>
-    <!-- Grid column -->
   </div>
   <!-- Grid row -->
 </div>

@@ -17,11 +17,38 @@ const sampleSkeleton = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListingComponent {
+  sampleData = [
+    {
+      id: '1',
+      src: 'assets/images/img1.jpg',
+    },
+    {
+      id: '2',
+      src: 'assets/images/img2.jpg',
+    },
+    {
+      id: '3',
+      src: 'assets/images/img3.jpg',
+    },
+    {
+      id: '4',
+      src: 'assets/images/img4.jpg',
+    },
+    {
+      id: '5',
+      src: 'assets/images/img5.jpg',
+    },
+    {
+      id: '6',
+      src: 'assets/images/img6.jpg',
+    },
+  ];
+
   constructor(public dialog: MatDialog) {}
 
-  openDialog(title: string, src: string) {
+  openDialog(id: string, title: string, src: string) {
     const dialogRef = this.dialog.open(ImageModalComponent, {
-      data: { title, src },
+      data: { id, title, src },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
