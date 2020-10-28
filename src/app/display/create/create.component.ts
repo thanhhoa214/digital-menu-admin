@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { SnackBarSuccessComponent } from 'src/app/shared/components';
 import { Pagination } from 'src/app/shared/models/pagination.model';
-import { AccountReadDto, ScreensService, ScreenTemplatesService, StoreReadDto, TemplateReadDto, TemplatesService } from 'src/generated';
+import { AccountReadDto, ScreensService, ScreenTemplatesService, StoreReadDto, TemplateReadDto, TemplateReadDtoPagingResponseDto, TemplatesService } from 'src/generated';
 
 @Component({
   selector: 'app-create',
@@ -15,7 +15,7 @@ import { AccountReadDto, ScreensService, ScreenTemplatesService, StoreReadDto, T
 })
 export class CreateComponent implements OnInit {
   form: FormGroup;
-  templates$: any;
+  templates$: Observable<TemplateReadDtoPagingResponseDto>;
   screens$: any;
   constructor(
     private formBuilder: FormBuilder,

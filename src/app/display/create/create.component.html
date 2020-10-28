@@ -36,7 +36,7 @@
           <label for="template-name">Template Name</label>
           <select class="form-control">
             <option
-              *ngFor="let item of (templates$ | async).result"
+              *ngFor="let item of (templates$ | async)?.result"
               [value]="item.id"
             >
               {{ item.name }}
