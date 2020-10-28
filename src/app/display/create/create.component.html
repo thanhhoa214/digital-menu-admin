@@ -4,61 +4,69 @@
       <!-- Form -->
       <form class="form" action="" method="post">
         <h1>Create Display</h1>
-
-        <!-- Display name  -->
-        <div class="form-group">
-          <label for="display-name">Name</label>
+        <!-- screen name  -->
+        <!-- <div class="form-group">
+          <label for="screen-name">Name</label>
           <input
             type="text"
             class="form-control"
-            id="display-name"
-            placeholder="Fill your display name"
-            name="display-name"
+            id="screen-name"
+            placeholder="Fill your screen name"
+            name="screen-name"
           />
-        </div>
-        <!-- End Display name  -->
+        </div> -->
+        <!-- End screen name  -->
+
         <!-- Store name  -->
         <div class="form-group">
-          <label for="store-name">Store Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="store-name"
-            placeholder="Store Name - ID"
-            name="store-name"
-          />
+          <label for="template-name">Screen Name</label>
+          <select class="form-control">
+            <option
+              *ngFor="let item of (screen$ | async).result"
+              [value]="item"
+            >
+              fgdg {{ item }}
+            </option>
+          </select>
         </div>
         <!-- End Srore name  -->
 
-        <!-- Resolution -->
+        <!-- Template name  -->
         <div class="form-group">
-          <label for="display-resolution">Display resolution</label>
-          <select class="form-control" id="display-resolution">
-            <option>1280 x 760</option>
-            <option>1280 x 760</option>
-            <option>1280 x 760</option>
+          <label for="template-name">Template Name</label>
+          <select class="form-control">
+            <option
+              *ngFor="let item of (templates$ | async).result"
+              [value]="item.id"
+            >
+              {{ item.name }}
+            </option>
           </select>
         </div>
-        <!-- End Resolution -->
+        <!-- End Template name  -->
 
         <!-- Description -->
-        <div class="form-group">
-          <label for="display-des">Description</label>
-          <textarea class="form-control" id="display-des" rows="3"></textarea>
-        </div>
+        <!-- <div class="form-group">
+          <label for="screen-des">Description</label>
+          <textarea class="form-control" id="screen-des" rows="3"></textarea>
+        </div><div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="is-available">
+          <label class="form-check-label" for="is-available">Is Available Now</label>
+        </div> -->
         <!-- End Description -->
 
         <!-- Is Available -->
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="is-available" />
-          <label class="form-check-label" for="is-available"
-            >Is Available Now</label
-          >
-        </div>
+        <!--  -->
         <!-- End Available -->
 
-        <button type="submit" class="btn btn-primary btn-block">Create</button>
-        <button type="" class="btn btn-secondary btn-block">&lt;</button>
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          (click)="create()"
+        >
+          Create
+        </button>
+        <!-- <button type="" class="btn btn-secondary btn-block">&lt;</button> -->
       </form>
     </div>
   </div>
