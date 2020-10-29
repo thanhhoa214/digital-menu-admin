@@ -2,7 +2,7 @@
   <div class="row justify-content-center align-items-center">
     <div class="col-10 col-md-8 col-lg-6">
       <!-- Form -->
-      <form class="form" action="" method="post">
+      <form class="form" [formGroup]="form">
         <h1>Create New Account</h1>
 
         <!-- Username  -->
@@ -14,6 +14,7 @@
             id="username"
             placeholder="Enter Username"
             name="username"
+            formControlName="username"
           />
         </div>
         <!-- End Username  -->
@@ -28,13 +29,14 @@
               class="form-control mr-2"
               id="password"
               placeholder="Password"
+              formControlName="password"
             />
             <button type="" class="btn btn-primary">Generate</button>
           </div>
         </div>
         <!-- End Password -->
         <!-- Store name  -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="store-name">Name</label>
           <input
             type="text"
@@ -43,30 +45,38 @@
             placeholder="Store Name - ID"
             name="store-name"
           />
-        </div>
+        </div> -->
         <!-- End Srore name  -->
         <!-- Description -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="user-des">Description</label>
           <textarea class="form-control" id="user-des" rows="2"></textarea>
-        </div>
+        </div> -->
         <!-- End Description -->
 
         <!-- Role -->
         <div class="form-group">
-          <label for="user-role">Role</label>
-          <select class="form-control" id="user-role">
-            <option>Admin</option>
-            <option>Staff</option>
-            <option>User</option>
-          </select>
+          <label for="role">Role</label>
+          <mat-select class="form-control" formControlName="roleId">
+            <mat-option
+              *ngFor="let item of (roles$ | async)?.result"
+              [value]="item.id"
+            >
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
         </div>
         <!-- End Role -->
 
-        <button type="submit" class="btn btn-primary btn-block">
-          Create New Account
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="w-100"
+          (click)="create()"
+        >
+          Create Account
         </button>
-        <button type="" class="btn btn-secondary btn-block">&lt;</button>
       </form>
     </div>
   </div>
