@@ -4,6 +4,10 @@ import { NotFoundComponent } from './shared/components';
 
 const routes: Routes = [
   {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
     path: 'templates',
     loadChildren: () =>
       import('./template/template.module').then((m) => m.TemplateModule),
@@ -27,6 +31,11 @@ const routes: Routes = [
     path: 'accounts',
     loadChildren: () =>
       import('./account/account.module').then((m) => m.AccountModule),
+  },
+  {
+    path: 'products',
+    loadChildren: () =>
+      import('./product/product.module').then((m) => m.ProductModule),
   },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: 'templates', pathMatch: 'full' },

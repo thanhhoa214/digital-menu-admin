@@ -1,0 +1,94 @@
+<div class="main-container container-fluid py-2 d-flex flex-column">
+  <h1 class="d-flex align-items-center ml-3 mt-2 mb-3 mat-display-1">
+    <mat-icon>view_list</mat-icon>
+    <span class="ml-3">Products</span>
+  </h1>
+  <div class="d-flex justify-content-end mb-2">
+    <!-- Search form -->
+    <input class="form-control mx-3" placeholder="Find by product name" />
+    <button mat-raised-button color="primary">
+      Search
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+  <div class="p-3 table-wrapper">
+    <table class="table table-hover w-100">
+      <thead>
+        <tr class="bg-dark text-light text-center">
+          <th scope="col">Product No</th>
+          <th scope="col">Thumbnail</th>
+          <th scope="col">Store Name</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody class="text-center" *ngIf="products$ | async as products">
+        <tr
+          *ngFor="let product of products"
+          class="cursor-pointer"
+          [routerLink]="product.id"
+        >
+          <th scope="row">{{ product.id }}</th>
+          <td>
+            <div class="img-wrapper mx-auto">
+              <img
+                [src]="product.src || 'assets/images/search.svg'"
+                class="h-100 img-fluid img-responsive"
+              />
+            </div>
+          </td>
+          <td>{{ product.storeName }}</td>
+          <td>{{ product.title }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.description }}</td>
+        </tr>
+      </tbody>
+
+      <!-- <ng-template #skeleton>
+        <tbody class="text-center">
+          <tr *ngFor="let i of [1, 2, 3, 4, 5, 6]">
+            <th scope="row">=========</th>
+            <td>
+              <div class="img-wrapper mx-auto">
+                <img
+                  src="assets/images/search.svg"
+                  class="h-100 img-fluid img-responsive"
+                />
+              </div>
+            </td>
+            <td>==========<br />==========</td>
+            <td>==========<br />==========</td>
+            <td>==========</td>
+            <td>=============<br />=============<br />=============</td>
+          </tr>
+        </tbody>
+      </ng-template> -->
+    </table>
+  </div>
+  <div class="ml-auto mt-1 mr-2">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" (click)="loadProducts(1)" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      <li class="page-item active">
+        <a class="page-link" (click)="loadProducts(1)">1</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" (click)="loadProducts(2)">2</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" (click)="loadProducts(3)">3</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" (click)="loadProducts(2)" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
