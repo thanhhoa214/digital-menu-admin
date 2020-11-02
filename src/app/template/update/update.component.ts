@@ -32,8 +32,7 @@ export class UpdateComponent implements AfterViewInit {
     const s = this.renderer2.createElement('script');
     s.async = true;
     s.type = 'module';
-    s.src = 'assets/template1.js';
-    console.log(this.data);
+    s.src = template.uilink;
     this.renderer2.appendChild(document.body, s);
   }
 }
