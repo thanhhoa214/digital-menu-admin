@@ -170,7 +170,6 @@ const data = document
   .getElementById("template-root")
   .getAttribute("data-template");
 const dataAsObject = JSON.parse(data);
-console.table(dataAsObject.boxes);
 const styleElement = document.createElement("style");
 styleElement.innerText = styleDeclaration;
 document.getElementsByTagName("head")[0].appendChild(styleElement);
