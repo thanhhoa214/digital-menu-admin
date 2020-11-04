@@ -5,9 +5,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { StoreReadDto, StoresService } from 'src/generated';
+import {
+  StoreReadDto,
+  StoreReadDtoPagingResponseDto,
+  StoresService,
+} from 'src/generated';
 
 @Component({
   selector: 'app-listing',
@@ -17,28 +22,31 @@ import { StoreReadDto, StoresService } from 'src/generated';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListingComponent implements OnInit {
-  public store$: Observable<StoreReadDto[]>;
+  public stores$: Observable<StoreReadDtoPagingResponseDto>;
+  search: FormControl = new FormControl('');
 
-  constructor(
-    private storeService: StoresService
-  ) { }
-
-
-
-
-  private _pagingOptions = {
+  pagingOptions = {
     limit: 10,
+    currentPage: 1,
   };
 
+  constructor(private _storeService: StoresService) {}
 
   ngOnInit() {
-    this.store$ = this.storeService.apiStoresGet(1, this._pagingOptions.limit)
+    this.stores$ = this._storeService.apiStoresGet(1, this.pagingOptions.limit);
   }
 
   loadStores(page: number) {
-    this.store$ = this.storeService.apiStoresGet(
+    const searchValue = this.search.value;
+    this.stores$ = this._storeService.apiStoresGet(
       page,
-      this._pagingOptions.limit
+      this.pagingOptions.limit,
+      searchValue
     );
+    this.pagingOptions = { ...this.pagingOptions, currentPage: page };
+  }
+  getPagingArray(totolItem: number) {
+    const pageCount = Math.round(totolItem / this.pagingOptions.limit);
+    return Array(pageCount).fill(1);
   }
 }
