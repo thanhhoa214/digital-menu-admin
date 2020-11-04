@@ -9,9 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ProductListProductCreateWithTemplateDto } from './productListProductCreateWithTemplateDto';
 
 
-export interface InlineObject { 
-    image?: Blob | null;
+export interface ProductListCreateWithTemplateDto { 
+    title?: string | null;
+    maxSize?: number | null;
+    location?: number | null;
+    products?: Array<ProductListProductCreateWithTemplateDto> | null;
 }
 

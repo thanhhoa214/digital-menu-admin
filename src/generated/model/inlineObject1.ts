@@ -11,7 +11,8 @@
  */
 
 
-export interface InlineObject { 
-    image?: Blob | null;
+export interface InlineObject1 { 
+    file?: Blob | null;
+    templateDtoJson?: string | null;
 }
 

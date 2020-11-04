@@ -11,7 +11,8 @@
  */
 
 
-export interface InlineObject { 
-    image?: Blob | null;
+export interface ProductListProductCreateWithTemplateDto { 
+    productId?: number | null;
+    location?: number | null;
 }
 

@@ -9,15 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BoxCreateWithTemplateDto } from './boxCreateWithTemplateDto';
 
 
 export interface TemplateUpdateDto { 
-    id?: number;
     description?: string | null;
-    storeId?: number | null;
-    uilink?: string | null;
     name?: string | null;
     tags?: string | null;
     readonly lastModified?: string;
+    boxes?: Array<BoxCreateWithTemplateDto> | null;
 }
 

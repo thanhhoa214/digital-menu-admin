@@ -165,6 +165,21 @@ const styleDeclaration = `
   background-color: #2f4554;
   color: #ffffff;
 }
+
+swd-root-box {
+  cursor: pointer;
+}
+swd-root-box.selected-active-element:before {
+  content: '';
+  border: 3px dashed rgb(255, 255, 255);
+  z-index: 999999;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.15);
+}
 `;
 const data = document
   .getElementById("template-root")
@@ -182,4 +197,33 @@ const boxElements = document.querySelectorAll("swd-root-box");
 dataAsObject.boxes.forEach((boxData, index) => {
   boxElements[index].classList.add("px-0");
   boxElements[index].box = JSON.stringify(boxData);
+});
+
+// Handle event dispatcher
+const templateBoxes = document.querySelectorAll("swd-root-box");
+templateBoxes.forEach((boxElement) => {
+  const event = new CustomEvent("swd-root-box-click", {
+    detail: JSON.parse(boxElement.box),
+  });
+  boxElement.addEventListener("click", () => {
+    document.querySelectorAll(".selected-active-element").forEach((element) => {
+      element.classList.remove("selected-active-element");
+    });
+    boxElement.classList.add("selected-active-element");
+    boxElement.dispatchEvent(event);
+  });
+});
+
+const templateProductLists = document.querySelectorAll("swd-root-product-list");
+templateProductLists.forEach((productListElement) => {
+  const event = new CustomEvent("swd-root-product-list-click", {
+    detail: JSON.parse(productListElement.productList),
+  });
+  productListElement.addEventListener("dblclick", () => {
+    document.querySelectorAll(".selected-active-element").forEach((element) => {
+      element.classList.remove("selected-active-element");
+    });
+    productListElement.classList.add("selected-active-element");
+    productListElement.dispatchEvent(event);
+  });
 });

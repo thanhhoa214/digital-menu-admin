@@ -8,6 +8,7 @@ import { AccountsService } from './api/accounts.service';
 import { AuthenticationService } from './api/authentication.service';
 import { BoxTypesService } from './api/boxTypes.service';
 import { BoxesService } from './api/boxes.service';
+import { ImageService } from './api/image.service';
 import { ProductListProductsService } from './api/productListProducts.service';
 import { ProductListsService } from './api/productLists.service';
 import { ProductsService } from './api/products.service';

@@ -9,9 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BoxCreateWithTemplateDto } from './boxCreateWithTemplateDto';
 
 
-export interface InlineObject { 
-    image?: Blob | null;
+export interface TemplateCreateDto { 
+    name?: string | null;
+    description?: string | null;
+    storeId?: number | null;
+    tags?: string | null;
+    readonly createdTime?: string;
+    boxes?: Array<BoxCreateWithTemplateDto> | null;
 }
 

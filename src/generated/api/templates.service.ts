@@ -18,6 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { Operation } from '../model/models';
+import { TemplateCreateDto } from '../model/models';
 import { TemplateDetailReadDto } from '../model/models';
 import { TemplateReadDtoPagingResponseDto } from '../model/models';
 import { TemplateUpdateDto } from '../model/models';
@@ -474,6 +475,71 @@ export class TemplatesService {
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/api/templates`,
             convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param sampleTemplateId 
+     * @param templateCreateDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sampleTemplateIdStoretemplatePost(sampleTemplateId: number, templateCreateDto?: TemplateCreateDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public sampleTemplateIdStoretemplatePost(sampleTemplateId: number, templateCreateDto?: TemplateCreateDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public sampleTemplateIdStoretemplatePost(sampleTemplateId: number, templateCreateDto?: TemplateCreateDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public sampleTemplateIdStoretemplatePost(sampleTemplateId: number, templateCreateDto?: TemplateCreateDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+        if (sampleTemplateId === null || sampleTemplateId === undefined) {
+            throw new Error('Required parameter sampleTemplateId was null or undefined when calling sampleTemplateIdStoretemplatePost.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["Bearer"] || this.configuration.apiKeys["Authorization"];
+            if (key) {
+                headers = headers.set('Authorization', key);
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json-patch+json',
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<any>(`${this.configuration.basePath}/${encodeURIComponent(String(sampleTemplateId))}/storetemplate`,
+            templateCreateDto,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
