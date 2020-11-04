@@ -1,118 +1,79 @@
-<h1 class="d-flex align-items-center ml-3 mt-2 mat-display-1">
-  <mat-icon>storefront</mat-icon>
-  <span class="ml-3">Stores</span>
-</h1>
-<app-create-button></app-create-button>
-<div class="search-area">
-  <!-- Search form -->
-  <input
-    class="form-control"
-    type="text"
-    placeholder="Find By NameStore"
-    aria-label="Search"
-  />
-  <button type="button" class="btn btn-primary">Search</button>
-</div>
-<div class="p-3">
-  <table class="table table-hover w-100">
-    <thead>
-      <tr class="bg-dark text-light text-center">
-        <th scope="col">No</th>
-        <th scope="col">ID Store</th>
-        <th scope="col">Name Store</th>
-        <th scope="col">Location</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row" style="text-align: center">1</th>
-        <td style="text-align: center">Passio_THT01</td>
-        <td style="text-align: center">Passio To Hien Thanh</td>
-        <td style="text-align: center">70 To Hien Thanh</td>
-        <td style="text-align: center">
-          <button type="button" class="btn btn-outline-warning waves-effect">
-            Inactive
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" style="text-align: center">2</th>
-        <td style="text-align: center">BLR_LDH03</td>
-        <td style="text-align: center">Bò-Lế-Rồ Lê Đại Hành</td>
-        <td style="text-align: center">113 Le Dai Hanh</td>
-        <td style="text-align: center">
-          <button type="button" class="btn btn-outline-warning waves-effect">
-            Inactive
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" style="text-align: center">3</th>
-        <td style="text-align: center">Lotte_CT01</td>
-        <td style="text-align: center">Lotte Cong Hoa</td>
-        <td style="text-align: center">223 Cong Hoa</td>
-        <td style="text-align: center">
-          <button type="button" class="btn btn-outline-warning waves-effect">
-            Inactive
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" style="text-align: center">4</th>
-        <td style="text-align: center">Kichi_SVH11</td>
-        <td style="text-align: center">Kichi Kichi Su Van Hanh</td>
-        <td style="text-align: center">499 Su Van Hanh</td>
-        <td style="text-align: center">
-          <button type="button" class="btn btn-outline-warning waves-effect">
-            Inactive
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" style="text-align: center">1</th>
-        <td style="text-align: center">Passio_THT01</td>
-        <td style="text-align: center">Passio To Hien Thanh</td>
-        <td style="text-align: center">70 To Hien Thanh</td>
-        <td style="text-align: center">
-          <button type="button" class="btn btn-outline-warning waves-effect">
-            Inactive
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" style="text-align: center">2</th>
-        <td style="text-align: center">BLR_LDH03</td>
-        <td style="text-align: center">Bò-Lế-Rồ Lê Đại Hành</td>
-        <td style="text-align: center">113 Le Dai Hanh</td>
-        <td style="text-align: center">
-          <button type="button" class="btn btn-outline-warning waves-effect">
-            Inactive
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" style="text-align: center">3</th>
-        <td style="text-align: center">Lotte_CT01</td>
-        <td style="text-align: center">Lotte Cong Hoa</td>
-        <td style="text-align: center">223 Cong Hoa</td>
-        <td style="text-align: center">
-          <button type="button" class="btn btn-outline-warning waves-effect">
-            Inactive
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row" style="text-align: center">4</th>
-        <td style="text-align: center">Kichi_SVH11</td>
-        <td style="text-align: center">Kichi Kichi Su Van Hanh</td>
-        <td style="text-align: center">499 Su Van Hanh</td>
-        <td style="text-align: center">
-          <button type="button" class="btn btn-outline-warning waves-effect">
-            Inactive
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="main-container container-fluid py-2 d-flex flex-column">
+  <h1 class="d-flex align-items-center ml-3 mt-2 mb-3 mat-display-1">
+    <mat-icon>view_list</mat-icon>
+    <span class="ml-3">Products</span>
+  </h1>
+  <div class="d-flex justify-content-end mb-2">
+    <!-- Search form -->
+    <input class="form-control mx-3" placeholder="Find by product name" />
+    <button mat-raised-button color="primary">
+      Search
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+  <div class="p-3 table-wrapper">
+    <table class="table table-hover w-100">
+      <thead>
+        <tr class="bg-dark text-light text-center">
+          <th scope="col">Store No</th>
+          <th scope="col">Store Name</th>
+        </tr>
+      </thead>
+      <tbody class="text-center" *ngIf="store$ | async as stores">
+        <tr
+          *ngFor="let store of stores"
+          class="cursor-pointer"
+          [routerLink]="store.id"
+        >
+          <th scope="row">{{ store.id }}</th>
+          <td>{{ store.name }}</td>
+        </tr>
+      </tbody>
+
+      <!-- <ng-template #skeleton>
+        <tbody class="text-center">
+          <tr *ngFor="let i of [1, 2, 3, 4, 5, 6]">
+            <th scope="row">=========</th>
+            <td>
+              <div class="img-wrapper mx-auto">
+                <img
+                  src="assets/images/search.svg"
+                  class="h-100 img-fluid img-responsive"
+                />
+              </div>
+            </td>
+            <td>==========<br />==========</td>
+            <td>==========<br />==========</td>
+            <td>==========</td>
+            <td>=============<br />=============<br />=============</td>
+          </tr>
+        </tbody>
+      </ng-template> -->
+    </table>
+  </div>
+  <div class="ml-auto mt-1 mr-2">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" (click)="loadStores(1)" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      <li class="page-item active">
+        <a class="page-link" (click)="loadStores(1)">1</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" (click)="loadStores(2)">2</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" (click)="loadStores(3)">3</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" (click)="loadStores(2)" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>

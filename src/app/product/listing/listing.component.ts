@@ -1,7 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { ProductReadDtoPagingResponseDto, ProductsService } from 'src/generated';
+import {
+  ProductReadDtoPagingResponseDto,
+  ProductsService,
+} from 'src/generated';
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -17,10 +20,13 @@ export class ListingComponent implements OnInit {
     currentPage: 1,
   };
 
-  constructor(private _productService: ProductsService) { }
+  constructor(private _productService: ProductsService) {}
 
   ngOnInit() {
-    this.products$ = this._productService.apiProductsGet();
+    this.products$ = this._productService.apiProductsGet(
+      1,
+      this.pagingOptions.limit
+    );
   }
   loadProducts(page: number) {
     const searchValue = this.search.value;
