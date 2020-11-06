@@ -16,6 +16,9 @@ import {
 } from 'rxjs/operators';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { ScreenReadDtoPagingResponseDto, ScreenTemplateCreateDto, ScreenTemplateReadDto, ScreenTemplatesService } from 'src/generated';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 const sampleSkeleton = {
   id: 'skeleton',
@@ -31,13 +34,41 @@ const sampleSkeleton = {
 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListingComponent implements OnInit, OnDestroy {
+export class ListingComponent implements OnInit {
+  display$:Observable<ScreenReadDtoPagingResponseDto> 
+  search: FormControl = new FormControl('');
+
+  pagingOptions = {
+    limit: 10,
+    currentPage: 1,
+  };
+
+
   constructor(
-    private _snackBar: MatSnackBar,
-    private _cdRef: ChangeDetectorRef
+    private _displayService: ScreenTemplatesService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.display$ = this._displayService.apiScreenTemplatesGet(
+      1,
+      this.pagingOptions.limit
+    );
+  }
 
-  ngOnDestroy(): void {}
+  loadDisplays(page: number) {
+    const searchValue = this.search.value;
+    this.display$ = this._displayService.apiScreenTemplatesGet(
+      page,
+      this.pagingOptions.limit,
+      searchValue
+    );
+    this.pagingOptions = { ...this.pagingOptions, currentPage: page };
+  }
+
+  getPagingArray(totolItem: number) {
+    const pageCount = Math.round(totolItem / this.pagingOptions.limit);
+    return Array(pageCount).fill(1);
+  }
+
+ 
 }
