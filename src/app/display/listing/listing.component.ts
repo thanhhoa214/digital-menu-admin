@@ -16,7 +16,7 @@ import {
 } from 'rxjs/operators';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ScreenReadDtoPagingResponseDto, ScreenTemplateCreateDto, ScreenTemplateReadDto, ScreenTemplatesService } from 'src/generated';
+import { ScreenReadDtoPagingResponseDto, ScreenTemplateCreateDto, ScreenTemplateReadDto, ScreenTemplateReadDtoPagingResponseDto, ScreenTemplatesService } from 'src/generated';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
@@ -35,7 +35,7 @@ const sampleSkeleton = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListingComponent implements OnInit {
-  display$:Observable<ScreenReadDtoPagingResponseDto> 
+  display$:Observable<ScreenTemplateReadDtoPagingResponseDto> 
   search: FormControl = new FormControl('');
 
   pagingOptions = {
