@@ -1,5 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import {
+  TemplateReadDtoPagingResponseDto,
+  TemplatesService,
+} from 'src/generated';
 import { ImageModalComponent } from '../shared/components/image-modal/image-modal.component';
 
 const sampleSkeleton = {
@@ -16,7 +21,8 @@ const sampleSkeleton = {
 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListingComponent {
+export class ListingComponent implements OnInit {
+  templates$: Observable<TemplateReadDtoPagingResponseDto>;
   sampleData = [
     {
       id: '1',
@@ -44,7 +50,13 @@ export class ListingComponent {
     },
   ];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    private _templateService: TemplatesService
+  ) {}
+  ngOnInit(): void {
+    this.templates$ = this._templateService.apiTemplatesGet();
+  }
 
   openDialog(id: string, title: string, src: string) {
     const dialogRef = this.dialog.open(ImageModalComponent, {

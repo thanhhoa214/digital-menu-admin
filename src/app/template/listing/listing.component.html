@@ -28,16 +28,12 @@
     <!-- Grid column -->
     <div class="col-md-12 d-flex justify-content-center mb-5">
       <button mat-stroked-button color="primary">All</button>
-      <button mat-stroked-button color="accent" class="ml-1" [routerLink]="18">
-        TEMPLATE 18
-      </button>
       <button mat-stroked-button color="primary" class="ml-1">Mountains</button>
       <button mat-stroked-button color="primary" class="ml-1">Sea</button>
       <button mat-stroked-button color="primary" class="ml-1">9:16</button>
       <button mat-stroked-button color="primary" class="ml-1">20:9</button>
       <button mat-stroked-button color="primary" class="ml-1">Desert</button>
     </div>
-
     <!-- Grid column -->
   </div>
   <!-- Grid row -->
@@ -46,20 +42,33 @@
   <div class="gallery" id="gallery">
     <div
       class="mb-3 px-2 py-3 shadow pics animation all"
-      *ngFor="let item of sampleData"
+      *ngFor="
+        let template of (templates$ | async).result;
+        index as templateIndex
+      "
     >
       <div class="d-flex justify-content-between mb-1">
-        <h2>Title {{ item.id }}</h2>
+        <h2>Title {{ template.id }}</h2>
         <button
           mat-raised-button
           color="primary"
           class="mb-2"
-          (click)="openDialog(item.id, 'Title ' + item.id, item.src)"
+          (click)="
+            openDialog(
+              template.id,
+              'Title ' + template.id,
+              sampleData[templateIndex % 6].src
+            )
+          "
         >
           Preview
         </button>
       </div>
-      <img class="img-fluid rounded-lg" [src]="item.src" alt="Card image cap" />
+      <img
+        class="img-fluid rounded-lg"
+        [src]="sampleData[templateIndex % 6].src"
+        alt="Card image cap"
+      />
     </div>
   </div>
   <!-- Grid row -->

@@ -12,7 +12,7 @@
       </div>
     </mat-card>
   </mat-drawer-content>
-  <mat-drawer mode="side" opened position="end">
+  <mat-drawer mode="side" [(opened)]="isConfigurationShow" position="end">
     <ng-container *ngIf="configuration.boxType">
       <div class="container my-2 d-flex flex-column justify-content-between">
         <h2>Box</h2>
@@ -100,7 +100,9 @@
             <h3 class="d-flex justify-content-between align-items-center">
               <b>Product List {{ indexOfProductList + 1 }}</b>
               <div class="badge badge-success ml-1">
-                {{ productListElement.selectedOptions.selected.length }}
+                {{
+                  selectionList?.nativeElement?.selectedOptions.selected.length
+                }}
               </div>
             </h3>
             <mat-form-field class="w-100">
@@ -112,15 +114,34 @@
               />
             </mat-form-field>
             <b>Products</b>
-            <mat-selection-list #productListElement>
-              <mat-list-option *ngFor="let product of productList.products">
+            <mat-selection-list
+              #productListElement
+              (selectionChange)="
+                updateProductList(
+                  $event,
+                  configuration.id,
+                  productList.id,
+                  indexOfProductList
+                )
+              "
+            >
+              <mat-list-option
+                *ngFor="let product of products"
+                [selected]="isIncludes(productList.products, product.id)"
+              >
                 {{ product.title }}
               </mat-list-option>
             </mat-selection-list>
+            <div class="border-bottom pb-4"></div>
           </div>
         </form>
-        <button mat-raised-button color="primary" class="w-100 mb-5">
-          Update Box
+        <button
+          mat-raised-button
+          color="primary"
+          class="w-100 mb-5"
+          (click)="updateBox(configuration.id)"
+        >
+          Save Box
         </button>
       </div>
     </ng-container>
@@ -132,8 +153,15 @@
   <span>My Template</span>
   <div>
     <button mat-flat-button color="accent">Preview</button>
-    <button mat-raised-button color="primary" class="mx-2">Update</button>
-    <button mat-stroked-button color="primary" [routerLink]="['..']">
+    <button
+      mat-raised-button
+      color="primary"
+      class="mx-2"
+      (click)="updateTemplate()"
+    >
+      Update
+    </button>
+    <button mat-stroked-button color="primary" (click)="goBack()">
       Cancel
     </button>
   </div>
