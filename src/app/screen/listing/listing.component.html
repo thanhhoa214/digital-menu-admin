@@ -21,8 +21,8 @@
           <tr class="bg-dark text-light text-center">
             <th scope="col">Screen No</th>
             <th scope="col">Screen ID</th>
-            <th scope="col">Store ID Name</th>
-            <th scope="col">User ID</th>
+            <th scope="col">Store Name</th>
+            <th scope="col">UID</th>
           </tr>
         </thead>
         <tbody class="text-center">
@@ -32,10 +32,10 @@
             [routerLink]="screen.id"
           >
             <th scope="row">{{ screen.id }}</th>
-            
+
             <td>{{ screen.id }}</td>
-            <td>{{ screen.storeId }}</td>
-            <td>{{ screen.uid}}</td>
+            <td>{{ getStoreName(screen.storeId) }}</td>
+            <td>{{ screen.uid }}</td>
           </tr>
         </tbody>
 
@@ -89,6 +89,6 @@
           </a>
         </li>
       </ul>
-    </div></ng-container
-  >
+    </div>
+  </ng-container>
 </div>

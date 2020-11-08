@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { TemplateRoutingModule } from './template-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { ListingComponent } from './listing/listing.component';
@@ -15,5 +15,6 @@ import { UpdateComponent } from './update/update.component';
   ],
   imports: [SharedModule, TemplateRoutingModule],
   providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TemplateModule {}

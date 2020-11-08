@@ -2,13 +2,15 @@
   <mat-drawer-content class="main-container">
     <mat-card class="m-1 bg-dark">
       <div
-        #templateRoot
-        *ngIf="stringifiedData"
-        id="template-root"
-        [attr.data-template]="stringifiedData"
         class="border border-light rounded-lg d-flex w-100 justify-content-center align-items-center"
       >
-        <h2 class="text-light">Loading ...</h2>
+        <h2 class="text-light" *ngIf="!templateData">Loading ...</h2>
+        <div id="template-declaration" class="d-none"></div>
+        <swd-root-template
+          id="template-root"
+          [initTemplate]="templateData | json"
+          [attr.template]="templateData | json"
+        ></swd-root-template>
       </div>
     </mat-card>
   </mat-drawer-content>
@@ -100,9 +102,7 @@
             <h3 class="d-flex justify-content-between align-items-center">
               <b>Product List {{ indexOfProductList + 1 }}</b>
               <div class="badge badge-success ml-1">
-                {{
-                  selectionList?.nativeElement?.selectedOptions.selected.length
-                }}
+                {{ productListElement?.selectedOptions.selected.length }}
               </div>
             </h3>
             <mat-form-field class="w-100">
@@ -117,7 +117,7 @@
             <mat-selection-list
               #productListElement
               (selectionChange)="
-                updateProductList(
+                productListChange(
                   $event,
                   configuration.id,
                   productList.id,
@@ -126,8 +126,14 @@
               "
             >
               <mat-list-option
+                #productElement
                 *ngFor="let product of products"
+                [value]="product.id"
                 [selected]="isIncludes(productList.products, product.id)"
+                [disabled]="
+                  productListElement?.selectedOptions.selected.length >=
+                    productList.maxSize && !productElement.selected
+                "
               >
                 {{ product.title }}
               </mat-list-option>

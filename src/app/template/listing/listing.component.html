@@ -43,7 +43,7 @@
     <div
       class="mb-3 px-2 py-3 shadow pics animation all"
       *ngFor="
-        let template of (templates$ | async).result;
+        let template of (templates$ | async)?.result;
         index as templateIndex
       "
     >
