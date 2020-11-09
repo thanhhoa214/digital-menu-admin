@@ -8,8 +8,8 @@
         <div id="template-declaration" class="d-none"></div>
         <swd-root-template
           id="template-root"
-          [initTemplate]="templateData | json"
-          [attr.template]="templateData | json"
+          [initTemplate]="getTemplateDataForUI()"
+          [attr.template]="getTemplateDataForUI()"
         ></swd-root-template>
       </div>
     </mat-card>
@@ -116,14 +116,7 @@
             <b>Products</b>
             <mat-selection-list
               #productListElement
-              (selectionChange)="
-                productListChange(
-                  $event,
-                  configuration.id,
-                  productList.id,
-                  indexOfProductList
-                )
-              "
+              (selectionChange)="productListChange($event, productList.id)"
             >
               <mat-list-option
                 #productElement
@@ -145,7 +138,7 @@
           mat-raised-button
           color="primary"
           class="w-100 mb-5"
-          (click)="updateBox(configuration.id)"
+          (click)="updateBox()"
         >
           Save Box
         </button>

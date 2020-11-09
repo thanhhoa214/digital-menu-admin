@@ -1,14 +1,10 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { AccountReadDtoPagingResponseDto, AccountsService } from 'src/generated';
+import {
+  AccountReadDtoPagingResponseDto,
+  AccountsService,
+} from 'src/generated';
 
 @Component({
   selector: 'app-listing',
@@ -18,7 +14,7 @@ import { AccountReadDtoPagingResponseDto, AccountsService } from 'src/generated'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListingComponent implements OnInit {
-  account$:Observable<AccountReadDtoPagingResponseDto>
+  account$: Observable<AccountReadDtoPagingResponseDto>;
   search: FormControl = new FormControl('');
 
   pagingOptions = {
@@ -26,9 +22,7 @@ export class ListingComponent implements OnInit {
     currentPage: 1,
   };
 
-  constructor(
-    private _accountService: AccountsService  
-  ) {}
+  constructor(private _accountService: AccountsService) {}
 
   ngOnInit() {
     this.account$ = this._accountService.apiAccountsGet(
@@ -50,6 +44,4 @@ export class ListingComponent implements OnInit {
     const pageCount = Math.round(totolItem / this.pagingOptions.limit);
     return Array(pageCount).fill(1);
   }
-
-  
 }

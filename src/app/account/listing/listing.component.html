@@ -1,13 +1,14 @@
 <div class="main-container container-fluid py-2 d-flex flex-column">
   <h1 class="d-flex align-items-center ml-3 mt-2 mb-3 mat-display-1">
-    <mat-icon>view_list</mat-icon>
+    <mat-icon style="zoom: 1.5">account_circle</mat-icon>
     <span class="ml-3">Accounts</span>
   </h1>
+  <app-create-button></app-create-button>
   <div class="d-flex justify-content-end mb-2">
     <input
       [formControl]="search"
-      class="form-control mx-3"
-      placeholder="Find by product name"
+      class="form-control mx-3 w-100"
+      placeholder="Find by account name"
     />
     <button mat-raised-button color="primary" (click)="loadAccounts(1)">
       Search
@@ -20,10 +21,9 @@
         <thead>
           <tr class="bg-dark text-light text-center">
             <th scope="col">Account ID</th>
-            
+
             <th scope="col">Username</th>
             <th scope="col">Role Name</th>
-            <th scope="col">Store ID</th>
             <th scope="col">Store Name</th>
           </tr>
         </thead>
@@ -36,7 +36,6 @@
             <th scope="row">{{ account.id }}</th>
             <td>{{ account.username }}</td>
             <td>{{ account.roleName }}</td>
-            <td>{{ account.storeId }}</td>
             <td>{{ account.storeName }}</td>
           </tr>
         </tbody>
