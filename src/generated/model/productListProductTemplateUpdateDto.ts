@@ -9,15 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BoxUpdateWithTemplateDto } from './boxUpdateWithTemplateDto';
 
 
-export interface TemplateUpdateDto { 
-    description?: string | null;
-    name?: string | null;
-    tags?: string | null;
-    src?: string | null;
-    readonly lastModified?: string;
-    boxes?: Array<BoxUpdateWithTemplateDto> | null;
+export interface ProductListProductTemplateUpdateDto { 
+    id?: number;
+    location?: number | null;
 }
 

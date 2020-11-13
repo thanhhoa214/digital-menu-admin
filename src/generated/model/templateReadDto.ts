@@ -18,6 +18,7 @@ export interface TemplateReadDto {
     storeId?: number | null;
     createdTime?: string;
     uilink?: string | null;
+    src?: string | null;
     tags?: string | null;
 }
 

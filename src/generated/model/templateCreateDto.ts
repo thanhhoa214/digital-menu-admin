@@ -17,6 +17,7 @@ export interface TemplateCreateDto {
     description?: string | null;
     storeId?: number | null;
     tags?: string | null;
+    src?: string | null;
     readonly createdTime?: string;
     boxes?: Array<BoxCreateWithTemplateDto> | null;
 }

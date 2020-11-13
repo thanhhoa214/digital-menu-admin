@@ -5,6 +5,7 @@ import {
   OnInit,
   ElementRef,
   ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Renderer2 } from '@angular/core';
@@ -28,14 +29,15 @@ import {
   SnackBarWarnComponent,
 } from 'src/app/shared/components';
 import { isEqual } from 'lodash';
+import { getDataURLFromFile } from 'src/app/shared/utils';
 
-export const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpeg'];
+export const ACCEPTEDIMAGETYPES = ['image/png', 'image/jpeg'];
 @Component({
   selector: 'app-update',
   templateUrl: './update.component.html',
   styleUrls: ['./update.component.scss'],
 })
-export class UpdateComponent implements OnInit, AfterViewInit {
+export class UpdateComponent implements OnInit, OnDestroy {
   @ViewChild('headerSrcInput') headerSrcInput: ElementRef<HTMLInputElement>;
   @ViewChild('headerSrcFileInput') headerSrcFileInput: ElementRef<
     HTMLInputElement
@@ -55,54 +57,57 @@ export class UpdateComponent implements OnInit, AfterViewInit {
   isConfigurationShow = true;
   currentSelectedCount = 5;
 
-  private _initTemplateData: TemplateDetailReadDto;
-  private _setupEventListenersInterval: any;
+  private initTemplateData: TemplateDetailReadDto;
+  private setupEventListenersInterval: any;
+  private script: HTMLScriptElement;
 
   constructor(
-    private _activatedRoute: ActivatedRoute,
-    private _renderer2: Renderer2,
-    private _drawerService: DrawerService,
-    private _templateService: TemplatesService,
-    private _storeService: StoresService,
-    private _imageService: ImageService,
-    private _formBuilder: FormBuilder,
-    private _router: Router,
-    private _snackBar: MatSnackBar,
-    private _changeDetector: ChangeDetectorRef
+    private activatedRoute: ActivatedRoute,
+    private renderer2: Renderer2,
+    private drawerService: DrawerService,
+    private templateService: TemplatesService,
+    private storeService: StoresService,
+    private imageService: ImageService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private changeDetector: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    this.form = this._formBuilder.group({
+  async ngOnInit() {
+    this.form = this.formBuilder.group({
       headerTitle: [''],
       headerSrc: [''],
       footerTitle: [''],
       footerSrc: [''],
     });
-  }
 
-  async ngAfterViewInit() {
-    this._drawerService.close();
-    this._drawerService.setMode('over');
+    this.drawerService.close();
+    this.drawerService.setMode('over');
 
-    const id = parseInt(this._activatedRoute.snapshot.params.id);
-    const template = await this._templateService
+    const id = parseInt(this.activatedRoute.snapshot.params.id, 10);
+    const template = await this.templateService
       .apiTemplatesIdGet(id)
       .toPromise();
-    this._storeService
-      .apiStoresIdProductsGet(id, 0, 0)
-      .subscribe((products) => {
-        this.products = products.result;
-      });
+
+    console.log('================================', template);
+
+    this.storeService.apiStoresIdProductsGet(id, 0, 0).subscribe((products) => {
+      this.products = products.result;
+    });
     this.templateData = template;
     this.tempTemplateData = template;
-    this._initTemplateData = template;
-    const s = this._renderer2.createElement('script');
-    s.async = true;
-    s.type = 'module';
-    s.src = 'assets/template1.js';
-    this._renderer2.appendChild(document.body, s);
+    this.initTemplateData = template;
+    this.script = this.renderer2.createElement('script');
+    this.script.async = true;
+    this.script.type = 'module';
+    this.script.src =
+      'assets/template1.js' + '?version=' + Math.round(Math.random() * 10000);
+    console.log('=============After start===================');
+    this.renderer2.appendChild(document.body, this.script);
+    console.log('=============After append===================');
 
-    this._setupEventListenersInterval = setInterval(() => {
+    this.setupEventListenersInterval = setInterval(() => {
       const templateBoxes = document.querySelectorAll('swd-root-box');
       if (templateBoxes) {
         templateBoxes.forEach((templateBox) => {
@@ -116,13 +121,19 @@ export class UpdateComponent implements OnInit, AfterViewInit {
               this.form.patchValue({
                 headerTitle: detail.headerTitle,
                 footerTitle: detail.footerTitle,
+                headerSrc: detail.headerSrc,
+                footerSrc: detail.footerSrc,
               });
             }
           );
         });
-        clearInterval(this._setupEventListenersInterval);
+        clearInterval(this.setupEventListenersInterval);
       }
     }, 1000);
+  }
+
+  async ngOnDestroy() {
+    this.renderer2.removeChild(document.body, this.script);
   }
 
   get selectedItemsLength(): number {
@@ -136,40 +147,85 @@ export class UpdateComponent implements OnInit, AfterViewInit {
     target,
   }: CustomEvent<HTMLInputElement>): Promise<void> {
     const { files } = target as HTMLInputElement;
-    if (!files) return;
+    if (!files) {
+      return;
+    }
 
     const file = files[0];
     this.form.get('headerSrc').setValue(file);
     this.headerSrcInput.nativeElement.value = file.name;
+
+    const { id: boxId } = this.configuration;
+
+    const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
+      (b) => b.id === boxId
+    );
+    const newBox: BoxDetailTemplateReadDto = {
+      ...this.tempTemplateData.boxes[oldBoxIndex],
+      headerSrc: (await getDataURLFromFile(file)) as string,
+    };
+
+    this.tempTemplateData.boxes[oldBoxIndex] = newBox;
   }
   async footerImageInputChange({
     target,
   }: CustomEvent<HTMLInputElement>): Promise<void> {
     const { files } = target as HTMLInputElement;
-    if (!files) return;
+    if (!files) {
+      return;
+    }
 
     const file = files[0];
     this.form.get('footerSrc').setValue(file);
     this.footerSrcInput.nativeElement.value = file.name;
+
+    const { id: boxId } = this.configuration;
+    const { footerTitle, footerSrc } = this.form.value;
+
+    const footerFirebaseUrl = await this.imageService
+      .apiImagePost(footerSrc)
+      .toPromise();
+
+    const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
+      (b) => b.id === boxId
+    );
+    const newBox: BoxDetailTemplateReadDto = {
+      ...this.tempTemplateData.boxes[oldBoxIndex],
+      footerSrc: footerFirebaseUrl,
+      footerTitle,
+    };
+    this.tempTemplateData.boxes[oldBoxIndex] = newBox;
   }
 
   isIncludes(products: ProductReadDto[], productId: ProductReadDto): boolean {
     return products.some((p) => p.id === productId);
   }
+  updateProductListTitle(event: any, productListId: number) {
+    console.log(event.target.value);
 
-  async updateBox() {
     const { id: boxId } = this.configuration;
-    const { headerTitle, headerSrc, footerTitle, footerSrc } = this.form.value;
-
-    // const headerFirebaseUrl = await this._imageService
-    //   .apiImagePost(headerSrc)
-    //   .toPromise();
-    // const footerFirebaseUrl = await this._imageService
-    //   .apiImagePost(footerSrc)
-    //   .toPromise();
+    const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
+      (b) => b.id === boxId
+    );
+    const oldProductListIndex = this.tempTemplateData.boxes[
+      oldBoxIndex
+    ].productLists.findIndex((pl) => pl.id === productListId);
+    const newProductList: ProductListReadDto = {
+      ...this.tempTemplateData.boxes[oldBoxIndex].productLists[
+        oldProductListIndex
+      ],
+      title: event.target.value,
+    };
+    this.tempTemplateData.boxes[oldBoxIndex].productLists[
+      oldProductListIndex
+    ] = newProductList;
+  }
+  updateHeader() {
+    const { id: boxId } = this.configuration;
+    const { headerTitle, footerTitle } = this.form.value;
 
     const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
-      (b) => b.id !== boxId
+      (b) => b.id === boxId
     );
     const newBox: BoxDetailTemplateReadDto = {
       ...this.tempTemplateData.boxes[oldBoxIndex],
@@ -177,8 +233,51 @@ export class UpdateComponent implements OnInit, AfterViewInit {
       footerTitle,
     };
     this.tempTemplateData.boxes[oldBoxIndex] = newBox;
+  }
+
+  async updateBox() {
+    const { id: boxId } = this.configuration;
+    const { headerTitle, headerSrc, footerTitle, footerSrc } = this.form.value;
+
+    const headerFirebaseUrl = await this.imageService
+      .apiImagePost(headerSrc)
+      .toPromise();
+    const footerFirebaseUrl = await this.imageService
+      .apiImagePost(footerSrc)
+      .toPromise();
+
+    const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
+      (b) => b.id === boxId
+    );
+    const newBox: BoxDetailTemplateReadDto = {
+      ...this.tempTemplateData.boxes[oldBoxIndex],
+      headerTitle,
+      headerSrc: headerFirebaseUrl,
+      footerTitle,
+      footerSrc: footerFirebaseUrl,
+    };
+    newBox.productLists.forEach((productList) => {
+      productList.products = productList.products.map((p, index) => {
+        console.log(productList.title);
+
+        p.location = index + 1;
+        return p;
+      });
+    });
+    console.warn(newBox);
+
+    this.tempTemplateData.boxes[oldBoxIndex] = newBox;
     this.templateData = this.tempTemplateData;
     this.tempTemplateData = undefined;
+    this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+      verticalPosition: 'top',
+      horizontalPosition: 'end',
+      panelClass: 'mat-snack-bar-success',
+      data: {
+        title: 'Success !',
+        message: 'Save box successfully. You must UPDATE to trigger changes.',
+      },
+    });
   }
 
   productListChange(event: any, productListId: number) {
@@ -207,33 +306,46 @@ export class UpdateComponent implements OnInit, AfterViewInit {
     this.tempTemplateData.boxes
       .find((b) => b.id === boxId)
       .productLists.find((l) => l.id === productListId).products = newProducts;
+    this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+      verticalPosition: 'top',
+      horizontalPosition: 'end',
+      panelClass: 'mat-snack-bar-success',
+      data: {
+        title: 'Success !',
+        message:
+          'Save product list successfully. You must UPDATE to trigger changes.',
+      },
+    });
   }
 
   updateTemplate() {
-    this._templateService
+    this.templateService
       .apiTemplatesIdPut(
         this.templateData.id,
         convertTemplateDetailReadDtoToTemplateIdPut(this.templateData)
       )
       .subscribe(() => {
-        this._snackBar.openFromComponent(SnackBarSuccessComponent, {
+        this.snackBar.openFromComponent(SnackBarSuccessComponent, {
           verticalPosition: 'top',
           horizontalPosition: 'end',
           panelClass: 'mat-snack-bar-success',
-          data: { title: 'Success !', message: 'Update template successfully' },
+          data: {
+            title: 'Success !',
+            message: 'Update template successfully.',
+          },
         });
       });
   }
   goBack() {
-    const isNotChanged = isEqual(this.templateData, this._initTemplateData);
+    const isNotChanged = isEqual(this.templateData, this.initTemplateData);
     if (!isNotChanged) {
       const result = confirm(
         'All changes will be lost if you go back without saving anything. Are you sure to go back ?'
       );
       if (result) {
-        this._router.navigateByUrl('/templates');
+        this.router.navigateByUrl('/templates');
 
-        this._snackBar.openFromComponent(SnackBarWarnComponent, {
+        this.snackBar.openFromComponent(SnackBarWarnComponent, {
           verticalPosition: 'top',
           horizontalPosition: 'end',
           panelClass: 'mat-snack-bar-warn',
@@ -243,7 +355,9 @@ export class UpdateComponent implements OnInit, AfterViewInit {
           },
         });
       }
-    } else this._router.navigateByUrl('/templates');
+    } else {
+      this.router.navigateByUrl('/templates');
+    }
   }
 
   getTemplateDataForUI() {

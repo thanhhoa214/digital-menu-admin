@@ -19,6 +19,7 @@ export interface TemplateDetailReadDto {
     storeId?: number | null;
     createdTime?: string;
     uilink?: string | null;
+    src?: string | null;
     boxes?: Array<BoxDetailTemplateReadDto> | null;
 }
 

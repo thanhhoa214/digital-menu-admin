@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TokenService } from 'src/app/token.service';
+import { AccountReadDto } from 'src/generated';
 import { SnackBarSuccessComponent } from '../snack-bar-success/snack-bar-success.component';
 interface TreeNode {
   name: string;
@@ -10,60 +11,69 @@ interface TreeNode {
   route?: string;
 }
 
-const TREE_DATA: TreeNode[] = [
-  // {
-  //   name: 'Products',
-  //   route: '/product',
-  //   icon: 'storefront',
-  //   children: [
-  //     { name: 'Bets', route: '/product/bet', icon: 'gavel' },
-  //     { name: 'Buys', route: '/product/buy', icon: 'shopping_basket' },
-  //   ],
-  // },
-  {
-    name: 'Templates',
-    route: '/templates',
-    icon: 'web',
-  },
-  {
-    name: 'Stores',
-    route: '/stores',
-    icon: 'storefront',
-  },
-  {
-    name: 'Screens',
-    route: '/screens',
-    icon: 'cast',
-  },
-  {
-    name: 'Displays',
-    route: '/displays',
-    icon: 'screen_share',
-  },
-  {
-    name: 'Accounts',
-    route: '/accounts',
-    icon: 'account_circle',
-  },
-  {
-    name: 'Products',
-    route: '/products',
-    icon: 'view_list',
-  },
-];
 @Component({
   selector: 'app-side-bar',
   templateUrl: './side-bar.component.html',
   styleUrls: ['./side-bar.component.scss'],
 })
-export class SideBarComponent {
-  treeData = TREE_DATA;
-  selectedNode: TreeNode = TREE_DATA[0];
+export class SideBarComponent implements OnInit {
+  treeData = [];
+  selectedNode: TreeNode;
   constructor(
     private _router: Router,
     private _snackBar: MatSnackBar,
     private _tokenService: TokenService
   ) {}
+
+  ngOnInit(): void {
+    const account: AccountReadDto = JSON.parse(
+      localStorage.getItem('accountInfor') ?? '{}'
+    );
+
+    if (account.roleName === 'Admin') {
+      this.treeData = [
+        {
+          name: 'Templates',
+          route: '/templates',
+          icon: 'web',
+        },
+        {
+          name: 'Screens',
+          route: '/screens',
+          icon: 'cast',
+        },
+        {
+          name: 'Displays',
+          route: '/displays',
+          icon: 'screen_share',
+        },
+        {
+          name: 'Products',
+          route: '/products',
+          icon: 'view_list',
+        },
+      ];
+    } else if (account.roleName === 'Super admin') {
+      this.treeData = [
+        {
+          name: 'Templates',
+          route: '/templates',
+          icon: 'web',
+        },
+        {
+          name: 'Stores',
+          route: '/stores',
+          icon: 'storefront',
+        },
+        {
+          name: 'Accounts',
+          route: '/accounts',
+          icon: 'account_circle',
+        },
+      ];
+    }
+    this.selectedNode = this.treeData[0];
+  }
 
   setSelectedNode(node: TreeNode): void {
     this.selectedNode = node;

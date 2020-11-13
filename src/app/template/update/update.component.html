@@ -1,16 +1,17 @@
 <mat-drawer-container autosize>
   <mat-drawer-content class="main-container">
     <mat-card class="m-1 bg-dark">
-      <div
-        class="border border-light rounded-lg d-flex w-100 justify-content-center align-items-center"
-      >
-        <h2 class="text-light" *ngIf="!templateData">Loading ...</h2>
-        <div id="template-declaration" class="d-none"></div>
-        <swd-root-template
-          id="template-root"
-          [initTemplate]="getTemplateDataForUI()"
-          [attr.template]="getTemplateDataForUI()"
-        ></swd-root-template>
+      <div class="border border-light rounded-lg w-100">
+        <div class="d-flex justify-content-center align-items-center content">
+          <h2 class="text-light" *ngIf="!templateData">Loading ...</h2>
+          <div id="template-declaration" class="d-none"></div>
+          <swd-root-template
+            id="template-root"
+            [initTemplate]="getTemplateDataForUI()"
+            [attr.template]="getTemplateDataForUI()"
+            admin="true"
+          ></swd-root-template>
+        </div>
       </div>
     </mat-card>
   </mat-drawer-content>
@@ -19,6 +20,14 @@
       <div class="container my-2 d-flex flex-column justify-content-between">
         <h2>Box</h2>
         <form [formGroup]="form">
+          <div class="d-flex justify-content-between mb-2">
+            <button mat-raised-button color="primary" (click)="updateBox()">
+              Save
+            </button>
+            <button mat-stroked-button color="primary" class="mx-1">
+              Discard
+            </button>
+          </div>
           <mat-form-field class="w-100">
             <mat-label>Header Title</mat-label>
             <input
@@ -49,7 +58,12 @@
               (change)="headerImageInputChange($event)"
             />
             <div class="d-flex">
-              <input readonly class="form-control" #headerSrcInput />
+              <input
+                readonly
+                class="form-control"
+                #headerSrcInput
+                [value]="form.get('headerSrc').value"
+              />
               <button
                 mat-stroked-button
                 size="small"
@@ -81,7 +95,12 @@
               (change)="footerImageInputChange($event)"
             />
             <div class="d-flex">
-              <input readonly class="form-control" #footerSrcInput />
+              <input
+                readonly
+                class="form-control"
+                #footerSrcInput
+                [value]="form.get('footerSrc').value"
+              />
               <button
                 mat-stroked-button
                 size="small"
@@ -111,6 +130,7 @@
                 matInput
                 placeholder="Enter product list title"
                 [value]="productList.title"
+                (change)="updateProductListTitle($event, productList.id)"
               />
             </mat-form-field>
             <b>Products</b>
@@ -134,14 +154,6 @@
             <div class="border-bottom pb-4"></div>
           </div>
         </form>
-        <button
-          mat-raised-button
-          color="primary"
-          class="w-100 mb-5"
-          (click)="updateBox()"
-        >
-          Save Box
-        </button>
       </div>
     </ng-container>
   </mat-drawer>

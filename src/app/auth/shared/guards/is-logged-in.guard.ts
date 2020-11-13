@@ -5,12 +5,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class IsLoggedInGuard implements CanActivateChild {
-  constructor(private router: Router, private _snackBar: MatSnackBar) {}
+  constructor(private router: Router, private snackBar: MatSnackBar) {}
 
   async canActivateChild() {
     const isLogined = !!localStorage.getItem('accessToken');
     if (!isLogined) {
-      this._snackBar.openFromComponent(SnackBarWarnComponent, {
+      this.snackBar.openFromComponent(SnackBarWarnComponent, {
         verticalPosition: 'top',
         horizontalPosition: 'end',
         panelClass: 'mat-snack-bar-warn',

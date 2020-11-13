@@ -1868,6 +1868,48 @@ paths:
       responses:
         '200':
           description: Success
+  /api/templates/sample:
+    get:
+      tags:
+        - Templates
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: tag
+          in: query
+          schema:
+            type: string
+            default: ''
+            nullable: true
+        - name: searchValue
+          in: query
+          schema:
+            type: string
+            default: ''
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
   '/api/templates/{id}':
     get:
       tags:
@@ -1971,6 +2013,30 @@ paths:
       responses:
         '200':
           description: Success
+  '/api/templates/udid/{udid}':
+    get:
+      tags:
+        - Templates
+      parameters:
+        - name: udid
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TemplateDetailReadDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateDetailReadDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TemplateDetailReadDto'
   '/{sample-template-id}/storetemplate':
     post:
       tags:
@@ -2708,6 +2774,9 @@ components:
         uilink:
           type: string
           nullable: true
+        src:
+          type: string
+          nullable: true
         tags:
           type: string
           nullable: true
@@ -2838,10 +2907,112 @@ components:
         uilink:
           type: string
           nullable: true
+        src:
+          type: string
+          nullable: true
         boxes:
           type: array
           items:
             $ref: '#/components/schemas/BoxDetailTemplateReadDto'
+          nullable: true
+      additionalProperties: false
+    ProductListProductTemplateUpdateDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        location:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    ProductListUpdateWithTemplateDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+          nullable: true
+        boxId:
+          type: integer
+          format: int32
+          nullable: true
+        maxSize:
+          type: integer
+          format: int32
+          nullable: true
+        location:
+          type: integer
+          format: int32
+          nullable: true
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductListProductTemplateUpdateDto'
+          nullable: true
+      additionalProperties: false
+    BoxUpdateWithTemplateDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        templateId:
+          type: integer
+          format: int32
+        boxType:
+          $ref: '#/components/schemas/BoxTypeReadDto'
+        location:
+          type: integer
+          format: int32
+          nullable: true
+        src:
+          type: string
+          nullable: true
+        headerTitle:
+          type: string
+          nullable: true
+        footerTitle:
+          type: string
+          nullable: true
+        headerSrc:
+          type: string
+          nullable: true
+        footerSrc:
+          type: string
+          nullable: true
+        productLists:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductListUpdateWithTemplateDto'
+          nullable: true
+      additionalProperties: false
+    TemplateUpdateDto:
+      type: object
+      properties:
+        description:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        tags:
+          type: string
+          nullable: true
+        src:
+          type: string
+          nullable: true
+        lastModified:
+          type: string
+          format: date-time
+          readOnly: true
+        boxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/BoxUpdateWithTemplateDto'
           nullable: true
       additionalProperties: false
     ProductListProductCreateWithTemplateDto:
@@ -2908,28 +3079,6 @@ components:
             $ref: '#/components/schemas/ProductListCreateWithTemplateDto'
           nullable: true
       additionalProperties: false
-    TemplateUpdateDto:
-      type: object
-      properties:
-        description:
-          type: string
-          nullable: true
-        name:
-          type: string
-          nullable: true
-        tags:
-          type: string
-          nullable: true
-        lastModified:
-          type: string
-          format: date-time
-          readOnly: true
-        boxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/BoxCreateWithTemplateDto'
-          nullable: true
-      additionalProperties: false
     TemplateCreateDto:
       type: object
       properties:
@@ -2944,6 +3093,9 @@ components:
           format: int32
           nullable: true
         tags:
+          type: string
+          nullable: true
+        src:
           type: string
           nullable: true
         createdTime:

@@ -7,13 +7,6 @@ import {
 } from 'src/generated';
 import { ImageModalComponent } from '../shared/components/image-modal/image-modal.component';
 
-const sampleSkeleton = {
-  id: 'skeleton',
-  icon: 'skeleton',
-  name: 'skeleton',
-  description: 'skeleton',
-};
-
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -52,10 +45,10 @@ export class ListingComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private _templateService: TemplatesService
+    private templateService: TemplatesService
   ) {}
   ngOnInit(): void {
-    this.templates$ = this._templateService.apiTemplatesGet();
+    this.templates$ = this.templateService.apiTemplatesGet();
   }
 
   openDialog(id: string, title: string, src: string) {

@@ -20,8 +20,8 @@ export class AppComponent implements AfterViewInit {
 
   constructor(
     breakpointObserver: BreakpointObserver,
-    private _tokenService: TokenService,
-    private _drawerService: DrawerService
+    private tokenService: TokenService,
+    private drawerService: DrawerService
   ) {
     this.isLessThanSmall$ = breakpointObserver
       .observe([Breakpoints.Small, Breakpoints.XSmall])
@@ -31,11 +31,11 @@ export class AppComponent implements AfterViewInit {
           refCount: false,
         })
       );
-    this.isLoggedIn$ = this._tokenService
+    this.isLoggedIn$ = this.tokenService
       .getAccessToken$()
       .pipe(map((accessToken) => !!accessToken));
   }
   ngAfterViewInit(): void {
-    this._drawerService.setDrawer(this.drawer);
+    this.drawerService.setDrawer(this.drawer);
   }
 }

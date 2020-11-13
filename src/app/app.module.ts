@@ -12,8 +12,9 @@ import {
 } from 'src/generated';
 import { environment } from 'src/environments/environment';
 import { TokenService } from './token.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CorsInterceptor } from './shared/interceptors/cors.interceptor';
 
 // export function apiConfigFactory(): Configuration {
 //   const params: ConfigurationParameters = {};
@@ -44,6 +45,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         }),
       deps: [TokenService],
       multi: false,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CorsInterceptor,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent],
