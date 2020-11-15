@@ -17,7 +17,6 @@ export class CorsInterceptor implements HttpInterceptor {
     const hasOfflineRequest = !!request.headers.get('Authorization');
     if (!hasOfflineRequest) {
       const headers = request.headers
-        .set('Content-Type', 'application/json')
         .set(
           'Cache-Control',
           'no-cache, no-store, must-revalidate, post-check=0, pre-check=0'

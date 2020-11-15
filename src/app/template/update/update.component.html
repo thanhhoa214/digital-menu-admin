@@ -1,53 +1,59 @@
+<div
+  class="position-fixed fixed-top w-100 h-100 {{
+    loading ? 'd-flex' : 'd-none'
+  }} flex-column justify-content-center align-items-center"
+  style="background-color: rgba(0, 0, 0, 0.6)"
+>
+  <div
+    class="rounded-circle overflow-hidden"
+    style="width: 20rem; height: 20rem"
+  >
+    <img
+      src="assets/images/loading.gif"
+      class="w-100 h-100"
+      style="object-fit: cover"
+    />
+  </div>
+  <b class="text-light text-uppercase" style="margin-top: -5rem"
+    >Your image is uploading</b
+  >
+  <span class="text-light h1 mt-n4">.....</span>
+</div>
 <mat-drawer-container autosize>
   <mat-drawer-content class="main-container">
     <mat-card class="m-1 bg-dark">
-      <div class="border border-light rounded-lg w-100">
-        <div class="d-flex justify-content-center align-items-center content">
-          <h2 class="text-light" *ngIf="!templateData">Loading ...</h2>
-          <div id="template-declaration" class="d-none"></div>
-          <swd-root-template
-            id="template-root"
-            [initTemplate]="getTemplateDataForUI()"
-            [attr.template]="getTemplateDataForUI()"
-            admin="true"
-          ></swd-root-template>
-        </div>
+      <div class="d-flex justify-content-center align-items-center content">
+        <h2 class="text-light" *ngIf="!templateData">Loading ...</h2>
+        <swd-root-template
+          class="w-100 border border-light rounded overflow-hidden"
+          id="template-root"
+          [attr.template]="getTemplateDataForUI()"
+          admin="true"
+        ></swd-root-template>
       </div>
     </mat-card>
   </mat-drawer-content>
   <mat-drawer mode="side" [(opened)]="isConfigurationShow" position="end">
     <ng-container *ngIf="configuration.boxType">
       <div class="container my-2 d-flex flex-column justify-content-between">
-        <h2>Box</h2>
+        <h2 class="d-flex justify-content-between align-items-center">
+          <span>Box</span>
+          <button mat-stroked-button color="accent" (click)="resetBox()">
+            Reset
+          </button>
+        </h2>
         <form [formGroup]="form">
-          <div class="d-flex justify-content-between mb-2">
-            <button mat-raised-button color="primary" (click)="updateBox()">
-              Save
-            </button>
-            <button mat-stroked-button color="primary" class="mx-1">
-              Discard
-            </button>
-          </div>
-          <mat-form-field class="w-100">
-            <mat-label>Header Title</mat-label>
+          <div class="form-group" *ngIf="configuration.headerTitle">
+            <label for="header-title"><b>Header Title</b></label>
             <input
-              matInput
+              class="form-control"
               #headerTitle
+              id="header-title"
               placeholder="Enter Header Title"
               formControlName="headerTitle"
             />
-            <button
-              mat-button
-              *ngIf="headerTitle?.value"
-              matSuffix
-              mat-icon-button
-              aria-label="Clear"
-              (click)="headerTitle.value = ''"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <div class="form-group">
+          </div>
+          <div class="form-group" *ngIf="configuration.headerSrc">
             <b>Header Image</b>
             <input
               #headerSrcFileInput
@@ -62,7 +68,7 @@
                 readonly
                 class="form-control"
                 #headerSrcInput
-                [value]="form.get('headerSrc').value"
+                [value]="form.get('headerSrc').value | slice: -30"
               />
               <button
                 mat-stroked-button
@@ -75,7 +81,7 @@
               </button>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" *ngIf="configuration.footerTitle">
             <label for="footer-title"><b>Footer Title</b></label>
             <input
               class="form-control"
@@ -84,13 +90,15 @@
               formControlName="footerTitle"
             />
           </div>
-          <div class="form-group border-bottom pb-4">
+          <div
+            class="form-group border-bottom pb-4"
+            *ngIf="configuration.footerSrc"
+          >
             <b>Footer Image</b>
             <input
               #footerSrcFileInput
               type="file"
               accept="image/png,image/jpeg"
-              placeholder="Enter Footer Image"
               class="d-none"
               (change)="footerImageInputChange($event)"
             />
@@ -99,7 +107,7 @@
                 readonly
                 class="form-control"
                 #footerSrcInput
-                [value]="form.get('footerSrc').value"
+                [value]="form.get('footerSrc').value | slice: -30"
               />
               <button
                 mat-stroked-button

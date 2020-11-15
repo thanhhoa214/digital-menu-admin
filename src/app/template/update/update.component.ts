@@ -1,6 +1,5 @@
 import {
   Component,
-  AfterViewInit,
   ViewChild,
   OnInit,
   ElementRef,
@@ -29,7 +28,6 @@ import {
   SnackBarWarnComponent,
 } from 'src/app/shared/components';
 import { isEqual } from 'lodash';
-import { getDataURLFromFile } from 'src/app/shared/utils';
 
 export const ACCEPTEDIMAGETYPES = ['image/png', 'image/jpeg'];
 @Component({
@@ -56,6 +54,8 @@ export class UpdateComponent implements OnInit, OnDestroy {
   products: ProductReadDto[];
   isConfigurationShow = true;
   currentSelectedCount = 5;
+
+  loading = false;
 
   private initTemplateData: TemplateDetailReadDto;
   private setupEventListenersInterval: any;
@@ -97,15 +97,13 @@ export class UpdateComponent implements OnInit, OnDestroy {
     });
     this.templateData = template;
     this.tempTemplateData = template;
-    this.initTemplateData = template;
+    this.initTemplateData = { ...template };
     this.script = this.renderer2.createElement('script');
     this.script.async = true;
     this.script.type = 'module';
     this.script.src =
       'assets/template1.js' + '?version=' + Math.round(Math.random() * 10000);
-    console.log('=============After start===================');
     this.renderer2.appendChild(document.body, this.script);
-    console.log('=============After append===================');
 
     this.setupEventListenersInterval = setInterval(() => {
       const templateBoxes = document.querySelectorAll('swd-root-box');
@@ -114,7 +112,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
           templateBox.addEventListener(
             'swd-root-box-click',
             ({ detail }: CustomEvent) => {
-              console.log(detail);
+              console.log('detail', detail);
 
               this.isConfigurationShow = true;
               this.configuration = detail;
@@ -150,10 +148,13 @@ export class UpdateComponent implements OnInit, OnDestroy {
     if (!files) {
       return;
     }
-
+    this.loading = true;
     const file = files[0];
-    this.form.get('headerSrc').setValue(file);
-    this.headerSrcInput.nativeElement.value = file.name;
+    const headerFirebaseUrl = await this.imageService
+      .apiImagePost(file)
+      .toPromise();
+    this.loading = false;
+    this.headerSrcInput.nativeElement.value = headerFirebaseUrl;
 
     const { id: boxId } = this.configuration;
 
@@ -162,10 +163,11 @@ export class UpdateComponent implements OnInit, OnDestroy {
     );
     const newBox: BoxDetailTemplateReadDto = {
       ...this.tempTemplateData.boxes[oldBoxIndex],
-      headerSrc: (await getDataURLFromFile(file)) as string,
+      headerSrc: headerFirebaseUrl,
     };
 
     this.tempTemplateData.boxes[oldBoxIndex] = newBox;
+    console.log(this.headerSrcFileInput);
   }
   async footerImageInputChange({
     target,
@@ -174,25 +176,21 @@ export class UpdateComponent implements OnInit, OnDestroy {
     if (!files) {
       return;
     }
+    this.loading = true;
 
     const file = files[0];
-    this.form.get('footerSrc').setValue(file);
-    this.footerSrcInput.nativeElement.value = file.name;
-
-    const { id: boxId } = this.configuration;
-    const { footerTitle, footerSrc } = this.form.value;
-
     const footerFirebaseUrl = await this.imageService
-      .apiImagePost(footerSrc)
+      .apiImagePost(file)
       .toPromise();
-
+    this.loading = false;
+    this.footerSrcInput.nativeElement.value = footerFirebaseUrl;
+    const { id: boxId } = this.configuration;
     const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
       (b) => b.id === boxId
     );
     const newBox: BoxDetailTemplateReadDto = {
       ...this.tempTemplateData.boxes[oldBoxIndex],
       footerSrc: footerFirebaseUrl,
-      footerTitle,
     };
     this.tempTemplateData.boxes[oldBoxIndex] = newBox;
   }
@@ -201,8 +199,6 @@ export class UpdateComponent implements OnInit, OnDestroy {
     return products.some((p) => p.id === productId);
   }
   updateProductListTitle(event: any, productListId: number) {
-    console.log(event.target.value);
-
     const { id: boxId } = this.configuration;
     const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
       (b) => b.id === boxId
@@ -219,6 +215,8 @@ export class UpdateComponent implements OnInit, OnDestroy {
     this.tempTemplateData.boxes[oldBoxIndex].productLists[
       oldProductListIndex
     ] = newProductList;
+
+    console.log('initTemplateData', this.initTemplateData);
   }
   updateHeader() {
     const { id: boxId } = this.configuration;
@@ -237,29 +235,15 @@ export class UpdateComponent implements OnInit, OnDestroy {
 
   async updateBox() {
     const { id: boxId } = this.configuration;
-    const { headerTitle, headerSrc, footerTitle, footerSrc } = this.form.value;
-
-    const headerFirebaseUrl = await this.imageService
-      .apiImagePost(headerSrc)
-      .toPromise();
-    const footerFirebaseUrl = await this.imageService
-      .apiImagePost(footerSrc)
-      .toPromise();
 
     const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
       (b) => b.id === boxId
     );
     const newBox: BoxDetailTemplateReadDto = {
       ...this.tempTemplateData.boxes[oldBoxIndex],
-      headerTitle,
-      headerSrc: headerFirebaseUrl,
-      footerTitle,
-      footerSrc: footerFirebaseUrl,
     };
     newBox.productLists.forEach((productList) => {
       productList.products = productList.products.map((p, index) => {
-        console.log(productList.title);
-
         p.location = index + 1;
         return p;
       });
@@ -321,8 +305,8 @@ export class UpdateComponent implements OnInit, OnDestroy {
   updateTemplate() {
     this.templateService
       .apiTemplatesIdPut(
-        this.templateData.id,
-        convertTemplateDetailReadDtoToTemplateIdPut(this.templateData)
+        this.tempTemplateData.id,
+        convertTemplateDetailReadDtoToTemplateIdPut(this.tempTemplateData)
       )
       .subscribe(() => {
         this.snackBar.openFromComponent(SnackBarSuccessComponent, {
@@ -362,5 +346,25 @@ export class UpdateComponent implements OnInit, OnDestroy {
 
   getTemplateDataForUI() {
     return JSON.stringify(this.tempTemplateData ?? this.templateData);
+  }
+  resetBox() {
+    const { id: boxId } = this.configuration;
+    const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
+      (b) => b.id === boxId
+    );
+    console.warn(this.initTemplateData.boxes[oldBoxIndex]);
+
+    this.tempTemplateData.boxes[oldBoxIndex] = {
+      ...this.initTemplateData.boxes[oldBoxIndex],
+    };
+    this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+      verticalPosition: 'top',
+      horizontalPosition: 'end',
+      panelClass: 'mat-snack-bar-success',
+      data: {
+        title: 'Success !',
+        message: 'Save box successfully. You must UPDATE to trigger changes.',
+      },
+    });
   }
 }

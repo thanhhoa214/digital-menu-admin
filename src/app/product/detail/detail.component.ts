@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ProductReadDto, ProductsService } from 'src/generated';
 
 @Component({
   selector: 'app-detail',
@@ -7,13 +9,27 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent implements OnInit {
-  item;
+  product: ProductReadDto;
+  formGroup: FormGroup;
 
-  constructor(private _activatedRoute: ActivatedRoute) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private productsService: ProductsService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    const id = this._activatedRoute.snapshot.params.id;
-    this.item = id;
-    console.log(id);
+    this.formGroup = this.formBuilder.group({
+      id: [''],
+      title: [''],
+      description: [''],
+      price: [''],
+      src: [''],
+      storeName: [''],
+    });
+    const id = parseInt(this.activatedRoute.snapshot.params.id, 10);
+    this.productsService.apiProductsIdGet(id).subscribe((data) => {
+      this.product = data;
+    });
   }
 }

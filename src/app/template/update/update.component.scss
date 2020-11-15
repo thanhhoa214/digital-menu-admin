@@ -1,22 +1,21 @@
-mat-card {
-  position: relative !important;
-  float: left;
-  width: 99%;
-  overflow: hidden;
-}
-mat-card:before {
-  content: "";
-  float: left;
-  padding-top: 57%;
-}
-.content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
+// mat-card {
+//   position: relative !important;
+//   float: left;
+//   width: 99%;
+//   overflow: hidden;
+// }
+// mat-card:before {
+//   content: "";
+//   float: left;
+//   padding-top: 57%;
+// }
+// .content {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: 0;
+//   right: 0;
+// }
 mat-toolbar {
   position: fixed;
   bottom: 0;

@@ -20,17 +20,17 @@ export class ListingComponent implements OnInit {
     currentPage: 1,
   };
 
-  constructor(private _productService: ProductsService) {}
+  constructor(private productService: ProductsService) {}
 
   ngOnInit() {
-    this.products$ = this._productService.apiProductsGet(
+    this.products$ = this.productService.apiProductsGet(
       1,
       this.pagingOptions.limit
     );
   }
   loadProducts(page: number) {
     const searchValue = this.search.value;
-    this.products$ = this._productService.apiProductsGet(
+    this.products$ = this.productService.apiProductsGet(
       page,
       this.pagingOptions.limit,
       searchValue
