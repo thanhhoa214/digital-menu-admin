@@ -52,7 +52,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
   configuration: any = {};
   configurationType: 'box' = 'box';
   products: ProductReadDto[];
-  isConfigurationShow = true;
+  isConfigurationShow = false;
   currentSelectedCount = 5;
 
   loading = false;
@@ -215,7 +215,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
     this.tempTemplateData.boxes[oldBoxIndex].productLists[
       oldProductListIndex
     ] = newProductList;
-
+    this.updateBox();
     console.log('initTemplateData', this.initTemplateData);
   }
   updateHeader() {

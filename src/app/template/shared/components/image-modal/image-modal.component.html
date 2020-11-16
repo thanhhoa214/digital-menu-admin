@@ -5,5 +5,12 @@
   </button>
 </div>
 <mat-dialog-content class="mat-typography">
-  <img [src]="data.src" [alt]="data.title" />
+  <div class="w-100 overflow-hidden">
+    <img
+      [src]="data.src"
+      [alt]="data.title"
+      class="w-100 h-100"
+      style="object-fit: cover"
+    />
+  </div>
 </mat-dialog-content>

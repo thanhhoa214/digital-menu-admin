@@ -1,9 +1,12 @@
 <div class="container mt-2">
-  <div class="row justify-content-center align-items-center">
+  <h1 class="d-flex align-items-center ml-3 mt-2 mb-3 mat-display-1">
+    <mat-icon style="zoom: 1.5">view_list</mat-icon>
+    <span class="ml-3">Update Product</span>
+  </h1>
+  <div class="row mx-0">
     <div class="col-10 col-md-8 col-lg-6">
       <!-- Form -->
-      <form class="form" action="" method="post">
-        <h1>Update Product "{{ product.title }}"</h1>
+      <form class="form" [formGroup]="formGroup" (submit)="update()">
         <!-- product name  -->
         <div class="form-group">
           <label for="product-name">Name</label>
@@ -12,55 +15,26 @@
             class="form-control"
             id="product-name"
             placeholder="Fill your product name"
-            name="product-name"
+            formControlName="title"
           />
         </div>
         <!-- End product name  -->
-
-        <!-- Store name  -->
+        <!-- product price  -->
         <div class="form-group">
-          <label for="template-name">Template Name</label>
+          <label for="product-price">Price</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
-            id="template-name"
-            placeholder="Template Name - ID"
-            name="template-name"
+            id="product-price"
+            placeholder="Fill your product price"
+            formControlName="price"
           />
         </div>
-        <!-- End Srore name  -->
+        <!-- product price  -->
 
-        <!-- Store name  -->
-        <div class="form-group">
-          <label for="store-name">Store Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="store-name"
-            placeholder="Store Name - ID"
-            name="store-name"
-          />
-        </div>
-        <!-- End Srore name  -->
-
-        <!-- Description -->
-        <div class="form-group">
-          <label for="product-des">Description</label>
-          <textarea class="form-control" id="product-des" rows="3"></textarea>
-        </div>
-        <!-- End Description -->
-
-        <!-- Is Available -->
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="is-available" />
-          <label class="form-check-label" for="is-available"
-            >Is Available Now</label
-          >
-        </div>
         <!-- End Available -->
 
-        <button type="submit" class="btn btn-primary btn-block">Create</button>
-        <button type="" class="btn btn-secondary btn-block">&lt;</button>
+        <button mat-raised-button color="primary" class="w-100">Update</button>
       </form>
     </div>
   </div>

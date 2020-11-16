@@ -15,7 +15,7 @@
       <mat-icon>search</mat-icon>
     </button>
   </div>
-  <ng-container *ngIf="screen$ | async as screenResponse"
+  <ng-container
     ><div class="p-3 table-wrapper">
       <table class="table table-hover w-100">
         <thead>
@@ -23,42 +23,27 @@
             <th scope="col">Screen ID</th>
             <th scope="col">Store Name</th>
             <th scope="col">UDID</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody class="text-center">
           <tr
             *ngFor="let screen of screenResponse.result"
             class="cursor-pointer"
-            [routerLink]="screen.id"
           >
             <th scope="row">{{ screen.id }}</th>
             <td>{{ getStoreName(screen.storeId) }}</td>
             <td>{{ screen.uid }}</td>
+            <td>
+              <mat-icon color="warn" (click)="removeScreen($event, screen.id)"
+                >close</mat-icon
+              >
+            </td>
           </tr>
         </tbody>
-
-        <!-- <ng-template #skeleton>
-  <tbody class="text-center">
-  <tr *ngFor="let i of [1, 2, 3, 4, 5, 6]">
-  <th scope="row">=========</th>
-  <td>
-  <div class="img-wrapper mx-auto">
-  <img
-  src="assets/images/search.svg"
-  class="h-100 img-fluid img-responsive"
-  />
-  </div>
-  </td>
-  <td>==========<br />==========</td>
-  <td>==========<br />==========</td>
-  <td>==========</td>
-  <td>=============<br />=============<br />=============</td>
-  </tr>
-  </tbody>
-  </ng-template> -->
       </table>
     </div>
-    <div class="ml-auto mt-1 mr-2">
+    <div class="mr-auto mt-1">
       <ul class="pagination">
         <li class="page-item" [class.invisible]="!screenResponse.previousPage">
           <a

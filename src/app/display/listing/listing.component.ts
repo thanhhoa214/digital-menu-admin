@@ -6,13 +6,6 @@ import {
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
-const sampleSkeleton = {
-  id: 'skeleton',
-  icon: 'skeleton',
-  name: 'skeleton',
-  description: 'skeleton',
-};
-
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
