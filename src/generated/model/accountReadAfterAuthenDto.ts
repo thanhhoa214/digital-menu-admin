@@ -11,8 +11,12 @@
  */
 
 
-export interface ScreenCreateDto { 
+export interface AccountReadAfterAuthenDto { 
+    id?: number;
+    username?: string | null;
     storeId?: number;
-    udid?: string | null;
+    storeName?: string | null;
+    roleId?: number;
+    roleName?: string | null;
 }
 

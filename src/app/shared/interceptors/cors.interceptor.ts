@@ -14,22 +14,16 @@ export class CorsInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let modifiedReq: HttpRequest<any> = request;
-    const hasOfflineRequest = !!request.headers.get('Authorization');
-    if (!hasOfflineRequest) {
-      const headers = request.headers
-        .set(
-          'Cache-Control',
-          'no-cache, no-store, must-revalidate, post-check=0, pre-check=0'
-        )
-        .set('Pragma', 'no-cache')
-        .set('Expires', '0');
-      // if (modifiedReq.url.includes('firebasestorage.googleapis')) {
-      //   headers = headers.set('Access-Control-Allow-Origin', '*');
-      // }
-      modifiedReq = request.clone({
-        headers,
-      });
-    }
+    const headers = request.headers;
+    // .set(
+    //   'Cache-Control',
+    //   'no-cache, no-store, must-revalidate, post-check=0, pre-check=0'
+    // )
+    // .set('Pragma', 'no-cache')
+    // .set('Expires', '0');
+    modifiedReq = request.clone({
+      headers,
+    });
     return next.handle(modifiedReq);
   }
 }

@@ -28,6 +28,7 @@ import {
   SnackBarWarnComponent,
 } from 'src/app/shared/components';
 import { isEqual } from 'lodash';
+import { HttpClient } from '@angular/common/http';
 
 export const ACCEPTEDIMAGETYPES = ['image/png', 'image/jpeg'];
 @Component({
@@ -71,7 +72,8 @@ export class UpdateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private snackBar: MatSnackBar,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private httpClient: HttpClient
   ) {}
 
   async ngOnInit() {

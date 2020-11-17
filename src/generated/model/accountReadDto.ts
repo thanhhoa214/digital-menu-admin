@@ -16,6 +16,7 @@ export interface AccountReadDto {
     username?: string | null;
     storeId?: number;
     storeName?: string | null;
+    roleId?: number;
     roleName?: string | null;
 }
 

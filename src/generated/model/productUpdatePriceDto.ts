@@ -11,8 +11,8 @@
  */
 
 
-export interface ScreenCreateDto { 
-    storeId?: number;
-    udid?: string | null;
+export interface ProductUpdatePriceDto { 
+    id?: number;
+    price?: number;
 }
 

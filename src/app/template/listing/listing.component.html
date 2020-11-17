@@ -27,7 +27,13 @@
           mat-raised-button
           color="primary"
           class="mb-2"
-          (click)="openDialog(template.id, template.name, template.src)"
+          (click)="
+            openDialog(
+              template.id,
+              template.name,
+              template.src || sampleData[templateIndex % 6].src
+            )
+          "
         >
           Preview
         </button>

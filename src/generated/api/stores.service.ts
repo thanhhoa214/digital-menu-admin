@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { AccountReadDtoPagingResponseDto } from '../model/models';
 import { Operation } from '../model/models';
 import { ProductReadDtoPagingResponseDto } from '../model/models';
+import { ProductUpdatePriceDto } from '../model/models';
 import { ScreenReadDtoPagingResponseDto } from '../model/models';
 import { StoreCreateDto } from '../model/models';
 import { StoreReadDto } from '../model/models';
@@ -735,6 +736,71 @@ export class StoresService {
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/api/stores`,
             storeCreateDto,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param storeId 
+     * @param productUpdatePriceDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiStoresStoreIdProductsBatchPricePut(storeId: number, productUpdatePriceDto?: Array<ProductUpdatePriceDto>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiStoresStoreIdProductsBatchPricePut(storeId: number, productUpdatePriceDto?: Array<ProductUpdatePriceDto>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiStoresStoreIdProductsBatchPricePut(storeId: number, productUpdatePriceDto?: Array<ProductUpdatePriceDto>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiStoresStoreIdProductsBatchPricePut(storeId: number, productUpdatePriceDto?: Array<ProductUpdatePriceDto>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+        if (storeId === null || storeId === undefined) {
+            throw new Error('Required parameter storeId was null or undefined when calling apiStoresStoreIdProductsBatchPricePut.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["Bearer"] || this.configuration.apiKeys["Authorization"];
+            if (key) {
+                headers = headers.set('Authorization', key);
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json-patch+json',
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<any>(`${this.configuration.basePath}/api/stores/${encodeURIComponent(String(storeId))}/products/batch-price`,
+            productUpdatePriceDto,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

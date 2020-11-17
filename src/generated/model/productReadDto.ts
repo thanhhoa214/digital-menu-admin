@@ -18,5 +18,6 @@ export interface ProductReadDto {
     price?: number;
     src?: string | null;
     storeName?: string | null;
+    storeId?: number;
 }
 

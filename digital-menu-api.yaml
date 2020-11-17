@@ -1322,6 +1322,30 @@ paths:
       responses:
         '200':
           description: Success
+  '/api/screens/udid/{udid}':
+    get:
+      tags:
+        - Screens
+      parameters:
+        - name: udid
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ScreenReadDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreenReadDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ScreenReadDto'
   /api/screen-templates:
     get:
       tags:
@@ -1676,6 +1700,46 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ProductReadDtoPagingResponseDto'
+  '/api/stores/{storeId}/products/batch-price':
+    put:
+      tags:
+        - Stores
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductUpdatePriceDto'
+              nullable: true
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductUpdatePriceDto'
+              nullable: true
+          text/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductUpdatePriceDto'
+              nullable: true
+          application/*+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductUpdatePriceDto'
+              nullable: true
+      responses:
+        '200':
+          description: Success
   '/api/stores/{id}/accounts':
     get:
       tags:
@@ -2161,6 +2225,9 @@ components:
         storeName:
           type: string
           nullable: true
+        roleId:
+          type: integer
+          format: int32
         roleName:
           type: string
           nullable: true
@@ -2199,6 +2266,10 @@ components:
         password:
           type: string
           nullable: true
+        salt:
+          type: string
+          nullable: true
+          readOnly: true
       additionalProperties: false
     AccountUpdateDto:
       type: object
@@ -2222,6 +2293,28 @@ components:
         password:
           type: string
       additionalProperties: false
+    AccountReadAfterAuthenDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        username:
+          type: string
+          nullable: true
+        storeId:
+          type: integer
+          format: int32
+        storeName:
+          type: string
+          nullable: true
+        roleId:
+          type: integer
+          format: int32
+        roleName:
+          type: string
+          nullable: true
+      additionalProperties: false
     AuthenticationReadDto:
       type: object
       properties:
@@ -2229,7 +2322,7 @@ components:
           type: string
           nullable: true
         account:
-          $ref: '#/components/schemas/AccountReadDto'
+          $ref: '#/components/schemas/AccountReadAfterAuthenDto'
       additionalProperties: false
     BoxReadDto:
       type: object
@@ -2549,6 +2642,9 @@ components:
         storeName:
           type: string
           nullable: true
+        storeId:
+          type: integer
+          format: int32
       additionalProperties: false
     ProductReadDtoPagingResponseDto:
       type: object
@@ -2645,7 +2741,7 @@ components:
         storeId:
           type: integer
           format: int32
-        uid:
+        udid:
           type: string
           nullable: true
       additionalProperties: false
@@ -2751,6 +2847,16 @@ components:
         name:
           type: string
           nullable: true
+      additionalProperties: false
+    ProductUpdatePriceDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        price:
+          type: number
+          format: double
       additionalProperties: false
     TemplateReadDto:
       type: object

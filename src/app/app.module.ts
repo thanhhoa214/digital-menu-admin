@@ -36,13 +36,14 @@ import { CorsInterceptor } from './shared/interceptors/cors.interceptor';
   providers: [
     {
       provide: Configuration,
-      useFactory: (tokenService: TokenService) =>
-        new Configuration({
+      useFactory: (tokenService: TokenService) => {
+        return new Configuration({
           basePath: environment.API_URL,
-          accessToken: tokenService
-            .snapshot()
-            .getAccessToken.bind(tokenService),
-        }),
+          apiKeys: {
+            Authorization: 'Bearer ' + tokenService.snapshot().getAccessToken(),
+          },
+        });
+      },
       deps: [TokenService],
       multi: false,
     },

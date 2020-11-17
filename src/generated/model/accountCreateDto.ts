@@ -16,5 +16,6 @@ export interface AccountCreateDto {
     storeId?: number | null;
     roleId?: number;
     password?: string | null;
+    readonly salt?: string | null;
 }
 
