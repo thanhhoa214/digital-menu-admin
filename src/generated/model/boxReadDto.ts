@@ -14,6 +14,7 @@
 export interface BoxReadDto { 
     id?: number;
     templateId?: number;
+    templateName?: string | null;
     location?: number | null;
     boxTypeId?: number | null;
     src?: string | null;

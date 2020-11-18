@@ -3,7 +3,6 @@ import {
   ViewChild,
   OnInit,
   ElementRef,
-  ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,7 +27,6 @@ import {
   SnackBarWarnComponent,
 } from 'src/app/shared/components';
 import { isEqual } from 'lodash';
-import { HttpClient } from '@angular/common/http';
 
 export const ACCEPTEDIMAGETYPES = ['image/png', 'image/jpeg'];
 @Component({
@@ -71,8 +69,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
     private imageService: ImageService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar,
-    private changeDetector: ChangeDetectorRef
+    private snackBar: MatSnackBar
   ) {}
 
   async ngOnInit() {
@@ -91,8 +88,6 @@ export class UpdateComponent implements OnInit, OnDestroy {
       .apiTemplatesIdGet(id)
       .toPromise();
 
-    console.log('================================', template);
-
     this.storeService.apiStoresIdProductsGet(id, 0, 0).subscribe((products) => {
       this.products = products.result;
     });
@@ -103,7 +98,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
     this.script.async = true;
     this.script.type = 'module';
     this.script.src =
-      'assets/template1.js' + '?version=' + Math.round(Math.random() * 10000);
+      template.uilink + '?version=' + Math.round(Math.random() * 10000);
     this.renderer2.appendChild(document.body, this.script);
 
     this.setupEventListenersInterval = setInterval(() => {

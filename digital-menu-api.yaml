@@ -2333,6 +2333,9 @@ components:
         templateId:
           type: integer
           format: int32
+        templateName:
+          type: string
+          nullable: true
         location:
           type: integer
           format: int32
@@ -2773,6 +2776,9 @@ components:
         templateId:
           type: integer
           format: int32
+        templateName:
+          type: string
+          nullable: true
       additionalProperties: false
     ScreenTemplateReadDtoPagingResponseDto:
       type: object

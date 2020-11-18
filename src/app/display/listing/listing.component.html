@@ -11,18 +11,14 @@
           <tr class="bg-dark text-light text-center">
             <th scope="col">Display ID</th>
             <th scope="col">Screen ID</th>
-            <th scope="col">Template ID</th>
+            <th scope="col">Template Name</th>
           </tr>
         </thead>
         <tbody class="text-center">
-          <tr
-            *ngFor="let display of displayResponse.result"
-            class="cursor-pointer"
-            [routerLink]="display.id"
-          >
+          <tr *ngFor="let display of displayResponse.result">
             <th scope="row">{{ display.id }}</th>
             <td>{{ display.screenId }}</td>
-            <td>{{ display.templateId }}</td>
+            <td>{{ display.templateName }}</td>
           </tr>
         </tbody>
       </table>

@@ -4,7 +4,7 @@
   matTooltip="Add new item"
   matTooltipPosition="left"
   matTooltipHideDelay="1000"
-  routerLink="create"
+  [routerLink]="goTo || 'create'"
 >
   <mat-icon>add</mat-icon>
 </button>

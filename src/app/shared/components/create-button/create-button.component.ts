@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'app-create-button',
@@ -6,4 +6,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./create-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateButtonComponent {}
+export class CreateButtonComponent {
+  @Input() goTo: string;
+}

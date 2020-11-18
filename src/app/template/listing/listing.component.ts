@@ -4,12 +4,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { debounceTime, distinctUntilChanged, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import {
+  AccountReadAfterAuthenDto,
   StoresService,
   TemplateReadDtoPagingResponseDto,
   TemplatesService,
 } from 'src/generated';
 import { ImageModalComponent } from '../shared/components/image-modal/image-modal.component';
 import { AccountService } from 'src/app/account.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-listing',
@@ -44,20 +46,24 @@ export class ListingComponent implements OnInit, OnDestroy {
       src: 'assets/images/img6.jpg',
     },
   ];
+  account: AccountReadAfterAuthenDto;
   search: FormControl = new FormControl('');
   subscriptions: Subscription[] = [];
+  isPicked = false;
 
   constructor(
     public dialog: MatDialog,
     private templateService: TemplatesService,
     private accountService: AccountService,
-    private storeService: StoresService
+    private storeService: StoresService,
+    private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
-    const account = this.accountService.getAccount();
-    if (account.roleId === 1) {
+    this.account = this.accountService.getAccount();
+    this.isPicked = this.route.snapshot.data.type === 'pick';
+    if (this.account.roleId === 1 || !this.isPicked) {
       this.storeService
-        .apiStoresIdTemplatesGet(account.storeId)
+        .apiStoresIdTemplatesGet(this.account.storeId)
         .subscribe((templates) => {
           this.templates = templates;
         });
@@ -68,7 +74,7 @@ export class ListingComponent implements OnInit, OnDestroy {
             this.subscriptions.push(
               this.storeService
                 .apiStoresIdTemplatesGet(
-                  account.storeId,
+                  this.account.storeId,
                   1,
                   0,
                   undefined,
@@ -81,7 +87,7 @@ export class ListingComponent implements OnInit, OnDestroy {
           })
       );
     }
-    if (account.roleId === 3) {
+    if (this.account.roleId === 3 || this.isPicked) {
       this.templateService.apiTemplatesGet().subscribe((templates) => {
         this.templates = templates;
       });

@@ -3,11 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { AccountService } from 'src/app/account.service';
 import { SnackBarSuccessComponent } from 'src/app/shared/components';
 import {
   ScreenReadDtoPagingResponseDto,
   ScreensService,
   ScreenTemplatesService,
+  StoresService,
   TemplateReadDtoPagingResponseDto,
   TemplatesService,
 } from 'src/generated';
@@ -28,7 +30,9 @@ export class CreateComponent implements OnInit {
     private displaysService: ScreenTemplatesService,
     private templatesService: TemplatesService,
     private screenService: ScreensService,
-    private _snackBar: MatSnackBar
+    private accountService: AccountService,
+    private storeService: StoresService,
+    private snackBar: MatSnackBar
   ) {
     this.form = this.formBuilder.group({
       templateId: ['', Validators.required],
@@ -36,8 +40,16 @@ export class CreateComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.templates$ = this.templatesService.apiTemplatesGet();
-    this.screens$ = this.screenService.apiScreensGet();
+    const account = this.accountService.getAccount();
+    if (account.roleId === 1) {
+      this.templates$ = this.storeService.apiStoresIdTemplatesGet(
+        account.storeId
+      );
+      this.screens$ = this.storeService.apiStoresIdScreensGet(account.storeId);
+    } else if (account.roleId === 3) {
+      this.templates$ = this.templatesService.apiTemplatesGet();
+      this.screens$ = this.screenService.apiScreensGet();
+    }
   }
 
   create() {
@@ -47,13 +59,13 @@ export class CreateComponent implements OnInit {
       .apiScreenTemplatesPost({ templateId, screenId })
       .pipe(take(1))
       .subscribe(() => {
-        this._snackBar.openFromComponent(SnackBarSuccessComponent, {
+        this.snackBar.openFromComponent(SnackBarSuccessComponent, {
           verticalPosition: 'top',
           horizontalPosition: 'end',
           panelClass: 'mat-snack-bar-success',
           data: {
             title: 'Success !',
-            message: `Create "${name}" successfully`,
+            message: `Display "${templateId}" on screen "${screenId}" setted up successfully`,
           },
         });
       });

@@ -16,5 +16,6 @@ export interface ScreenTemplateReadDto {
     screenId?: number;
     screenUid?: string | null;
     templateId?: number;
+    templateName?: string | null;
 }
 

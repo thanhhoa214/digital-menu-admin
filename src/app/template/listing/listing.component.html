@@ -1,8 +1,10 @@
 <h1 class="d-flex align-items-center ml-3 mt-2 mat-display-1">
   <mat-icon>web</mat-icon>
-  <span class="ml-3">Templates</span>
+  <span class="ml-3"> {{ isPicked ? "Choose New " : "Your " }}Templates</span>
 </h1>
-<app-create-button></app-create-button>
+<app-create-button
+  [goTo]="account.roleId === 1 ? 'pick' : 'create'"
+></app-create-button>
 <div class="container-fluid">
   <form>
     <div class="row d-flex justify-content-center mx-2">

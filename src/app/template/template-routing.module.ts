@@ -6,6 +6,7 @@ import { UpdateComponent } from './update/update.component';
 
 const routes: Routes = [
   { path: '', component: ListingComponent },
+  { path: 'pick', component: ListingComponent, data: { type: 'pick' } },
   { path: 'create', component: DetailComponent },
   { path: ':id', component: UpdateComponent },
 ];
