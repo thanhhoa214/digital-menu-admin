@@ -3,7 +3,7 @@
   <span class="ml-3"> {{ isPicked ? "Choose New " : "Your " }}Templates</span>
 </h1>
 <app-create-button
-  [goTo]="account.roleId === 1 ? 'pick' : 'create'"
+  [goTo]="account?.roleId === 1 ? 'pick' : 'create'"
 ></app-create-button>
 <div class="container-fluid">
   <form>

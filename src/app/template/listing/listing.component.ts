@@ -61,7 +61,9 @@ export class ListingComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.account = this.accountService.getAccount();
     this.isPicked = this.route.snapshot.data.type === 'pick';
-    if (this.account.roleId === 1 || !this.isPicked) {
+    if (this.account.roleId === 1 && !this.isPicked) {
+      console.log(this.account.roleName);
+
       this.storeService
         .apiStoresIdTemplatesGet(this.account.storeId)
         .subscribe((templates) => {
@@ -71,19 +73,17 @@ export class ListingComponent implements OnInit, OnDestroy {
         this.search.valueChanges
           .pipe(debounceTime(500), distinctUntilChanged())
           .subscribe((value) => {
-            this.subscriptions.push(
-              this.storeService
-                .apiStoresIdTemplatesGet(
-                  this.account.storeId,
-                  1,
-                  0,
-                  undefined,
-                  value
-                )
-                .subscribe((templates) => {
-                  this.templates = templates;
-                })
-            );
+            this.storeService
+              .apiStoresIdTemplatesGet(
+                this.account.storeId,
+                1,
+                0,
+                undefined,
+                value
+              )
+              .subscribe((templates) => {
+                this.templates = templates;
+              });
           })
       );
     }
@@ -107,6 +107,8 @@ export class ListingComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy(): void {
+    console.log('cleannnn');
+
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
   openDialog(id: string, title: string, src: string) {
