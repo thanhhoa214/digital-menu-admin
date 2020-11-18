@@ -2713,6 +2713,9 @@ components:
         storeId:
           type: integer
           format: int32
+        storeName:
+          type: string
+          nullable: true
         uid:
           type: string
           nullable: true
@@ -2741,7 +2744,7 @@ components:
         storeId:
           type: integer
           format: int32
-        udid:
+        uid:
           type: string
           nullable: true
       additionalProperties: false
@@ -2764,6 +2767,9 @@ components:
         screenId:
           type: integer
           format: int32
+        screenUid:
+          type: string
+          nullable: true
         templateId:
           type: integer
           format: int32
@@ -2873,6 +2879,9 @@ components:
         storeId:
           type: integer
           format: int32
+          nullable: true
+        storeName:
+          type: string
           nullable: true
         createdTime:
           type: string

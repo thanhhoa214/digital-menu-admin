@@ -72,8 +72,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private snackBar: MatSnackBar,
-    private changeDetector: ChangeDetectorRef,
-    private httpClient: HttpClient
+    private changeDetector: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -217,8 +216,6 @@ export class UpdateComponent implements OnInit, OnDestroy {
     this.tempTemplateData.boxes[oldBoxIndex].productLists[
       oldProductListIndex
     ] = newProductList;
-    this.updateBox();
-    console.log('initTemplateData', this.initTemplateData);
   }
   updateHeader() {
     const { id: boxId } = this.configuration;
@@ -235,36 +232,36 @@ export class UpdateComponent implements OnInit, OnDestroy {
     this.tempTemplateData.boxes[oldBoxIndex] = newBox;
   }
 
-  async updateBox() {
-    const { id: boxId } = this.configuration;
+  // async updateBox() {
+  //   const { id: boxId } = this.configuration;
 
-    const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
-      (b) => b.id === boxId
-    );
-    const newBox: BoxDetailTemplateReadDto = {
-      ...this.tempTemplateData.boxes[oldBoxIndex],
-    };
-    newBox.productLists.forEach((productList) => {
-      productList.products = productList.products.map((p, index) => {
-        p.location = index + 1;
-        return p;
-      });
-    });
-    console.warn(newBox);
+  //   const oldBoxIndex = this.tempTemplateData.boxes.findIndex(
+  //     (b) => b.id === boxId
+  //   );
+  //   const newBox: BoxDetailTemplateReadDto = {
+  //     ...this.tempTemplateData.boxes[oldBoxIndex],
+  //   };
+  //   newBox.productLists.forEach((productList) => {
+  //     productList.products = productList.products.map((p, index) => {
+  //       p.location = index + 1;
+  //       return p;
+  //     });
+  //   });
+  //   console.warn(newBox);
 
-    this.tempTemplateData.boxes[oldBoxIndex] = newBox;
-    this.templateData = this.tempTemplateData;
-    this.tempTemplateData = undefined;
-    this.snackBar.openFromComponent(SnackBarSuccessComponent, {
-      verticalPosition: 'top',
-      horizontalPosition: 'end',
-      panelClass: 'mat-snack-bar-success',
-      data: {
-        title: 'Success !',
-        message: 'Save box successfully. You must UPDATE to trigger changes.',
-      },
-    });
-  }
+  //   this.tempTemplateData.boxes[oldBoxIndex] = newBox;
+  //   this.templateData = this.tempTemplateData;
+  //   this.tempTemplateData = undefined;
+  //   this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+  //     verticalPosition: 'top',
+  //     horizontalPosition: 'end',
+  //     panelClass: 'mat-snack-bar-success',
+  //     data: {
+  //       title: 'Success !',
+  //       message: 'Save box successfully. You must UPDATE to trigger changes.',
+  //     },
+  //   });
+  // }
 
   productListChange(event: any, productListId: number) {
     const { id: boxId } = this.configuration;
@@ -282,6 +279,10 @@ export class UpdateComponent implements OnInit, OnDestroy {
     } else {
       this.updateProductList(boxId, productListId, newProducts);
     }
+    newProducts.forEach((product, index) => {
+      product.location = index + 1;
+      return product;
+    });
   }
 
   updateProductList(
@@ -365,7 +366,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
       panelClass: 'mat-snack-bar-success',
       data: {
         title: 'Success !',
-        message: 'Save box successfully. You must UPDATE to trigger changes.',
+        message: 'Reset box successfully. You must UPDATE to trigger changes.',
       },
     });
   }

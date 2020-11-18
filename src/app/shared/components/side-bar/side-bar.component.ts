@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AccountService } from 'src/app/account.service';
 import { TokenService } from 'src/app/token.service';
 import { AccountReadDto } from 'src/generated';
 import { SnackBarSuccessComponent } from '../snack-bar-success/snack-bar-success.component';
@@ -20,17 +21,16 @@ export class SideBarComponent implements OnInit {
   treeData = [];
   selectedNode: TreeNode;
   constructor(
-    private _router: Router,
-    private _snackBar: MatSnackBar,
-    private _tokenService: TokenService
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private tokenService: TokenService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
-    const account: AccountReadDto = JSON.parse(
-      localStorage.getItem('accountInfor') ?? '{}'
-    );
+    const account: AccountReadDto = this.accountService.getAccount();
 
-    if (account.roleName === 'Admin') {
+    if (account.roleId === 1) {
       this.treeData = [
         {
           name: 'Templates',
@@ -53,7 +53,7 @@ export class SideBarComponent implements OnInit {
           icon: 'view_list',
         },
       ];
-    } else if (account.roleName === 'Super admin') {
+    } else if (account.roleId === 3) {
       this.treeData = [
         {
           name: 'Templates',
@@ -83,14 +83,14 @@ export class SideBarComponent implements OnInit {
     return node.children?.some((c) => c.route === this.selectedNode.route);
   }
   logout() {
-    this._snackBar.openFromComponent(SnackBarSuccessComponent, {
+    this.snackBar.openFromComponent(SnackBarSuccessComponent, {
       verticalPosition: 'top',
       horizontalPosition: 'end',
       panelClass: 'mat-snack-bar-success',
       data: { title: 'Success !', message: 'Logout successfully' },
     });
-    this._tokenService.removeAccessToken();
+    this.tokenService.removeAccessToken();
 
-    this._router.navigateByUrl('/auth');
+    this.router.navigateByUrl('/auth');
   }
 }

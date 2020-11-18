@@ -14,6 +14,7 @@
 export interface ScreenReadDto { 
     id?: number;
     storeId?: number;
+    storeName?: string | null;
     uid?: string | null;
 }
 

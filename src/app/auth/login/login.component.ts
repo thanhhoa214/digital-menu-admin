@@ -1,15 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { distinctUntilChanged, filter, take, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatInput } from '@angular/material/input';
 import { AuthenticationService } from 'src/generated';
 import {
   SnackBarFailedComponent,
   SnackBarSuccessComponent,
 } from 'src/app/shared/components';
 import { TokenService } from 'src/app/token.service';
+import { AccountService } from 'src/app/account.service';
 
 @Component({
   selector: 'app-login',
@@ -20,27 +20,28 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    private _router: Router,
-    private _formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar,
-    private _authService: AuthenticationService,
-    private _tokenService: TokenService
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
+    private authService: AuthenticationService,
+    private tokenService: TokenService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
-    this.form = this._formBuilder.group({
+    this.form = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
 
   login(): void {
-    this._authService
+    this.authService
       .apiAuthenticationPost(this.form.value)
       .pipe(take(1))
       .subscribe((result) => {
         if (typeof result !== 'object') {
-          this._snackBar.openFromComponent(SnackBarFailedComponent, {
+          this.snackBar.openFromComponent(SnackBarFailedComponent, {
             verticalPosition: 'top',
             horizontalPosition: 'end',
             panelClass: 'mat-snack-bar-failed',
@@ -52,16 +53,16 @@ export class LoginComponent implements OnInit {
           return;
         }
         if (result.token) {
-          this._snackBar.openFromComponent(SnackBarSuccessComponent, {
+          this.snackBar.openFromComponent(SnackBarSuccessComponent, {
             verticalPosition: 'top',
             horizontalPosition: 'end',
             panelClass: 'mat-snack-bar-success',
             data: { title: 'Success !', message: 'Login successfully' },
           });
-          this._tokenService.updateAccessToken(result.token);
+          this.tokenService.updateAccessToken(result.token);
 
-          localStorage.setItem('accountInfor', JSON.stringify(result.account));
-          this._router.navigateByUrl('/templates');
+          this.accountService.setAccount(result.account);
+          this.router.navigateByUrl('/templates');
         }
       });
   }

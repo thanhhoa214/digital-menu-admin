@@ -13,6 +13,6 @@
 
 export interface ScreenCreateDto { 
     storeId?: number;
-    udid?: string | null;
+    uid?: string | null;
 }
 

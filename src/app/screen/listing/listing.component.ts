@@ -1,10 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { AccountService } from 'src/app/account.service';
 import { SnackBarSuccessComponent } from 'src/app/shared/components';
 import {
+  AccountReadDto,
   ScreenReadDtoPagingResponseDto,
   ScreensService,
   StoreReadDtoPagingResponseDto,
@@ -15,13 +16,11 @@ import {
   selector: 'app-listing',
   templateUrl: './listing.component.html',
   styleUrls: ['./listing.component.scss'],
-
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListingComponent implements OnInit {
   screenResponse: ScreenReadDtoPagingResponseDto;
   stores: StoreReadDtoPagingResponseDto;
-  search: FormControl = new FormControl('');
+  account: AccountReadDto;
 
   pagingOptions = {
     limit: 10,
@@ -29,33 +28,48 @@ export class ListingComponent implements OnInit {
   };
 
   constructor(
-    private _screenService: ScreensService,
-    private _storeService: StoresService,
-    private snackBar: MatSnackBar
+    private storeService: StoresService,
+    private snackBar: MatSnackBar,
+    private accountService: AccountService,
+    private screenService: ScreensService
   ) {}
 
   async ngOnInit() {
-    this._screenService
-      .apiScreensGet(1, this.pagingOptions.limit)
-      .subscribe((data) => {
-        this.screenResponse = data;
-      });
-    this.stores = await this._storeService.apiStoresGet(0, 0).toPromise();
+    this.account = this.accountService.getAccount();
+    if (this.account.roleId === 1) {
+      this.storeService
+        .apiStoresIdScreensGet(this.account.id, 1, this.pagingOptions.limit)
+        .subscribe((data) => {
+          this.screenResponse = data;
+        });
+    } else if (this.account.roleId === 3) {
+      this.screenService
+        .apiScreensGet(1, this.pagingOptions.limit)
+        .subscribe((data) => {
+          this.screenResponse = data;
+        });
+    }
   }
 
   loadScreens(page = 1) {
-    const searchValue = this.search.value;
-    this._screenService
-      .apiScreensGet(page, this.pagingOptions.limit, searchValue)
-      .subscribe((data) => {
-        this.screenResponse = data;
-      });
-    this.pagingOptions = { ...this.pagingOptions, currentPage: page };
+    if (this.account.roleId === 1) {
+      this.storeService
+        .apiStoresIdScreensGet(this.account.id, 1, this.pagingOptions.limit)
+        .subscribe((data) => {
+          this.screenResponse = data;
+        });
+      this.pagingOptions = { ...this.pagingOptions, currentPage: page };
+    } else if (this.account.roleId === 3) {
+      this.storeService
+        .apiStoresIdScreensGet(page, this.pagingOptions.limit)
+        .subscribe((data) => {
+          this.screenResponse = data;
+        });
+      this.pagingOptions = { ...this.pagingOptions, currentPage: page };
+    }
   }
   getStoreName(storeId: number): string {
-    return storeId
-      ? this.stores?.result.find((s) => s.id === storeId).name
-      : '';
+    return storeId + '';
   }
   getPagingArray(totolItem: number) {
     const pageCount = Math.round(totolItem / this.pagingOptions.limit);
@@ -65,16 +79,14 @@ export class ListingComponent implements OnInit {
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    this._screenService
-      .apiScreensIdDelete(screenId)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.snackBar.openFromComponent(SnackBarSuccessComponent, {
-          verticalPosition: 'top',
-          horizontalPosition: 'end',
-          panelClass: 'mat-snack-bar-success',
-          data: { title: 'Success !', message: 'Remove screen successfully' },
-        });
+    this.screenService.apiScreensIdDelete(screenId).subscribe(() => {
+      this.snackBar.openFromComponent(SnackBarSuccessComponent, {
+        verticalPosition: 'top',
+        horizontalPosition: 'end',
+        panelClass: 'mat-snack-bar-success',
+        data: { title: 'Success !', message: 'Remove screen successfully' },
       });
+      this.loadScreens();
+    });
   }
 }

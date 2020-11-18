@@ -8,7 +8,11 @@
     <div class="row d-flex justify-content-center mx-2">
       <mat-form-field class="flex-fill">
         <mat-label>Search</mat-label>
-        <input matInput placeholder="Find your template ..." />
+        <input
+          matInput
+          placeholder="Find your template ..."
+          [formControl]="search"
+        />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
@@ -16,10 +20,7 @@
   <div class="gallery" id="gallery">
     <div
       class="mb-3 px-2 py-3 shadow pics animation all"
-      *ngFor="
-        let template of (templates$ | async)?.result;
-        index as templateIndex
-      "
+      *ngFor="let template of templates?.result; index as templateIndex"
     >
       <div class="d-flex justify-content-between mb-1">
         <h2>{{ template.name }}</h2>
