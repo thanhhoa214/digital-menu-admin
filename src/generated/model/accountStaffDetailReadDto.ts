@@ -9,10 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CarAssignedReadDto } from './carAssignedReadDto';
 import { AccountNotManagedByReadDto } from './accountNotManagedByReadDto';
 
 
-export interface AccountReadDto { 
+export interface AccountStaffDetailReadDto { 
     id?: number;
     email?: string | null;
     role?: string | null;
@@ -23,5 +24,6 @@ export interface AccountReadDto {
     isAvailable?: boolean | null;
     createdAt?: string;
     managedBy?: AccountNotManagedByReadDto;
+    assignedCars?: Array<CarAssignedReadDto> | null;
 }
 

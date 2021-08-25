@@ -1,71 +1,91 @@
 openapi: 3.0.1
 info:
-  title: Digital Menu Api
+  title: AVC System
   version: v1
 paths:
-  /api/account-roles:
+  /api/accounts/staffs:
     get:
       tags:
-        - AccountRoles
+        - Accounts
+      summary: Get list of staff
       parameters:
-        - name: page
+        - name: IsAvailable
+          in: query
+          schema:
+            type: boolean
+        - name: Page
           in: query
           schema:
             type: integer
             format: int32
-            default: 1
-        - name: limit
+        - name: Limit
           in: query
           schema:
             type: integer
             format: int32
-            default: 10
-        - name: searchValue
+        - name: SearchValue
           in: query
           schema:
             type: string
-            default: ''
-            nullable: true
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/AccountRoleReadDtoPagingResponseDto'
+                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
             application/json:
               schema:
-                $ref: '#/components/schemas/AccountRoleReadDtoPagingResponseDto'
+                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
             text/json:
               schema:
-                $ref: '#/components/schemas/AccountRoleReadDtoPagingResponseDto'
-    post:
+                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
+  /api/accounts/managers:
+    get:
       tags:
-        - AccountRoles
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/AccountRoleCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccountRoleCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/AccountRoleCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/AccountRoleCreateDto'
+        - Accounts
+      summary: Get List of Manager
+      parameters:
+        - name: IsAvailable
+          in: query
+          schema:
+            type: boolean
+        - name: Page
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: Limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: SearchValue
+          in: query
+          schema:
+            type: string
       responses:
         '200':
           description: Success
-  '/api/account-roles/{id}':
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AccountNotManagedByReadDtoPagingResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountNotManagedByReadDtoPagingResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AccountNotManagedByReadDtoPagingResponseDto'
+  '/api/accounts/manager/{id}':
     get:
       tags:
-        - AccountRoles
+        - Accounts
+      summary: Get Specific Account
       parameters:
         - name: id
           in: path
+          description: ''
           required: true
           schema:
             type: integer
@@ -76,258 +96,239 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/AccountRoleReadDto'
+                $ref: '#/components/schemas/AccountManagerDetailReadDto'
             application/json:
               schema:
-                $ref: '#/components/schemas/AccountRoleReadDto'
+                $ref: '#/components/schemas/AccountManagerDetailReadDto'
             text/json:
               schema:
-                $ref: '#/components/schemas/AccountRoleReadDto'
+                $ref: '#/components/schemas/AccountManagerDetailReadDto'
+  '/api/accounts/staff/{id}':
+    get:
+      tags:
+        - Accounts
+      summary: Get Specific Account
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AccountStaffDetailReadDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountStaffDetailReadDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AccountStaffDetailReadDto'
+  /api/accounts/manager:
+    post:
+      tags:
+        - Accounts
+      summary: Create new Account
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - Email
+                - FirstName
+                - LastName
+                - Password
+              type: object
+              properties:
+                AvatarImage:
+                  type: string
+                  format: binary
+                Email:
+                  maxLength: 255
+                  type: string
+                  format: email
+                Password:
+                  type: string
+                FirstName:
+                  type: string
+                LastName:
+                  type: string
+                Phone:
+                  type: string
+                  format: tel
+            encoding:
+              AvatarImage:
+                style: form
+              Email:
+                style: form
+              Password:
+                style: form
+              FirstName:
+                style: form
+              LastName:
+                style: form
+              Phone:
+                style: form
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AccountNotManagedByReadDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountNotManagedByReadDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AccountNotManagedByReadDto'
+  /api/accounts/staff:
+    post:
+      tags:
+        - Accounts
+      summary: Create new Account
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - Email
+                - FirstName
+                - LastName
+                - Password
+              type: object
+              properties:
+                AvatarImage:
+                  type: string
+                  format: binary
+                Email:
+                  maxLength: 255
+                  type: string
+                  format: email
+                Password:
+                  type: string
+                FirstName:
+                  type: string
+                LastName:
+                  type: string
+                Phone:
+                  type: string
+                  format: tel
+                ManagedBy:
+                  type: integer
+                  format: int32
+            encoding:
+              AvatarImage:
+                style: form
+              Email:
+                style: form
+              Password:
+                style: form
+              FirstName:
+                style: form
+              LastName:
+                style: form
+              Phone:
+                style: form
+              ManagedBy:
+                style: form
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AccountReadDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountReadDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AccountReadDto'
+  '/api/accounts/{id}/activation':
     put:
       tags:
-        - AccountRoles
+        - Accounts
+      summary: Activate or Deactivate account
       parameters:
         - name: id
           in: path
+          description: Id of Account
           required: true
           schema:
             type: integer
             format: int32
       requestBody:
+        description: 'IsAvailable: True for activate, false for deactivate'
         content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/AccountActivationDto'
           application/json-patch+json:
             schema:
-              $ref: '#/components/schemas/AccountRoleUpdateDto'
+              $ref: '#/components/schemas/AccountActivationDto'
           application/json:
             schema:
-              $ref: '#/components/schemas/AccountRoleUpdateDto'
+              $ref: '#/components/schemas/AccountActivationDto'
           text/json:
             schema:
-              $ref: '#/components/schemas/AccountRoleUpdateDto'
+              $ref: '#/components/schemas/AccountActivationDto'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/AccountRoleUpdateDto'
+              $ref: '#/components/schemas/AccountActivationDto'
       responses:
         '200':
           description: Success
-    delete:
-      tags:
-        - AccountRoles
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - AccountRoles
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  /api/accounts:
-    get:
+  /api/accounts/managedby:
+    put:
       tags:
         - Accounts
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: searchValue
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
-    post:
-      tags:
-        - Accounts
+      summary: Assign/UnAssign Staff for Manager
       requestBody:
+        description: activate true or false
         content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/AccountManagedByUpdateDto'
           application/json-patch+json:
             schema:
-              $ref: '#/components/schemas/AccountCreateDto'
+              $ref: '#/components/schemas/AccountManagedByUpdateDto'
           application/json:
             schema:
-              $ref: '#/components/schemas/AccountCreateDto'
+              $ref: '#/components/schemas/AccountManagedByUpdateDto'
           text/json:
             schema:
-              $ref: '#/components/schemas/AccountCreateDto'
+              $ref: '#/components/schemas/AccountManagedByUpdateDto'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/AccountCreateDto'
+              $ref: '#/components/schemas/AccountManagedByUpdateDto'
       responses:
         '200':
           description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/AccountReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/AccountReadDto'
   '/api/accounts/{id}':
-    get:
-      tags:
-        - Accounts
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/AccountReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/AccountReadDto'
-    put:
-      tags:
-        - Accounts
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/AccountUpdateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccountUpdateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/AccountUpdateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/AccountUpdateDto'
-      responses:
-        '200':
-          description: Success
-    delete:
-      tags:
-        - Accounts
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
     patch:
       tags:
         - Accounts
+      summary: Partitle update account
       parameters:
         - name: id
           in: path
+          description: id of account
           required: true
           schema:
             type: integer
             format: int32
       requestBody:
+        description: update dto
         content:
-          application/json-patch+json:
+          application/merge-patch+json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
+              $ref: '#/components/schemas/AccountUpdateDto'
       responses:
         '200':
           description: Success
@@ -335,8 +336,13 @@ paths:
     post:
       tags:
         - Authentication
+      summary: Login
       requestBody:
+        description: username and password
         content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationPostDto'
           application/json-patch+json:
             schema:
               $ref: '#/components/schemas/AuthenticationPostDto'
@@ -362,219 +368,101 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationReadDto'
-  /api/boxes:
-    get:
-      tags:
-        - Boxes
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/BoxReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BoxReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/BoxReadDtoPagingResponseDto'
+  /api/authentication/reset:
     post:
       tags:
-        - Boxes
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/BoxCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BoxCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/BoxCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/BoxCreateDto'
+        - Authentication
+      summary: Request to send the reset password
+      parameters:
+        - name: email
+          in: query
+          description: ''
+          schema:
+            type: string
       responses:
         '200':
           description: Success
-  '/api/boxes/{id}':
+  /api/authentication/new-password:
+    post:
+      tags:
+        - Authentication
+      summary: Change password for owner account
+      requestBody:
+        description: ''
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/NewPasswordDto'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/NewPasswordDto'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPasswordDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/NewPasswordDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/NewPasswordDto'
+      responses:
+        '200':
+          description: Success
+  /api/cars:
     get:
       tags:
-        - Boxes
+        - Cars
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: IsAvailable
+          in: query
           schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/BoxReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BoxReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/BoxReadDto'
-    put:
-      tags:
-        - Boxes
-      parameters:
-        - name: id
-          in: path
-          required: true
+            type: boolean
+        - name: IsApproved
+          in: query
           schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/BoxUpdateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BoxUpdateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/BoxUpdateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/BoxUpdateDto'
-      responses:
-        '200':
-          description: Success
-    delete:
-      tags:
-        - Boxes
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - Boxes
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  /api/box-types:
-    get:
-      tags:
-        - BoxTypes
-      parameters:
-        - name: page
+            type: boolean
+        - name: Page
           in: query
           schema:
             type: integer
             format: int32
-            default: 1
-        - name: limit
+        - name: Limit
           in: query
           schema:
             type: integer
             format: int32
-            default: 10
-        - name: searchValue
+        - name: SearchValue
           in: query
           schema:
             type: string
-            default: ''
-            nullable: true
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/BoxTypeReadDtoPagingResponseDto'
+                $ref: '#/components/schemas/CarListReadDtoPagingResponseDto'
             application/json:
               schema:
-                $ref: '#/components/schemas/BoxTypeReadDtoPagingResponseDto'
+                $ref: '#/components/schemas/CarListReadDtoPagingResponseDto'
             text/json:
               schema:
-                $ref: '#/components/schemas/BoxTypeReadDtoPagingResponseDto'
+                $ref: '#/components/schemas/CarListReadDtoPagingResponseDto'
     post:
       tags:
-        - BoxTypes
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/BoxTypeCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BoxTypeCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/BoxTypeCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/BoxTypeCreateDto'
+        - Cars
+      parameters:
+        - name: deviceId
+          in: query
+          schema:
+            type: string
       responses:
         '200':
           description: Success
-  '/api/box-types/{id}':
+  '/api/cars/{id}':
     get:
       tags:
-        - BoxTypes
+        - Cars
       parameters:
         - name: id
           in: path
@@ -588,16 +476,41 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/BoxTypeReadDto'
+                $ref: '#/components/schemas/CarReadDto'
             application/json:
               schema:
-                $ref: '#/components/schemas/BoxTypeReadDto'
+                $ref: '#/components/schemas/CarReadDto'
             text/json:
               schema:
-                $ref: '#/components/schemas/BoxTypeReadDto'
+                $ref: '#/components/schemas/CarReadDto'
+  /api/cars/managedby:
     put:
       tags:
-        - BoxTypes
+        - Cars
+      requestBody:
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/CarManagedByUpdateDto'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/CarManagedByUpdateDto'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarManagedByUpdateDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CarManagedByUpdateDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CarManagedByUpdateDto'
+      responses:
+        '200':
+          description: Success
+  '/api/cars/{id}/activation':
+    put:
+      tags:
+        - Cars
       parameters:
         - name: id
           in: path
@@ -607,37 +520,28 @@ paths:
             format: int32
       requestBody:
         content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/CarActivationDto'
           application/json-patch+json:
             schema:
-              $ref: '#/components/schemas/BoxTypeUpdateDto'
+              $ref: '#/components/schemas/CarActivationDto'
           application/json:
             schema:
-              $ref: '#/components/schemas/BoxTypeUpdateDto'
+              $ref: '#/components/schemas/CarActivationDto'
           text/json:
             schema:
-              $ref: '#/components/schemas/BoxTypeUpdateDto'
+              $ref: '#/components/schemas/CarActivationDto'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/BoxTypeUpdateDto'
+              $ref: '#/components/schemas/CarActivationDto'
       responses:
         '200':
           description: Success
-    delete:
+  '/api/cars/{id}/approvement':
+    put:
       tags:
-        - BoxTypes
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - BoxTypes
+        - Cars
       parameters:
         - name: id
           in: path
@@ -647,48 +551,119 @@ paths:
             format: int32
       requestBody:
         content:
-          application/json-patch+json:
+          multipart/form-data:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
+              required:
+                - IsApproved
+              type: object
+              properties:
+                IsApproved:
+                  type: boolean
+                ImageFile:
+                  type: string
+                  format: binary
+                Name:
+                  type: string
+                ConfigFile:
+                  type: string
+                  format: binary
+                ManagedBy:
+                  type: integer
+                  format: int32
+            encoding:
+              IsApproved:
+                style: form
+              ImageFile:
+                style: form
+              Name:
+                style: form
+              ConfigFile:
+                style: form
+              ManagedBy:
+                style: form
       responses:
         '200':
           description: Success
-  /api/image:
+  /api/check:
+    get:
+      tags:
+        - Check
+      responses:
+        '200':
+          description: Success
+  /api/issue:
+    get:
+      tags:
+        - Issue
+      parameters:
+        - name: CarId
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: TypeId
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: Page
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: Limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: SearchValue
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/IssueReadDtoPagingResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueReadDtoPagingResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IssueReadDtoPagingResponseDto'
     post:
       tags:
-        - Image
+        - Issue
       requestBody:
         content:
           multipart/form-data:
             schema:
               type: object
               properties:
+                TypeId:
+                  type: integer
+                  format: int32
+                CarId:
+                  type: integer
+                  format: int32
+                Description:
+                  type: string
+                Location:
+                  type: string
                 image:
                   type: string
                   format: binary
-                  nullable: true
             encoding:
+              TypeId:
+                style: form
+              CarId:
+                style: form
+              Description:
+                style: form
+              Location:
+                style: form
               image:
                 style: form
       responses:
@@ -697,67 +672,17 @@ paths:
           content:
             text/plain:
               schema:
-                type: string
+                $ref: '#/components/schemas/IssueReadDto'
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/IssueReadDto'
             text/json:
               schema:
-                type: string
-  /api/product-lists-products:
+                $ref: '#/components/schemas/IssueReadDto'
+  '/api/issue/{id}':
     get:
       tags:
-        - ProductListProducts
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProductListProductReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductListProductReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProductListProductReadDtoPagingResponseDto'
-    post:
-      tags:
-        - ProductListProducts
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ProductListProductCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductListProductCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ProductListProductCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ProductListProductCreateDto'
-      responses:
-        '200':
-          description: Success
-  '/api/product-lists-products/{id}':
-    get:
-      tags:
-        - ProductListProducts
+        - Issue
       parameters:
         - name: id
           in: path
@@ -771,56 +696,16 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/ProductListProductReadDto'
+                $ref: '#/components/schemas/IssueReadDto'
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductListProductReadDto'
+                $ref: '#/components/schemas/IssueReadDto'
             text/json:
               schema:
-                $ref: '#/components/schemas/ProductListProductReadDto'
-    put:
-      tags:
-        - ProductListProducts
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ProductListProductUpdateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductListProductUpdateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ProductListProductUpdateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ProductListProductUpdateDto'
-      responses:
-        '200':
-          description: Success
-    delete:
-      tags:
-        - ProductListProducts
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
+                $ref: '#/components/schemas/IssueReadDto'
     patch:
       tags:
-        - ProductListProducts
+        - Issue
       parameters:
         - name: id
           in: path
@@ -830,1327 +715,226 @@ paths:
             format: int32
       requestBody:
         content:
-          application/json-patch+json:
+          application/merge-patch+json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
+              $ref: '#/components/schemas/IssueCreateDto'
       responses:
         '200':
           description: Success
-  /api/product-lists:
+  /api/issuetypes:
     get:
       tags:
-        - ProductLists
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
+        - IssueTypes
+      summary: Get all Type of System
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/ProductListReadDtoPagingResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/TypeReadDto'
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductListReadDtoPagingResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/TypeReadDto'
             text/json:
               schema:
-                $ref: '#/components/schemas/ProductListReadDtoPagingResponseDto'
-    post:
-      tags:
-        - ProductLists
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ProductListCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductListCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ProductListCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ProductListCreateDto'
-      responses:
-        '200':
-          description: Success
-  '/api/product-lists/{id}':
-    get:
-      tags:
-        - ProductLists
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProductListReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductListReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProductListReadDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/TypeReadDto'
+  /api/profile/password:
     put:
       tags:
-        - ProductLists
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+        - Profile
+      summary: Change password for owner account
       requestBody:
+        description: ''
         content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/ProfilePasswordUpdateDto'
           application/json-patch+json:
             schema:
-              $ref: '#/components/schemas/ProductListUpdateDto'
+              $ref: '#/components/schemas/ProfilePasswordUpdateDto'
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductListUpdateDto'
+              $ref: '#/components/schemas/ProfilePasswordUpdateDto'
           text/json:
             schema:
-              $ref: '#/components/schemas/ProductListUpdateDto'
+              $ref: '#/components/schemas/ProfilePasswordUpdateDto'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/ProductListUpdateDto'
+              $ref: '#/components/schemas/ProfilePasswordUpdateDto'
       responses:
         '200':
           description: Success
-    delete:
-      tags:
-        - ProductLists
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - ProductLists
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  /api/products:
+  /api/profile:
     get:
       tags:
-        - Products
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: searchValue
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
+        - Profile
+      summary: Get personal Profile Infomation
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/ProductReadDtoPagingResponseDto'
+                $ref: '#/components/schemas/AccountReadDto'
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductReadDtoPagingResponseDto'
+                $ref: '#/components/schemas/AccountReadDto'
             text/json:
               schema:
-                $ref: '#/components/schemas/ProductReadDtoPagingResponseDto'
-    post:
-      tags:
-        - Products
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ProductCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ProductCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ProductCreateDto'
-      responses:
-        '200':
-          description: Success
-  '/api/products/{id}':
-    get:
-      tags:
-        - Products
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProductReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProductReadDto'
+                $ref: '#/components/schemas/AccountReadDto'
     put:
       tags:
-        - Products
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ProductUpdateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductUpdateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ProductUpdateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ProductUpdateDto'
-      responses:
-        '200':
-          description: Success
-    delete:
-      tags:
-        - Products
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - Products
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  /api/screens:
-    get:
-      tags:
-        - Screens
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDtoPagingResponseDto'
-    post:
-      tags:
-        - Screens
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ScreenCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScreenCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ScreenCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ScreenCreateDto'
-      responses:
-        '200':
-          description: Success
-  '/api/screens/{id}':
-    get:
-      tags:
-        - Screens
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDto'
-    put:
-      tags:
-        - Screens
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ScreenUpdateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScreenUpdateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ScreenUpdateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ScreenUpdateDto'
-      responses:
-        '200':
-          description: Success
-    delete:
-      tags:
-        - Screens
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - Screens
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  '/api/screens/udid/{udid}':
-    get:
-      tags:
-        - Screens
-      parameters:
-        - name: udid
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDto'
-  /api/screen-templates:
-    get:
-      tags:
-        - ScreenTemplates
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ScreenTemplateReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScreenTemplateReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ScreenTemplateReadDtoPagingResponseDto'
-    post:
-      tags:
-        - ScreenTemplates
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ScreenTemplateCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScreenTemplateCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ScreenTemplateCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ScreenTemplateCreateDto'
-      responses:
-        '200':
-          description: Success
-  '/api/screen-templates/{id}':
-    get:
-      tags:
-        - ScreenTemplates
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ScreenTemplateReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScreenTemplateReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ScreenTemplateReadDto'
-    put:
-      tags:
-        - ScreenTemplates
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/ScreenTemplateUpdateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScreenTemplateUpdateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ScreenTemplateUpdateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ScreenTemplateUpdateDto'
-      responses:
-        '200':
-          description: Success
-    delete:
-      tags:
-        - ScreenTemplates
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - ScreenTemplates
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  /api/stores:
-    get:
-      tags:
-        - Stores
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: searchValue
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/StoreReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StoreReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/StoreReadDtoPagingResponseDto'
-    post:
-      tags:
-        - Stores
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/StoreCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/StoreCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/StoreCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/StoreCreateDto'
-      responses:
-        '200':
-          description: Success
-  '/api/stores/{id}':
-    get:
-      tags:
-        - Stores
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/StoreReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StoreReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/StoreReadDto'
-    put:
-      tags:
-        - Stores
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/StoreUpdateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/StoreUpdateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/StoreUpdateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/StoreUpdateDto'
-      responses:
-        '200':
-          description: Success
-    delete:
-      tags:
-        - Stores
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - Stores
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  '/api/stores/{id}/products':
-    get:
-      tags:
-        - Stores
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: searchValue
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProductReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProductReadDtoPagingResponseDto'
-  '/api/stores/{storeId}/products/batch-price':
-    put:
-      tags:
-        - Stores
-      parameters:
-        - name: storeId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/ProductUpdatePriceDto'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/ProductUpdatePriceDto'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/ProductUpdatePriceDto'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/ProductUpdatePriceDto'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  '/api/stores/{id}/accounts':
-    get:
-      tags:
-        - Stores
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: searchValue
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/AccountReadDtoPagingResponseDto'
-  '/api/stores/{id}/templates':
-    get:
-      tags:
-        - Stores
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: tag
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-        - name: searchValue
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
-  '/api/stores/{id}/screens':
-    get:
-      tags:
-        - Stores
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ScreenReadDtoPagingResponseDto'
-  /api/templates:
-    get:
-      tags:
-        - Templates
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: tag
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-        - name: searchValue
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
-    post:
-      tags:
-        - Templates
+        - Profile
       requestBody:
         content:
           multipart/form-data:
             schema:
               type: object
               properties:
-                file:
+                Phone:
+                  type: string
+                AvatarImage:
                   type: string
                   format: binary
-                  nullable: true
-                templateDtoJson:
-                  type: string
-                  nullable: true
             encoding:
-              file:
+              Phone:
                 style: form
-              templateDtoJson:
+              AvatarImage:
                 style: form
       responses:
         '200':
           description: Success
-  /api/templates/sample:
+  /api/roles:
     get:
       tags:
-        - Templates
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: tag
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
-        - name: searchValue
-          in: query
-          schema:
-            type: string
-            default: ''
-            nullable: true
+        - Roles
+      summary: Get all Role of System
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleReadDto'
             application/json:
               schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleReadDto'
             text/json:
               schema:
-                $ref: '#/components/schemas/TemplateReadDtoPagingResponseDto'
-  '/api/templates/{id}':
-    get:
-      tags:
-        - Templates
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/TemplateDetailReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TemplateDetailReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/TemplateDetailReadDto'
-    put:
-      tags:
-        - Templates
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/TemplateUpdateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateUpdateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/TemplateUpdateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/TemplateUpdateDto'
-      responses:
-        '200':
-          description: Success
-    delete:
-      tags:
-        - Templates
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-    patch:
-      tags:
-        - Templates
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          text/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-          application/*+json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Operation'
-              nullable: true
-      responses:
-        '200':
-          description: Success
-  '/api/templates/udid/{udid}':
-    get:
-      tags:
-        - Templates
-      parameters:
-        - name: udid
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/TemplateDetailReadDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TemplateDetailReadDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/TemplateDetailReadDto'
-  '/{sample-template-id}/storetemplate':
-    post:
-      tags:
-        - Templates
-      parameters:
-        - name: sample-template-id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json-patch+json:
-            schema:
-              $ref: '#/components/schemas/TemplateCreateDto'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateCreateDto'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/TemplateCreateDto'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/TemplateCreateDto'
-      responses:
-        '200':
-          description: Success
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleReadDto'
 components:
   schemas:
-    AccountRoleReadDto:
+    AccountActivationDto:
+      required:
+        - isAvailable
+      type: object
+      properties:
+        isAvailable:
+          type: boolean
+      additionalProperties: false
+    AccountManagedByUpdateDto:
+      type: object
+      properties:
+        managerId:
+          type: integer
+          format: int32
+          nullable: true
+        staffId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    AccountManagerDetailReadDto:
       type: object
       properties:
         id:
           type: integer
           format: int32
-        name:
+        email:
           type: string
           nullable: true
-        description:
+        role:
           type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+        isAvailable:
+          type: boolean
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        assignedStaffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountNotManagedByReadDto'
+          nullable: true
+        assignedCars:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarAssignedReadDto'
           nullable: true
       additionalProperties: false
-    AccountRoleReadDtoPagingResponseDto:
+    AccountNotManagedByReadDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        email:
+          type: string
+          nullable: true
+        role:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        isAvailable:
+          type: boolean
+          nullable: true
+      additionalProperties: false
+    AccountNotManagedByReadDtoPagingResponseDto:
       type: object
       properties:
         result:
           type: array
           items:
-            $ref: '#/components/schemas/AccountRoleReadDto'
+            $ref: '#/components/schemas/AccountNotManagedByReadDto'
           nullable: true
         count:
           type: integer
@@ -2162,75 +946,38 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    AccountRoleCreateDto:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AccountRoleUpdateDto:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-      additionalProperties: false
-    OperationType:
-      enum:
-        - 0
-        - 1
-        - 2
-        - 3
-        - 4
-        - 5
-        - 6
-      type: integer
-      format: int32
-    Operation:
-      type: object
-      properties:
-        operationType:
-          $ref: '#/components/schemas/OperationType'
-        path:
-          type: string
-          nullable: true
-        op:
-          type: string
-          nullable: true
-        from:
-          type: string
-          nullable: true
-        value:
-          nullable: true
-      additionalProperties: false
     AccountReadDto:
       type: object
       properties:
         id:
           type: integer
           format: int32
-        username:
+        email:
           type: string
           nullable: true
-        storeId:
-          type: integer
-          format: int32
-        storeName:
+        role:
           type: string
           nullable: true
-        roleId:
-          type: integer
-          format: int32
-        roleName:
+        firstName:
           type: string
           nullable: true
+        lastName:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+        isAvailable:
+          type: boolean
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        managedBy:
+          $ref: '#/components/schemas/AccountNotManagedByReadDto'
       additionalProperties: false
     AccountReadDtoPagingResponseDto:
       type: object
@@ -2250,70 +997,95 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    AccountCreateDto:
-      type: object
-      properties:
-        username:
-          type: string
-          nullable: true
-        storeId:
-          type: integer
-          format: int32
-          nullable: true
-        roleId:
-          type: integer
-          format: int32
-        password:
-          type: string
-          nullable: true
-        salt:
-          type: string
-          nullable: true
-          readOnly: true
-      additionalProperties: false
-    AccountUpdateDto:
-      type: object
-      properties:
-        storeId:
-          type: integer
-          format: int32
-          nullable: true
-        roleId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    AuthenticationPostDto:
-      required:
-        - password
-        - username
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-      additionalProperties: false
-    AccountReadAfterAuthenDto:
+    AccountStaffAssignToReadDto:
       type: object
       properties:
         id:
           type: integer
           format: int32
-        username:
+        email:
           type: string
           nullable: true
-        storeId:
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    AccountStaffDetailReadDto:
+      type: object
+      properties:
+        id:
           type: integer
           format: int32
-        storeName:
+        email:
+          type: string
+          nullable: true
+        role:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+        isAvailable:
+          type: boolean
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        managedBy:
+          $ref: '#/components/schemas/AccountNotManagedByReadDto'
+        assignedCars:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarAssignedReadDto'
+          nullable: true
+      additionalProperties: false
+    AccountUpdateDto:
+      type: object
+      properties:
+        firstName:
+          type: string
+          nullable: true
+        lastName:
           type: string
           nullable: true
         roleId:
           type: integer
           format: int32
-        roleName:
+        phone:
           type: string
           nullable: true
+      additionalProperties: false
+    AuthenticationPostDto:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
       additionalProperties: false
     AuthenticationReadDto:
       type: object
@@ -2322,593 +1094,85 @@ components:
           type: string
           nullable: true
         account:
-          $ref: '#/components/schemas/AccountReadAfterAuthenDto'
+          $ref: '#/components/schemas/AccountReadDto'
       additionalProperties: false
-    BoxReadDto:
+    CarActivationDto:
+      required:
+        - isAvailable
+      type: object
+      properties:
+        isAvailable:
+          type: boolean
+      additionalProperties: false
+    CarAssignedReadDto:
       type: object
       properties:
         id:
           type: integer
           format: int32
-        templateId:
-          type: integer
-          format: int32
-        templateName:
+        image:
           type: string
           nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        boxTypeId:
-          type: integer
-          format: int32
-          nullable: true
-        src:
-          type: string
-          nullable: true
-        headerTitle:
-          type: string
-          nullable: true
-        footerTitle:
-          type: string
-          nullable: true
-        headerSrc:
-          type: string
-          nullable: true
-        footerSrc:
-          type: string
-          nullable: true
-      additionalProperties: false
-    BoxReadDtoPagingResponseDto:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/BoxReadDto'
-          nullable: true
-        count:
-          type: integer
-          format: int32
-        nextPage:
-          type: string
-          nullable: true
-        previousPage:
-          type: string
-          nullable: true
-      additionalProperties: false
-    BoxCreateDto:
-      type: object
-      properties:
-        templateId:
-          type: integer
-          format: int32
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        boxTypeId:
-          type: integer
-          format: int32
-          nullable: true
-        src:
-          type: string
-          nullable: true
-        headerTitle:
-          type: string
-          nullable: true
-        footerTitle:
-          type: string
-          nullable: true
-        headerSrc:
-          type: string
-          nullable: true
-        footerSrc:
-          type: string
-          nullable: true
-      additionalProperties: false
-    BoxUpdateDto:
-      type: object
-      properties:
-        templateId:
-          type: integer
-          format: int32
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        boxTypeId:
-          type: integer
-          format: int32
-          nullable: true
-        src:
-          type: string
-          nullable: true
-        headerTitle:
-          type: string
-          nullable: true
-        footerTitle:
-          type: string
-          nullable: true
-        headerSrc:
-          type: string
-          nullable: true
-        footerSrc:
-          type: string
-          nullable: true
-      additionalProperties: false
-    BoxTypeReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
         name:
           type: string
           nullable: true
-        description:
-          type: string
-          nullable: true
-      additionalProperties: false
-    BoxTypeReadDtoPagingResponseDto:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/BoxTypeReadDto'
-          nullable: true
-        count:
-          type: integer
-          format: int32
-        nextPage:
-          type: string
-          nullable: true
-        previousPage:
-          type: string
-          nullable: true
-      additionalProperties: false
-    BoxTypeCreateDto:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-      additionalProperties: false
-    BoxTypeUpdateDto:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ProductListProductReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        productListId:
-          type: integer
-          format: int32
-          nullable: true
-        productId:
-          type: integer
-          format: int32
-          nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductListProductReadDtoPagingResponseDto:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductListProductReadDto'
-          nullable: true
-        count:
-          type: integer
-          format: int32
-        nextPage:
-          type: string
-          nullable: true
-        previousPage:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ProductListProductCreateDto:
-      type: object
-      properties:
-        productListId:
-          type: integer
-          format: int32
-          nullable: true
-        productId:
-          type: integer
-          format: int32
-          nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductListProductUpdateDto:
-      type: object
-      properties:
-        productListId:
-          type: integer
-          format: int32
-          nullable: true
-        productId:
-          type: integer
-          format: int32
-          nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductListReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        title:
-          type: string
-          nullable: true
-        boxId:
-          type: integer
-          format: int32
-          nullable: true
-        maxSize:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductListReadDtoPagingResponseDto:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductListReadDto'
-          nullable: true
-        count:
-          type: integer
-          format: int32
-        nextPage:
-          type: string
-          nullable: true
-        previousPage:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ProductListCreateDto:
-      type: object
-      properties:
-        title:
-          type: string
-          nullable: true
-        maxSize:
-          type: integer
-          format: int32
-          nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductListUpdateDto:
-      type: object
-      properties:
-        title:
-          type: string
-          nullable: true
-        boxId:
-          type: integer
-          format: int32
-          nullable: true
-        maxSize:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        title:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        price:
-          type: number
-          format: double
-        src:
-          type: string
-          nullable: true
-        storeName:
-          type: string
-          nullable: true
-        storeId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    ProductReadDtoPagingResponseDto:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductReadDto'
-          nullable: true
-        count:
-          type: integer
-          format: int32
-        nextPage:
-          type: string
-          nullable: true
-        previousPage:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ProductCreateDto:
-      type: object
-      properties:
-        title:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        price:
-          type: number
-          format: double
-        src:
-          type: string
-          nullable: true
-        storeId:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductUpdateDto:
-      type: object
-      properties:
-        title:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        price:
-          type: number
-          format: double
-        src:
-          type: string
-          nullable: true
-        storeId:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ScreenReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        storeId:
-          type: integer
-          format: int32
-        storeName:
-          type: string
-          nullable: true
-        uid:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ScreenReadDtoPagingResponseDto:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScreenReadDto'
-          nullable: true
-        count:
-          type: integer
-          format: int32
-        nextPage:
-          type: string
-          nullable: true
-        previousPage:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ScreenCreateDto:
-      type: object
-      properties:
-        storeId:
-          type: integer
-          format: int32
-        uid:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ScreenUpdateDto:
-      type: object
-      properties:
-        storeId:
-          type: integer
-          format: int32
-        uid:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ScreenTemplateReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        screenId:
-          type: integer
-          format: int32
-        screenUid:
-          type: string
-          nullable: true
-        templateId:
-          type: integer
-          format: int32
-        templateName:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ScreenTemplateReadDtoPagingResponseDto:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScreenTemplateReadDto'
-          nullable: true
-        count:
-          type: integer
-          format: int32
-        nextPage:
-          type: string
-          nullable: true
-        previousPage:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ScreenTemplateCreateDto:
-      type: object
-      properties:
-        screenId:
-          type: integer
-          format: int32
-        templateId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    ScreenTemplateUpdateDto:
-      type: object
-      properties:
-        screenId:
-          type: integer
-          format: int32
-        templateId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    StoreReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        name:
-          type: string
-          nullable: true
-      additionalProperties: false
-    StoreReadDtoPagingResponseDto:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/StoreReadDto'
-          nullable: true
-        count:
-          type: integer
-          format: int32
-        nextPage:
-          type: string
-          nullable: true
-        previousPage:
-          type: string
-          nullable: true
-      additionalProperties: false
-    StoreCreateDto:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-      additionalProperties: false
-    StoreUpdateDto:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ProductUpdatePriceDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        price:
-          type: number
-          format: double
-      additionalProperties: false
-    TemplateReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        name:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        storeId:
-          type: integer
-          format: int32
-          nullable: true
-        storeName:
-          type: string
-          nullable: true
-        createdTime:
+        isConnecting:
+          type: boolean
+        isAvailable:
+          type: boolean
+          nullable: true
+        createdAt:
           type: string
           format: date-time
-        uilink:
+          nullable: true
+        deviceId:
           type: string
           nullable: true
-        src:
+        configUrl:
           type: string
           nullable: true
-        tags:
-          type: string
+        isApproved:
+          type: boolean
           nullable: true
       additionalProperties: false
-    TemplateReadDtoPagingResponseDto:
+    CarListReadDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        isConnecting:
+          type: boolean
+        isAvailable:
+          type: boolean
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+        isRunning:
+          type: boolean
+        deviceId:
+          type: string
+          nullable: true
+        isApproved:
+          type: boolean
+          nullable: true
+        managedBy:
+          $ref: '#/components/schemas/AccountNotManagedByReadDto'
+        assignTo:
+          $ref: '#/components/schemas/AccountStaffAssignToReadDto'
+      additionalProperties: false
+    CarListReadDtoPagingResponseDto:
       type: object
       properties:
         result:
           type: array
           items:
-            $ref: '#/components/schemas/TemplateReadDto'
+            $ref: '#/components/schemas/CarListReadDto'
           nullable: true
         count:
           type: integer
@@ -2920,313 +1184,184 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    ProductTemplateReadDto:
+    CarManagedByUpdateDto:
+      type: object
+      properties:
+        carId:
+          type: integer
+          format: int32
+        managerId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    CarReadDto:
       type: object
       properties:
         id:
           type: integer
           format: int32
-        title:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        price:
-          type: number
-          format: double
-        src:
-          type: string
-          nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductListTemplateReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        title:
-          type: string
-          nullable: true
-        boxId:
-          type: integer
-          format: int32
-          nullable: true
-        maxSize:
-          type: integer
-          format: int32
-          nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductTemplateReadDto'
-          nullable: true
-      additionalProperties: false
-    BoxDetailTemplateReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        templateId:
-          type: integer
-          format: int32
-        boxType:
-          $ref: '#/components/schemas/BoxTypeReadDto'
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        src:
-          type: string
-          nullable: true
-        headerTitle:
-          type: string
-          nullable: true
-        footerTitle:
-          type: string
-          nullable: true
-        headerSrc:
-          type: string
-          nullable: true
-        footerSrc:
-          type: string
-          nullable: true
-        productLists:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductListTemplateReadDto'
-          nullable: true
-      additionalProperties: false
-    TemplateDetailReadDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        name:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        storeId:
-          type: integer
-          format: int32
-          nullable: true
-        createdTime:
-          type: string
-          format: date-time
-        uilink:
-          type: string
-          nullable: true
-        src:
-          type: string
-          nullable: true
-        boxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/BoxDetailTemplateReadDto'
-          nullable: true
-      additionalProperties: false
-    ProductListProductTemplateUpdateDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        location:
-          type: integer
-          format: int32
-          nullable: true
-      additionalProperties: false
-    ProductListUpdateWithTemplateDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        title:
-          type: string
-          nullable: true
-        boxId:
-          type: integer
-          format: int32
-          nullable: true
-        maxSize:
-          type: integer
-          format: int32
-          nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductListProductTemplateUpdateDto'
-          nullable: true
-      additionalProperties: false
-    BoxUpdateWithTemplateDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        templateId:
-          type: integer
-          format: int32
-        boxType:
-          $ref: '#/components/schemas/BoxTypeReadDto'
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        src:
-          type: string
-          nullable: true
-        headerTitle:
-          type: string
-          nullable: true
-        footerTitle:
-          type: string
-          nullable: true
-        headerSrc:
-          type: string
-          nullable: true
-        footerSrc:
-          type: string
-          nullable: true
-        productLists:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductListUpdateWithTemplateDto'
-          nullable: true
-      additionalProperties: false
-    TemplateUpdateDto:
-      type: object
-      properties:
-        description:
+        image:
           type: string
           nullable: true
         name:
           type: string
           nullable: true
-        tags:
-          type: string
+        isConnecting:
+          type: boolean
+        isAvailable:
+          type: boolean
           nullable: true
-        src:
-          type: string
-          nullable: true
-        lastModified:
+        createdAt:
           type: string
           format: date-time
+          nullable: true
+        deviceId:
+          type: string
+          nullable: true
+        configUrl:
+          type: string
+          nullable: true
+        isApproved:
+          type: boolean
+          nullable: true
+        managedBy:
+          $ref: '#/components/schemas/AccountNotManagedByReadDto'
+        assignTo:
+          $ref: '#/components/schemas/AccountStaffAssignToReadDto'
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueReadDto'
+          nullable: true
+      additionalProperties: false
+    IContractResolver:
+      type: object
+      additionalProperties: false
+    IssueCreateDto:
+      type: object
+      properties:
+        typeId:
+          type: integer
+          format: int32
+        carId:
+          type: integer
+          format: int32
+        description:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+      additionalProperties: false
+    IssueReadDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: string
+          nullable: true
+        carId:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+        image:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        isAvailable:
+          type: boolean
+          nullable: true
+        location:
+          type: string
+          nullable: true
+      additionalProperties: false
+    IssueReadDtoPagingResponseDto:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueReadDto'
+          nullable: true
+        count:
+          type: integer
+          format: int32
+        nextPage:
+          type: string
+          nullable: true
+        previousPage:
+          type: string
+          nullable: true
+      additionalProperties: false
+    NewPasswordDto:
+      required:
+        - email
+        - securityKey
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          nullable: true
+        securityKey:
+          type: string
+        salt:
+          type: string
+          nullable: true
           readOnly: true
-        boxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/BoxUpdateWithTemplateDto'
-          nullable: true
       additionalProperties: false
-    ProductListProductCreateWithTemplateDto:
+    OperationType:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+      type: integer
+      format: int32
+    ProfilePasswordUpdateDto:
       type: object
       properties:
-        productId:
-          type: integer
-          format: int32
+        newPassword:
+          type: string
           nullable: true
-        location:
-          type: integer
-          format: int32
+        oldPassword:
+          type: string
           nullable: true
       additionalProperties: false
-    ProductListCreateWithTemplateDto:
+    RoleReadDto:
       type: object
       properties:
-        title:
-          type: string
-          nullable: true
-        maxSize:
+        id:
           type: integer
           format: int32
-          nullable: true
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductListProductCreateWithTemplateDto'
-          nullable: true
-      additionalProperties: false
-    BoxCreateWithTemplateDto:
-      type: object
-      properties:
-        location:
-          type: integer
-          format: int32
-          nullable: true
-        boxTypeId:
-          type: integer
-          format: int32
-          nullable: true
-        src:
-          type: string
-          nullable: true
-        headerTitle:
-          type: string
-          nullable: true
-        footerTitle:
-          type: string
-          nullable: true
-        headerSrc:
-          type: string
-          nullable: true
-        footerSrc:
-          type: string
-          nullable: true
-        productLists:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductListCreateWithTemplateDto'
-          nullable: true
-      additionalProperties: false
-    TemplateCreateDto:
-      type: object
-      properties:
         name:
           type: string
           nullable: true
         description:
           type: string
           nullable: true
-        storeId:
+      additionalProperties: false
+    TypeReadDto:
+      type: object
+      properties:
+        id:
           type: integer
           format: int32
-          nullable: true
-        tags:
+        name:
           type: string
           nullable: true
-        src:
+        description:
           type: string
-          nullable: true
-        createdTime:
-          type: string
-          format: date-time
-          readOnly: true
-        boxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/BoxCreateWithTemplateDto'
           nullable: true
       additionalProperties: false
   securitySchemes:

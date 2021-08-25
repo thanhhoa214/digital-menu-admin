@@ -12,16 +12,10 @@
 import { AccountNotManagedByReadDto } from './accountNotManagedByReadDto';
 
 
-export interface AccountReadDto { 
-    id?: number;
-    email?: string | null;
-    role?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-    phone?: string | null;
-    avatar?: string | null;
-    isAvailable?: boolean | null;
-    createdAt?: string;
-    managedBy?: AccountNotManagedByReadDto;
+export interface AccountNotManagedByReadDtoPagingResponseDto { 
+    result?: Array<AccountNotManagedByReadDto> | null;
+    count?: number;
+    nextPage?: string | null;
+    previousPage?: string | null;
 }
 

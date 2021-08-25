@@ -10,18 +10,22 @@
  * Do not edit the class manually.
  */
 import { AccountNotManagedByReadDto } from './accountNotManagedByReadDto';
+import { IssueReadDto } from './issueReadDto';
+import { AccountStaffAssignToReadDto } from './accountStaffAssignToReadDto';
 
 
-export interface AccountReadDto { 
+export interface CarReadDto { 
     id?: number;
-    email?: string | null;
-    role?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-    phone?: string | null;
-    avatar?: string | null;
+    image?: string | null;
+    name?: string | null;
+    isConnecting?: boolean;
     isAvailable?: boolean | null;
-    createdAt?: string;
+    createdAt?: string | null;
+    deviceId?: string | null;
+    configUrl?: string | null;
+    isApproved?: boolean | null;
     managedBy?: AccountNotManagedByReadDto;
+    assignTo?: AccountStaffAssignToReadDto;
+    issues?: Array<IssueReadDto> | null;
 }
 

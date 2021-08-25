@@ -3,19 +3,14 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { AccountRolesService } from './api/accountRoles.service';
 import { AccountsService } from './api/accounts.service';
 import { AuthenticationService } from './api/authentication.service';
-import { BoxTypesService } from './api/boxTypes.service';
-import { BoxesService } from './api/boxes.service';
-import { ImageService } from './api/image.service';
-import { ProductListProductsService } from './api/productListProducts.service';
-import { ProductListsService } from './api/productLists.service';
-import { ProductsService } from './api/products.service';
-import { ScreenTemplatesService } from './api/screenTemplates.service';
-import { ScreensService } from './api/screens.service';
-import { StoresService } from './api/stores.service';
-import { TemplatesService } from './api/templates.service';
+import { CarsService } from './api/cars.service';
+import { CheckService } from './api/check.service';
+import { IssueService } from './api/issue.service';
+import { IssueTypesService } from './api/issueTypes.service';
+import { ProfileService } from './api/profile.service';
+import { RolesService } from './api/roles.service';
 
 @NgModule({
   imports:      [],

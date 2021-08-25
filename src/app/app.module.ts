@@ -37,6 +37,8 @@ import { CorsInterceptor } from './shared/interceptors/cors.interceptor';
     {
       provide: Configuration,
       useFactory: (tokenService: TokenService) => {
+        console.log('===============');
+        
         return new Configuration({
           basePath: environment.API_URL,
           apiKeys: {

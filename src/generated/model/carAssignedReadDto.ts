@@ -9,19 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccountNotManagedByReadDto } from './accountNotManagedByReadDto';
 
 
-export interface AccountReadDto { 
+export interface CarAssignedReadDto { 
     id?: number;
-    email?: string | null;
-    role?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-    phone?: string | null;
-    avatar?: string | null;
+    image?: string | null;
+    name?: string | null;
+    isConnecting?: boolean;
     isAvailable?: boolean | null;
-    createdAt?: string;
-    managedBy?: AccountNotManagedByReadDto;
+    createdAt?: string | null;
+    deviceId?: string | null;
+    configUrl?: string | null;
+    isApproved?: boolean | null;
 }
 
